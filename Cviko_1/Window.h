@@ -1,5 +1,6 @@
 #pragma once
 
+#include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <stdio.h>
 
@@ -17,8 +18,15 @@ public:
 	static void cursor_callback(GLFWwindow* window, double x, double y);
 	static void button_callback(GLFWwindow* window, int button, int action, int mode);
 
+
+	bool shouldClose();
+	void poolEvents();
+	void swapBuffers();
+
+
 private:
 	GLFWwindow* window;
-	int width, height;
+	int width, height, major, minor, revision;
+	float ratio;
 };
 
