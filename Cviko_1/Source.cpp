@@ -16,10 +16,6 @@
 #include <stdio.h>
 
 
-static float angle = 50.f;
-static bool press = false;
-
-
 static void error_callback(int error, const char* description) { fputs(description, stderr); }
 
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -30,12 +26,6 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 	}
 	
 	printf("key_callback [%d,%d,%d,%d] \n", key, scancode, action, mods);
-	
-	if (action == GLFW_PRESS)
-	{
-		printf("Zmena smeru");
-		press = !press;
-	}
 	
 }
 
@@ -54,8 +44,6 @@ static void button_callback(GLFWwindow* window, int button, int action, int mode
 	if (action == GLFW_PRESS) printf("button_callback [%d,%d,%d]\n", button, action, mode);
 
 }
-
-
 
 //GLM test
 
@@ -79,21 +67,81 @@ float points[] = {
 	-0.5f, -0.5f, 0.0f
 };
 
+float square_1[] = {
+	 0.9f, 0.9f, 0.0f,
+	 0.9f, 0.7f, 0.0f,
+	 0.7f, 0.7f, 0.0f,
+
+	 0.7f, 0.7f, 0.0f,
+	 0.7f, 0.9f, 0.0f,
+	 0.9f, 0.9f, 0.0f,
+};
+
+
+typedef struct {
+	float position[4];  // 4 hodnoty pro pozici
+	float color[4];     // 4 hodnoty pro barvu
+} Vertex;
+
+const Vertex square_2[] = {
+   { { -.9f, .9f, .5f, 1 }, { 1, 1, 0, 1 } },
+   { { -.9f, .7f, .5f, 1 }, { 1, 0, 0, 1 } },
+   { { -.7f, .7f, .5f, 1 }, { 0, 0, 0, 1 } },
+   { { -.7f, .9f, .5f, 1 }, { 0, 1, 0, 1 } },
+};
+
+
 const char* vertex_shader =
+"#version 330\n"
+"layout(location=0) in vec3 vp;"
+"out vec3 frag_pos;"
+"void main () {"
+"     gl_Position = vec4 (vp, 1.0);"
+"	  frag_pos = vp;"
+"}";
+
+const char* vertex_shader_square =
 "#version 330\n"
 "layout(location=0) in vec3 vp;"
 "void main () {"
 "     gl_Position = vec4 (vp, 1.0);"
 "}";
 
+const char* vertex_shader_with_color =
+"#version 330\n"
+"layout(location=0) in vec4 position;\n"  // Pozice vrcholu
+"layout(location=1) in vec4 color;\n"     // Barva vrcholu
+"out vec4 vertex_color;\n"                // Přeposíláme barvu do fragment shaderu
+"void main () {\n"
+"    gl_Position = position;\n"
+"    vertex_color = color;\n"
+"}";
 
 
 const char* fragment_shader =
 "#version 330\n"
+"in vec3 frag_pos;"
 "out vec4 frag_colour;"
 "void main () {"
-"     frag_colour = vec4 (0.5, 0.0, 0.5, 1.0);"
+"	  vec3 color = (frag_pos + vec3(0.5));"
+"     frag_colour = vec4 (color, 1.0);"
 "}";
+
+const char* fragment_shader_square =
+"#version 330\n"
+"out vec4 frag_colour;"
+"void main () {"
+"     frag_colour = vec4 (1.0, 1.0, 0.0, 1.0);"
+"}";
+
+const char* fragment_shader_with_color =
+"#version 330\n"
+"in vec4 vertex_color;\n"  // Přijímáme barvu z vertex shaderu
+"out vec4 frag_colour;\n"
+"void main () {\n"
+"    frag_colour = vertex_color;\n"  // Nastavujeme výslednou barvu
+"}";
+
 
 
 
@@ -101,31 +149,41 @@ int main(void)
 {
 	GLFWwindow* window;
 	glfwSetErrorCallback(error_callback);
-
-	if (!glfwInit())
+	if (!glfwInit()) {
+		fprintf(stderr, "ERROR: could not start GLFW3\n");
 		exit(EXIT_FAILURE);
-	window = glfwCreateWindow(640, 480, "ZPG", NULL, NULL);
-	if (!window)
-	{
+	}
+
+	/* //inicializace konkretni verze
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+	glfwWindowHint(GLFW_OPENGL_PROFILE,
+	GLFW_OPENGL_CORE_PROFILE);  //*/
+
+	window = glfwCreateWindow(800, 600, "ZPG", NULL, NULL);
+	if (!window) {
 		glfwTerminate();
 		exit(EXIT_FAILURE);
 	}
+
 	glfwMakeContextCurrent(window);
 	glfwSwapInterval(1);
 
-	// Sets the key callback
-	glfwSetKeyCallback(window, key_callback);
+	// start GLEW extension handler
+	glewExperimental = GL_TRUE;
+	glewInit();
 
-	glfwSetCursorPosCallback(window, cursor_callback);
 
-	glfwSetMouseButtonCallback(window, button_callback);
-
-	glfwSetWindowFocusCallback(window, window_focus_callback);
-
-	glfwSetWindowIconifyCallback(window, window_iconify_callback);
-
-	glfwSetWindowSizeCallback(window, window_size_callback);
-
+	// get version info
+	printf("OpenGL Version: %s\n", glGetString(GL_VERSION));
+	printf("Using GLEW %s\n", glewGetString(GLEW_VERSION));
+	printf("Vendor %s\n", glGetString(GL_VENDOR));
+	printf("Renderer %s\n", glGetString(GL_RENDERER));
+	printf("GLSL %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
+	int major, minor, revision;
+	glfwGetVersion(&major, &minor, &revision);
+	printf("Using GLFW %i.%i.%i\n", major, minor, revision);
 
 	int width, height;
 	glfwGetFramebufferSize(window, &width, &height);
@@ -133,52 +191,142 @@ int main(void)
 	glViewport(0, 0, width, height);
 
 
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
 
 
-	while (!glfwWindowShouldClose(window))
+
+	//vertex buffer object (VBO)
+	GLuint VBO;
+	glGenBuffers(1, &VBO); // generate the VBO
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(points), points, GL_STATIC_DRAW);
+
+	GLuint VBO_2;
+	glGenBuffers(1, &VBO_2);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO_2);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(square_1), square_1, GL_STATIC_DRAW);
+
+	GLuint VBO_3;
+	glGenBuffers(1, &VBO_3);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO_3);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(square_2), square_2, GL_STATIC_DRAW);
+
+
+
+
+	//Vertex Array Object (VAO)
+	GLuint VAO;
+	glGenVertexArrays(1, &VAO); //generate the VAO
+	glBindVertexArray(VAO); //bind the 
+	// Povolení atributů pro pozici (location=0) a barvu (location=1)
+	glEnableVertexAttribArray(0); //enable vertex attributes for position
+	//glEnableVertexAttribArray(1); // for color 
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+
+
+	GLuint VAO_2;
+	glGenVertexArrays(1, &VAO_2);
+	glBindVertexArray(VAO_2);
+	glEnableVertexAttribArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO_2);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+
+	GLuint VAO_3;
+	glGenVertexArrays(1, &VAO_3);
+	glBindVertexArray(VAO_3);
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO_3);
+	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)0); //pozice
+	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)(sizeof(float) * 4)); // barva
+
+
+	//create and compile shaders
+	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(vertexShader, 1, &vertex_shader, NULL);
+	glCompileShader(vertexShader);
+
+	GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(fragmentShader, 1, &fragment_shader, NULL);
+	glCompileShader(fragmentShader);
+
+	GLuint shaderProgram = glCreateProgram();
+	glAttachShader(shaderProgram, fragmentShader);
+	glAttachShader(shaderProgram, vertexShader);
+	glLinkProgram(shaderProgram);
+
+
+	//square1
+	GLuint vertexSharedSquare = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(vertexSharedSquare, 1, &vertex_shader_square, NULL);
+	glCompileShader(vertexSharedSquare);
+
+	GLuint fragmentShaderSquare = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(fragmentShaderSquare, 1, &fragment_shader_square, NULL);
+	glCompileShader(fragmentShaderSquare);
+
+	GLuint shaderProgramSquare = glCreateProgram();
+	glAttachShader(shaderProgramSquare, fragmentShaderSquare);
+	glAttachShader(shaderProgramSquare, vertexSharedSquare);
+	glLinkProgram(shaderProgramSquare);
+
+
+	//square2
+	GLuint vertexSharedSquare_2 = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(vertexSharedSquare_2, 1, &vertex_shader_with_color, NULL);
+	glCompileShader(vertexSharedSquare_2);
+
+	GLuint fragmentShaderSquare_2 = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(fragmentShaderSquare_2, 1, &fragment_shader_with_color, NULL);
+	glCompileShader(fragmentShaderSquare_2);
+
+	GLuint shaderProgramSquare_2 = glCreateProgram();
+	glAttachShader(shaderProgramSquare_2, fragmentShaderSquare_2);
+	glAttachShader(shaderProgramSquare_2, vertexSharedSquare_2);
+	glLinkProgram(shaderProgramSquare_2);
+
+
+
+
+	GLint status;
+	glGetProgramiv(shaderProgram, GL_LINK_STATUS, &status);
+	if (status == GL_FALSE)
 	{
-		if (press == true)
-		{
-			angle -= 1.f;
-		}
-		else
-		{
-			angle += 1.f;
-		}
-
-
-
-
-
-		glClear(GL_COLOR_BUFFER_BIT);
-
-		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();
-		glRotatef(angle, 0.f, 0.f, 1.f);
-
-		glBegin(GL_QUADS);
-		glColor3f(1.f, 0.f, 0.f);
-		glVertex3f(-0.5f, -0.5f, 0.f);
-
-		glColor3f(0.f, 1.f, 0.f);
-		glVertex3f(0.5f, -0.5f, 0.f);
-
-		glColor3f(0.f, 0.f, 1.f);
-		glVertex3f(0.5f, 0.5f, 0.f);
-
-		glColor3f(1.f, 1.f, 0.f);
-		glVertex3f(-0.5f, 0.5f, 0.f);
-
-
-		glEnd();
-		glfwSwapBuffers(window);
-
-		glfwPollEvents();
+		GLint infoLogLength;
+		glGetProgramiv(shaderProgram, GL_INFO_LOG_LENGTH, &infoLogLength);
+		GLchar* strInfoLog = new GLchar[infoLogLength + 1];
+		glGetProgramInfoLog(shaderProgram, infoLogLength, NULL, strInfoLog);
+		fprintf(stderr, "Linker failure: %s\n", strInfoLog);
+		delete[] strInfoLog;
+		return 0;
 	}
+
+
+	while (!glfwWindowShouldClose(window)) {
+		// clear color and depth buffer
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		
+		glUseProgram(shaderProgram);
+		glBindVertexArray(VAO);
+		glDrawArrays(GL_TRIANGLES, 0, 3); //mode,first,count
+
+		glUseProgram(shaderProgramSquare);
+		glBindVertexArray(VAO_2);
+		glDrawArrays(GL_TRIANGLES, 0, 6);	
+
+		glUseProgram(shaderProgramSquare_2);
+		glBindVertexArray(VAO_3);
+		glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+
+
+		// update other events like input handling
+		glfwPollEvents();
+		// put the stuff we’ve been drawing onto the display
+		glfwSwapBuffers(window);
+	}
+
 	glfwDestroyWindow(window);
+
 	glfwTerminate();
 	exit(EXIT_SUCCESS);
 }

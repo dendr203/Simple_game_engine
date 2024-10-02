@@ -1,0 +1,96 @@
+# Visual Studio
+.vs/
+.vscode/
+*.code-workspace
+
+# Build directories
+Debug/
+Release/
+x64/
+x86/
+out/
+build/
+bin/
+obj/
+
+# User-specific files
+*.rsuser
+*.user
+*.opendb
+*.suo
+
+# Visual Studio specific
+*.vcxproj.user
+*.vcxproj.filters
+*.pdb
+*.ipch
+*.idb
+*.sdf
+*.opensdf
+*.tlog
+*.log
+*.tmp
+*.tlog
+
+# Visual Studio Code specific
+.vscode/
+*.code-workspace
+
+# Windows specific
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Backup files
+*.bak
+*.old
+*.orig
+*.save
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+*.obj
+*.pch
+*.ilk
+*.res
+*.aps
+*.ncb
+*.sbr
+*.tlog
+*.lastbuildstate
+
+# C++ specific
+*.exe
+*.dll
+*.lib
+*.out
+*.o
+*.obj
+*.tlb
+*.tlh
+*.bak
+*.bak2
+
+# Directories created by the build process
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+CMakeLists.txt.user
+Makefile
+
+# Ignore auto-generated Qt files
+moc_*.cpp
+qrc_*.cpp
+ui_*.h
+
+# Ignore coverage reports
+*.gcda
+*.gcno
+*.gcov
+
+# Ignore build artifacts and executable files
+*.exe
+*.out
+*.app
