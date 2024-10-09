@@ -13,12 +13,11 @@ class Shader
 public:
 	Shader();
 
-	void Init(const char* vertex_shader_str, const char* fragment_shader_str);
-	
-	GLuint GetShader_prg();
+	void init_shader(GLenum type, const char* shader_string);
 
+	GLuint GetShader();
 private:
-	GLuint vertexShader, fragmentShader, shaderProgram;
+	GLuint shader_id;
 
 };
 

@@ -7,7 +7,7 @@
 class Window
 {
 public:
-	Window();
+	Window(int width, int height);
 	~Window();
 
 	static void error_callback(int error, const char* description);

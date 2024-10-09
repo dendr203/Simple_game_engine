@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-Window::Window()
+Window::Window(int witdth, int height)
 {
 	glfwSetErrorCallback(error_callback);
 	if (!glfwInit()) {
@@ -21,7 +21,7 @@ Window::Window()
 	glfwWindowHint(GLFW_OPENGL_PROFILE,
 	GLFW_OPENGL_CORE_PROFILE);  //*/
 
-	window = glfwCreateWindow(800, 600, "ZPG", NULL, NULL);
+	window = glfwCreateWindow(witdth, height, "ZPG", NULL, NULL);
 	if (!window) {
 		glfwTerminate();
 		exit(EXIT_FAILURE);

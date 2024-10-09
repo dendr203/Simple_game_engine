@@ -1,16 +1,7 @@
 #pragma once
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>  
-
-#include <stdlib.h>
-#include <stdio.h>
-#include <vector>
-#include <memory> //smart pointers
 
 #include "Window.h"
-#include "Triangle.h"
-#include "Square.h"
-#include "Shader.h"
+#include "Scene.h" 
 
 
 class Application
@@ -24,11 +15,9 @@ public:
 	void run();
 
 private:
-	Window* window = new Window();
-	
+	Window* window;
 
-	Triangle* triangle = new Triangle();
-	Square* square = new Square();
+	Scene* scene;	
 };
 
 
