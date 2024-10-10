@@ -55,7 +55,14 @@ const char* fragment_shader_better =
 "in vec4 vertex_color;\n"  // Pøijímáme barvu z vertex shaderu
 "out vec4 frag_colour;\n"
 "void main () {\n"
-"    frag_colour = vertex_color + 0.7;\n"  // Nastavujeme výslednou barvu
+"    frag_colour = vertex_color + 1;\n"  // Nastavujeme výslednou barvu
+"}";
+
+const char* fragment_shader_green =
+"#version 330\n"
+"out vec4 frag_colour;"
+"void main () {"
+"     frag_colour = vec4 (0.0, 0.9, 0.0, 1.0);"
 "}";
 
 
@@ -64,6 +71,12 @@ DrawableObject::DrawableObject()
 {
 	model = new Model();
 	shaderProgram = new ShaderProgram();
+	transformation = new Transformation();
+}
+
+DrawableObject::~DrawableObject()
+{
+	
 }
 
 void DrawableObject::init_sphere()
@@ -81,20 +94,35 @@ void DrawableObject::init_tree()
 	shaderProgram->init_shader(vertex_shader_trans, fragment_shader_with_color);
 }
 
+void DrawableObject::init_bushes()
+{
+	vector_model = std::vector<float>(bushes, bushes + sizeof(bushes) / sizeof(bushes[0]));
+	model->init_model(vector_model);
+	shaderProgram->init_shader(vertex_shader_trans, fragment_shader_green);
+}
+
 void DrawableObject::Draw()
 {
-	glm::mat4 modelMatrix = transformation.getModelMatrix();
+	glm::mat4 modelMatrix = transformation->getModelMatrix();
 	GLint modelLoc = glGetUniformLocation(shaderProgram->GetShader(), "modelMatrix");
-	
 	glUseProgram(shaderProgram->GetShader());
 	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &modelMatrix[0][0]);
-	
-	
 	glBindVertexArray(model->GetVAO());
 	glDrawArrays(GL_TRIANGLES, 0, vector_model.size() / 6);
 }
 
-void DrawableObject::setTransformation(const Transformation& trans) {
-	transformation = trans;
+
+void DrawableObject::scale(float x, float y, float z)
+{
+	transformation->scale(x, y, z);
 }
 
+void DrawableObject::translate(float x, float y, float z)
+{
+	transformation->translate(x, y, z);
+}
+
+void DrawableObject::rotate(float angle, float x, float y, float z)
+{
+	transformation->rotate(angle, x, y, z);
+}

@@ -35,6 +35,13 @@ Window::Window(int witdth, int height)
 		}
 		});
 
+	glfwSetKeyCallback(window, [](GLFWwindow* win, int key, int scancode, int action, int mods) {
+		Window* instance = static_cast<Window*>(glfwGetWindowUserPointer(win));
+		if (instance) {
+			instance->key_callback(win, key, scancode, action, mods);
+		}
+		});
+
 
 
 	glfwMakeContextCurrent(window);
@@ -72,11 +79,22 @@ void Window::error_callback(int error, const char* description)
 	fputs(description, stderr);
 }
 
+
+int Window::pressedKey = 0;
 void Window::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 	{
 		glfwSetWindowShouldClose(window, GL_TRUE);
+	}
+
+	if (key == GLFW_KEY_1 && action == GLFW_PRESS)
+	{
+		pressedKey = 1;
+	}
+	else if (key == GLFW_KEY_2 && action == GLFW_PRESS)
+	{
+		pressedKey = 2;
 	}
 
 	printf("key_callback [%d,%d,%d,%d] \n", key, scancode, action, mods);

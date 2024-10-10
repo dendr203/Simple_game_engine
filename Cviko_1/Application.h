@@ -14,6 +14,8 @@ public:
 	void createModels();
 	void run();
 
+	void HandleInput();
+
 private:
 	Window* window;
 

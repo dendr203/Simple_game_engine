@@ -1,7 +1,9 @@
 ﻿  Application.cpp
-D:\School\3.ročník\ZPG\Cviko_1\Application.cpp(50,20): warning C4244: argument: float se převádí na int; může dojít ke ztrátě dat.
+D:\School\3.ročník\ZPG\Cviko_1\Application.cpp(45,20): warning C4244: argument: float se převádí na int; může dojít ke ztrátě dat.
+  DrawableObjects.cpp
+D:\School\3.ročník\ZPG\Cviko_1\DrawableObjects.cpp(111,52): warning C4267: argument: Převod z: size_t na: GLsizei, může dojít ke ztrátě dat.
   Scene.cpp
-D:\School\3.ročník\ZPG\Cviko_1\Scene.cpp(40,25): warning C4244: argument: int se převádí na float; může dojít ke ztrátě dat.
+D:\School\3.ročník\ZPG\Cviko_1\Scene.cpp(71,31): warning C4244: =: int se převádí na float; může dojít ke ztrátě dat.
   Source.cpp
   Generování kódu...
   Cviko_1.vcxproj -> D:\School\3.ročník\ZPG\Cviko_1\x64\Debug\Cviko_1.exe

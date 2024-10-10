@@ -10,6 +10,11 @@
 
 #include "Models/sphere.h"
 #include "Models/tree.h"
+#include "Models/bushes.h"
+#include "Models/gift.h"
+#include "Models/plain.h"
+#include "Models/suzi_flat.h"
+#include "Models/suzi_smooth.h"
 
 
 class DrawableObject
@@ -19,15 +24,26 @@ public:
 	~DrawableObject();
 	void init_sphere();
 	void init_tree();
+	void init_bushes();
 	void Draw();
 
-	void setTransformation(const Transformation& transformation);
 	
+	void scale(float x, float y, float z);
+	void translate(float x, float y, float z);
+	void rotate(float angle, float x, float y, float z);
+	
+	float rotateAngle;
+	float rotateX;
+	float rotateY;
+	float rotateZ;
+
 private:
 	ShaderProgram* shaderProgram;
 	Model* model;
 
 	std::vector<float> vector_model;
-	Transformation transformation;
+	Transformation* transformation;
+
+	
 };
 

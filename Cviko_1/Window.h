@@ -18,6 +18,7 @@ public:
 	static void cursor_callback(GLFWwindow* window, double x, double y);
 	static void button_callback(GLFWwindow* window, int button, int action, int mode);
 
+	static int pressedKey;
 
 	bool shouldClose();
 	void poolEvents();

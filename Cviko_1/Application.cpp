@@ -14,14 +14,13 @@ void Application::initialization()
 {
 	window = new Window(1000, 800);
 	scene = new Scene();
-	scene->CrateScene();
 }
 
 //toto tu nebude, bude to v scénì ty inity jednotlivé na objekty
 void Application::createModels()
 {
-	//drawableObject->init_sphere();
-	//drawableObject->init_tree();
+	//scene->CrateScene();
+	scene->CreateForestScene(10, 10);
 }
 
 void Application::run()
@@ -35,18 +34,14 @@ void Application::run()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
 
-
-		if (angle > 1.0f)
+		//angle += 0.5f;
+		if (angle > 5.0f)
 		{
-			angle = 0;
-		}
-		else
-		{
-			angle += 0.1f;
+			angle = 0.f;
 		}
 
-		//trans.rotate(angle, 0.0f, 1.0f, 0.0f);
 
+		HandleInput();
 		scene->DrawScene(angle);
 		
 		window->poolEvents();
@@ -54,6 +49,21 @@ void Application::run()
 	}
 
 	exit(EXIT_SUCCESS);
+}
+
+
+void Application::HandleInput() 
+{
+
+	int key = window->pressedKey;
+	if (key == 1) {
+		scene->SwitchScene(1); // Pøepnout na normální scénu
+		window->pressedKey = 0;
+	}
+	else if (key == 2) {
+		scene->SwitchScene(2); // Pøepnout na scénu lesa
+		window->pressedKey = 0;
+	}
 }
 
 
