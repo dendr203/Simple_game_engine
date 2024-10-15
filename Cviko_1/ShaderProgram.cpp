@@ -2,13 +2,15 @@
 
 ShaderProgram::ShaderProgram() {}
 
+ShaderProgram::~ShaderProgram() {}
+
 void ShaderProgram::init_shader(const char* vertex_shader_str, const char* fragment_shader_str)
 {
-	Shader fragment_shader;
-	fragment_shader.init_shader(GL_FRAGMENT_SHADER, fragment_shader_str);
-
 	Shader vertex_shader;
 	vertex_shader.init_shader(GL_VERTEX_SHADER, vertex_shader_str);
+
+	Shader fragment_shader;
+	fragment_shader.init_shader(GL_FRAGMENT_SHADER, fragment_shader_str);
 
 	shaderProgram_id = glCreateProgram();
 	glAttachShader(shaderProgram_id, fragment_shader.GetShader());
@@ -27,10 +29,20 @@ void ShaderProgram::init_shader(const char* vertex_shader_str, const char* fragm
 		delete[] strInfoLog;
 		exit(EXIT_FAILURE);
 	}
+
+	// Smažeme shadery, už je nepotøebujeme po linkování
+	glDeleteShader(vertex_shader.GetShader());
+	glDeleteShader(fragment_shader.GetShader());
 }
 
+void ShaderProgram::use_shader()
+{
+	glUseProgram(shaderProgram_id);
+}
 
 GLuint ShaderProgram::GetShader()
 {
 	return shaderProgram_id;
 }
+
+

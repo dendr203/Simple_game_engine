@@ -20,29 +20,20 @@ void Application::initialization()
 void Application::createModels()
 {
 	//scene->CrateScene();
-	scene->CreateForestScene(10, 10);
+	//scene->CreateForestScene(10, 10);
+	scene->CreateCameraBaseScene();
 }
 
 void Application::run()
-{
-	float angle = 0.0f;
-	
-
+{	
 	glEnable(GL_DEPTH_TEST);//Do depth comparisons and update the depth buffer.
 	while (!window->shouldClose()) {
 		// clear color and depth buffer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		
-
-		//angle += 0.5f;
-		if (angle > 5.0f)
-		{
-			angle = 0.f;
-		}
 
 
 		HandleInput();
-		scene->DrawScene(angle);
+		scene->DrawScene();
 		
 		window->poolEvents();
 		window->swapBuffers();

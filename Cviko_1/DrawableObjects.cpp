@@ -31,6 +31,18 @@ const char* vertex_shader_trans =
 "}";
 
 
+const char* vertex_shader_camera =
+"#version 330\n"
+"uniform mat4 modelMatrix;"
+"uniform mat4 projectMatrix;"
+"uniform mat4 viewMatrix;"
+"out vec3 vertexColor;"
+"layout(location=0) in vec3 vp;"
+"layout(location=1) in vec3 vn;"
+"void main () {"
+"     vertexColor=vn;"
+"     gl_Position = projectMatrix * viewMatrix * modelMatrix * vec4(vp, 1.0);"
+"}";
 
 
 const char* fragment_shader =
@@ -65,6 +77,15 @@ const char* fragment_shader_green =
 "     frag_colour = vec4 (0.0, 0.9, 0.0, 1.0);"
 "}";
 
+const char* fragment_shader_camera =
+"#version 330\n"
+"out vec4 frag_colour;"
+"in vec3 vertexColor;"
+"void main () {"
+"     frag_colour = vec4(vertexColor, 0.0);"
+"}";
+
+
 
 
 DrawableObject::DrawableObject()
@@ -76,7 +97,10 @@ DrawableObject::DrawableObject()
 
 DrawableObject::~DrawableObject()
 {
-	
+	delete model;
+	delete shaderProgram;
+	delete transformation;
+
 }
 
 void DrawableObject::init_sphere()
@@ -84,7 +108,6 @@ void DrawableObject::init_sphere()
 	vector_model = std::vector<float>(sphere, sphere + sizeof(sphere) / sizeof(sphere[0]));
 	model->init_model(vector_model);
 	shaderProgram->init_shader(vertex_shader_trans, fragment_shader_better);
-
 }
 
 void DrawableObject::init_tree()
@@ -101,13 +124,22 @@ void DrawableObject::init_bushes()
 	shaderProgram->init_shader(vertex_shader_trans, fragment_shader_green);
 }
 
+void DrawableObject::init_sphere_camera()
+{
+	vector_model = std::vector<float>(sphere, sphere + sizeof(sphere) / sizeof(sphere[0]));
+	model->init_model(vector_model);
+	shaderProgram->init_shader(vertex_shader_camera, fragment_shader_camera);
+}
+
 void DrawableObject::Draw()
 {
 	glm::mat4 modelMatrix = transformation->getModelMatrix();
 	GLint modelLoc = glGetUniformLocation(shaderProgram->GetShader(), "modelMatrix");
-	glUseProgram(shaderProgram->GetShader());
+	shaderProgram->use_shader();
 	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &modelMatrix[0][0]);
 	glBindVertexArray(model->GetVAO());
+
+
 	glDrawArrays(GL_TRIANGLES, 0, vector_model.size() / 6);
 }
 

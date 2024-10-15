@@ -11,7 +11,7 @@ void Transformation::translate(float x, float y, float z) {
 }
 
 void Transformation::rotate(float angle, float x, float y, float z) {
-    modelMatrix = glm::rotate(modelMatrix, glm::radians(angle), glm::vec3(x, y, z));
+    modelMatrix = glm::rotate(modelMatrix, 0.05f, glm::vec3(x, y, z));
 }
 
 void Transformation::scale(float x, float y, float z) {

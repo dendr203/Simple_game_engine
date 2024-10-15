@@ -1,8 +1,7 @@
 #pragma once
+#include "DrawableObject.h"
 
 #include <vector>
-
-#include "DrawableObject.h"
 
 class Scene
 {
@@ -11,13 +10,14 @@ public:
 	~Scene();
 	void CrateScene();
 	void CreateForestScene(int numTrees, int numBushes);
-	void RandomTransform(DrawableObject* object);
+	void CreateCameraBaseScene();
 
 	void AddObject(DrawableObject* object);
-	void DrawScene(int angle);
+	void DrawScene();
 	void ClearScene();
 	void SwitchScene(int sceneId);
 private:
 	std::vector<DrawableObject*> objects;
+	void RandomTransform(DrawableObject* object);
 };
 

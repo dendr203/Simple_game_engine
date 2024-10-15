@@ -1,4 +1,5 @@
 #include "Scene.h"
+
 #include <cstdlib> // Pro rand()
 #include <ctime>   // Pro srand()
 
@@ -16,7 +17,7 @@ void Scene::CrateScene() {
 	object1->init_sphere();
 	object1->translate(0.4f, -0.5f, 0.f);
 	object1->scale(0.1f, 0.1f, 0.1f);
-	object1->rotateAngle = 1.2f;
+	object1->rotateAngle = 0.02f;
 	object1->rotateX = 1.f;
 	objects.push_back(object1);
 
@@ -24,7 +25,7 @@ void Scene::CrateScene() {
 	object2->init_tree();
 	object2->translate(-0.4f, -0.8f, 0.f);
 	object2->scale(0.3f, 0.3f, 0.3f);
-	object2->rotateAngle = 3.2f;
+	object2->rotateAngle = 0.05f;
 	object2->rotateY = 1.f;
 	objects.push_back(object2);
 
@@ -32,7 +33,7 @@ void Scene::CrateScene() {
 	object3->init_bushes();
 	object3->translate(0.5f, 0.6f, 0.f);
 	object3->scale(0.4f, 0.4f, 0.4f);
-	object3->rotateAngle = 2.2f;
+	object3->rotateAngle = 0.025f;
 	object3->rotateZ = 1.f;
 	objects.push_back(object3);
 	
@@ -60,6 +61,15 @@ void Scene::CreateForestScene(int numTrees, int numBushes) {
 	}
 }
 
+void Scene::CreateCameraBaseScene() {
+	DrawableObject* object1 = new DrawableObject();
+	object1->init_sphere();
+	object1->scale(0.2f, 0.2f, 0.2f);
+	object1->rotateAngle = 0.1f;
+	object1->rotateX = 1.f;
+	objects.push_back(object1);
+}
+
 void Scene::RandomTransform(DrawableObject* object) {
 	// Náhodná pozice v rozsahu (-10, 10) na ose x a z, a na y v rozsahu (-1, 0)
 	float x = static_cast<float>(rand() % 10 - 5) / 10.0f;
@@ -68,7 +78,7 @@ void Scene::RandomTransform(DrawableObject* object) {
 	object->translate(x, y, z);
 
 	// Náhodná rotace v rozsahu (0, 360) na ose y
-	object->rotateAngle = rand() % 5;
+	object->rotateAngle = rand() % 3 / 10.0f;
 	int axis = rand() % 3; // 0 = X, 1 = Y, 2 = Z
 	switch (axis) {
 	case 0: // Rotace kolem osy X
@@ -92,7 +102,7 @@ void Scene::AddObject(DrawableObject* object) {
 	objects.push_back(object);
 }
 
-void Scene::DrawScene(int angle) {
+void Scene::DrawScene() {
 	for (int i = 0; i < objects.size(); i++)
 	{
 		objects[i]->rotate(objects[i]->rotateAngle, objects[i]->rotateX, objects[i]->rotateY, objects[i]->rotateZ);

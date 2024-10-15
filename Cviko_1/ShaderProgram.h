@@ -16,6 +16,7 @@ public:
 	~ShaderProgram();
 
 	void init_shader(const char* vertex_shader_str, const char* fragment_shader_str);
+	void use_shader();
 	GLuint GetShader();
 
 private:

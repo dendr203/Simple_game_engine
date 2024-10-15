@@ -25,6 +25,7 @@ public:
 	void init_sphere();
 	void init_tree();
 	void init_bushes();
+	void init_sphere_camera();
 	void Draw();
 
 	

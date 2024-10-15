@@ -7,7 +7,6 @@
 #include <stdio.h>
 
 
-
 class Shader
 {
 public:

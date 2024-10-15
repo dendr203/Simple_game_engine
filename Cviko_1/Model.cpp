@@ -1,6 +1,8 @@
 #include "Model.h"
 Model::Model() { }
 
+Model::~Model() { }
+
 void Model::init_model(std::vector<float>& vector_model)
 {
 	model = vector_model;
