@@ -1,7 +1,8 @@
 #pragma once
 
 #include "Window.h"
-#include "Scene.h" 
+#include "Scene.h"
+#include "Camera.h"
 
 
 class Application
@@ -18,8 +19,8 @@ public:
 
 private:
 	Window* window;
-
 	Scene* scene;	
+	Camera* camera;
 };
 
 

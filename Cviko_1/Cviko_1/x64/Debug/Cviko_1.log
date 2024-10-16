@@ -1,3 +1,8 @@
-﻿  Scene.cpp
-D:\School\3.ročník\ZPG\Cviko_1\Scene.cpp(176,26): warning C4305: argument: zkrácení z: double na: float
+﻿  Application.cpp
+D:\School\3.ročník\ZPG\Cviko_1\Application.cpp(43,10): warning C4477: printf: Formátovací řetězec %d vyžaduje argument typu int, ale variadický argument 1 má typ glm::vec3.
+  Camera.cpp
+  Scene.cpp
+D:\School\3.ročník\ZPG\Cviko_1\Scene.cpp(177,26): warning C4305: argument: zkrácení z: double na: float
+  Source.cpp
+  Generování kódu...
   Cviko_1.vcxproj -> D:\School\3.ročník\ZPG\Cviko_1\x64\Debug\Cviko_1.exe

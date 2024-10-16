@@ -4,6 +4,9 @@
 #include <GLFW/glfw3.h>
 #include <stdio.h>
 
+#include <unordered_map>
+
+
 class Window
 {
 public:
@@ -19,6 +22,7 @@ public:
 	static void button_callback(GLFWwindow* window, int button, int action, int mode);
 
 	static int pressedKey;
+	static std::unordered_map<int, bool> keyStates;
 
 	bool shouldClose();
 	void poolEvents();

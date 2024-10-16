@@ -90,9 +90,10 @@ const char* fragment_shader_camera =
 
 
 
-Scene::Scene()
+Scene::Scene(Camera* _camera)
 {
-	//srand(static_cast<unsigned int>(time(0)));
+	srand(static_cast<unsigned int>(time(0)));
+	camera = _camera;
 }
 
 Scene::~Scene() {}
@@ -199,13 +200,11 @@ void Scene::RandomTransform(DrawableObject* object, int i) {
 }
 
 
-void Scene::AddObject(DrawableObject* object) {
-	objects.push_back(object);
-}
 
 void Scene::DrawScene() {
 
-	glm::mat4 viewMatrix = glm::lookAt(glm::vec3(0.0f, 0.0f, 5.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	//glm::mat4 viewMatrix = glm::lookAt(glm::vec3(0.0f, 0.0f, 5.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	glm::mat4 viewMatrix = camera->getViewMatrix();
 	glm::mat4 projectionMatrix = glm::perspective(glm::radians(45.0f), 1000.0f / 800.0f, 0.1f, 100.0f);
 
 	for (int i = 0; i < objects.size(); i++)

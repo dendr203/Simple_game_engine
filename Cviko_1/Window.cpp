@@ -81,20 +81,19 @@ void Window::error_callback(int error, const char* description)
 
 
 int Window::pressedKey = 0;
+std::unordered_map<int, bool> Window::keyStates;
+
 void Window::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-	{
-		glfwSetWindowShouldClose(window, GL_TRUE);
+	if (action == GLFW_PRESS) {
+		keyStates[key] = true; // Klávesa je stisknuta
+	}
+	else if (action == GLFW_RELEASE) {
+		keyStates[key] = false; // Klávesa je uvolnìna
 	}
 
-	if (key == GLFW_KEY_1 && action == GLFW_PRESS)
-	{
-		pressedKey = 1;
-	}
-	else if (key == GLFW_KEY_2 && action == GLFW_PRESS)
-	{
-		pressedKey = 2;
+	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
+		glfwSetWindowShouldClose(window, GL_TRUE);
 	}
 
 	printf("key_callback [%d,%d,%d,%d] \n", key, scancode, action, mods);
