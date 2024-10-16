@@ -16,7 +16,7 @@ void Application::initialization()
 	scene = new Scene();
 }
 
-//toto tu nebude, bude to v scénì ty inity jednotlivé na objekty
+
 void Application::createModels()
 {
 	//scene->CrateScene();
@@ -44,8 +44,7 @@ void Application::run()
 
 
 void Application::HandleInput() 
-{
-
+{	
 	int key = window->pressedKey;
 	if (key == 1) {
 		scene->SwitchScene(1); // Pøepnout na normální scénu

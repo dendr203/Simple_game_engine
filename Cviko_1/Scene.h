@@ -18,6 +18,6 @@ public:
 	void SwitchScene(int sceneId);
 private:
 	std::vector<DrawableObject*> objects;
-	void RandomTransform(DrawableObject* object);
+	void RandomTransform(DrawableObject* object, int i);
 };
 

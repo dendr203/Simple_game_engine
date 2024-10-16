@@ -3,56 +3,56 @@
   "WorkspaceRootPath": "D:\\School\\3.ro\u010Dn\u00EDk\\ZPG\\Cviko_1\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{476596BF-23DD-441E-B1FD-6CBDB774076C}|Cviko_1.vcxproj|D:\\School\\3.ro\u010Dn\u00EDk\\ZPG\\Cviko_1\\Camera.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{476596BF-23DD-441E-B1FD-6CBDB774076C}|Cviko_1.vcxproj|solutionrelative:Camera.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{476596BF-23DD-441E-B1FD-6CBDB774076C}|Cviko_1.vcxproj|D:\\School\\3.ro\u010Dn\u00EDk\\ZPG\\Cviko_1\\Scene.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{476596BF-23DD-441E-B1FD-6CBDB774076C}|Cviko_1.vcxproj|solutionrelative:Scene.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{476596BF-23DD-441E-B1FD-6CBDB774076C}|Cviko_1.vcxproj|D:\\School\\3.ro\u010Dn\u00EDk\\ZPG\\Cviko_1\\DrawableObjects.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{476596BF-23DD-441E-B1FD-6CBDB774076C}|Cviko_1.vcxproj|solutionrelative:DrawableObjects.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{476596BF-23DD-441E-B1FD-6CBDB774076C}|Cviko_1.vcxproj|D:\\School\\3.ro\u010Dn\u00EDk\\ZPG\\Cviko_1\\ShaderProgram.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{476596BF-23DD-441E-B1FD-6CBDB774076C}|Cviko_1.vcxproj|solutionrelative:ShaderProgram.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{476596BF-23DD-441E-B1FD-6CBDB774076C}|Cviko_1.vcxproj|D:\\School\\3.ro\u010Dn\u00EDk\\ZPG\\Cviko_1\\ShaderProgram.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{476596BF-23DD-441E-B1FD-6CBDB774076C}|Cviko_1.vcxproj|solutionrelative:ShaderProgram.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{476596BF-23DD-441E-B1FD-6CBDB774076C}|Cviko_1.vcxproj|D:\\School\\3.ro\u010Dn\u00EDk\\ZPG\\Cviko_1\\Shader.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{476596BF-23DD-441E-B1FD-6CBDB774076C}|Cviko_1.vcxproj|solutionrelative:Shader.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{476596BF-23DD-441E-B1FD-6CBDB774076C}|Cviko_1.vcxproj|D:\\School\\3.ro\u010Dn\u00EDk\\ZPG\\Cviko_1\\Shader.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{476596BF-23DD-441E-B1FD-6CBDB774076C}|Cviko_1.vcxproj|solutionrelative:Shader.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{476596BF-23DD-441E-B1FD-6CBDB774076C}|Cviko_1.vcxproj|D:\\School\\3.ro\u010Dn\u00EDk\\ZPG\\Cviko_1\\Camera.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{476596BF-23DD-441E-B1FD-6CBDB774076C}|Cviko_1.vcxproj|solutionrelative:Camera.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{476596BF-23DD-441E-B1FD-6CBDB774076C}|Cviko_1.vcxproj|D:\\School\\3.ro\u010Dn\u00EDk\\ZPG\\Cviko_1\\Scene.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{476596BF-23DD-441E-B1FD-6CBDB774076C}|Cviko_1.vcxproj|solutionrelative:Scene.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{476596BF-23DD-441E-B1FD-6CBDB774076C}|Cviko_1.vcxproj|D:\\School\\3.ro\u010Dn\u00EDk\\ZPG\\Cviko_1\\DrawableObject.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{476596BF-23DD-441E-B1FD-6CBDB774076C}|Cviko_1.vcxproj|solutionrelative:DrawableObject.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{476596BF-23DD-441E-B1FD-6CBDB774076C}|Cviko_1.vcxproj|D:\\School\\3.ro\u010Dn\u00EDk\\ZPG\\Cviko_1\\Transformation.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{476596BF-23DD-441E-B1FD-6CBDB774076C}|Cviko_1.vcxproj|solutionrelative:Transformation.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{476596BF-23DD-441E-B1FD-6CBDB774076C}|Cviko_1.vcxproj|D:\\School\\3.ro\u010Dn\u00EDk\\ZPG\\Cviko_1\\Application.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{476596BF-23DD-441E-B1FD-6CBDB774076C}|Cviko_1.vcxproj|solutionrelative:Application.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{476596BF-23DD-441E-B1FD-6CBDB774076C}|Cviko_1.vcxproj|D:\\School\\3.ro\u010Dn\u00EDk\\ZPG\\Cviko_1\\Transformation.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{476596BF-23DD-441E-B1FD-6CBDB774076C}|Cviko_1.vcxproj|solutionrelative:Transformation.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{476596BF-23DD-441E-B1FD-6CBDB774076C}|Cviko_1.vcxproj|D:\\School\\3.ro\u010Dn\u00EDk\\ZPG\\Cviko_1\\DrawableObject.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{476596BF-23DD-441E-B1FD-6CBDB774076C}|Cviko_1.vcxproj|solutionrelative:DrawableObject.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{476596BF-23DD-441E-B1FD-6CBDB774076C}|Cviko_1.vcxproj|D:\\School\\3.ro\u010Dn\u00EDk\\ZPG\\Cviko_1\\ShaderProgram.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{476596BF-23DD-441E-B1FD-6CBDB774076C}|Cviko_1.vcxproj|solutionrelative:ShaderProgram.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{476596BF-23DD-441E-B1FD-6CBDB774076C}|Cviko_1.vcxproj|D:\\School\\3.ro\u010Dn\u00EDk\\ZPG\\Cviko_1\\ShaderProgram.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{476596BF-23DD-441E-B1FD-6CBDB774076C}|Cviko_1.vcxproj|solutionrelative:ShaderProgram.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{476596BF-23DD-441E-B1FD-6CBDB774076C}|Cviko_1.vcxproj|D:\\School\\3.ro\u010Dn\u00EDk\\ZPG\\Cviko_1\\Scene.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{476596BF-23DD-441E-B1FD-6CBDB774076C}|Cviko_1.vcxproj|solutionrelative:Scene.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{476596BF-23DD-441E-B1FD-6CBDB774076C}|Cviko_1.vcxproj|D:\\School\\3.ro\u010Dn\u00EDk\\ZPG\\Cviko_1\\Shader.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{476596BF-23DD-441E-B1FD-6CBDB774076C}|Cviko_1.vcxproj|solutionrelative:Shader.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{476596BF-23DD-441E-B1FD-6CBDB774076C}|Cviko_1.vcxproj|D:\\School\\3.ro\u010Dn\u00EDk\\ZPG\\Cviko_1\\Transformation.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{476596BF-23DD-441E-B1FD-6CBDB774076C}|Cviko_1.vcxproj|solutionrelative:Transformation.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{476596BF-23DD-441E-B1FD-6CBDB774076C}|Cviko_1.vcxproj|D:\\School\\3.ro\u010Dn\u00EDk\\ZPG\\Cviko_1\\Camera.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{476596BF-23DD-441E-B1FD-6CBDB774076C}|Cviko_1.vcxproj|solutionrelative:Camera.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{476596BF-23DD-441E-B1FD-6CBDB774076C}|Cviko_1.vcxproj|D:\\School\\3.ro\u010Dn\u00EDk\\ZPG\\Cviko_1\\Camera.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{476596BF-23DD-441E-B1FD-6CBDB774076C}|Cviko_1.vcxproj|solutionrelative:Camera.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{476596BF-23DD-441E-B1FD-6CBDB774076C}|Cviko_1.vcxproj|D:\\School\\3.ro\u010Dn\u00EDk\\ZPG\\Cviko_1\\Transformation.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{476596BF-23DD-441E-B1FD-6CBDB774076C}|Cviko_1.vcxproj|solutionrelative:Transformation.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -62,7 +62,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 545,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Document",
@@ -72,20 +72,20 @@
               "RelativeDocumentMoniker": "DrawableObjects.cpp",
               "ToolTip": "D:\\School\\3.ro\u010Dn\u00EDk\\ZPG\\Cviko_1\\DrawableObjects.cpp",
               "RelativeToolTip": "DrawableObjects.cpp",
-              "ViewState": "AgIAAHAAAAAAAAAAAAAkwIUAAAAbAAAAAAAAAA==",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAC8AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-10-14T19:51:03.657Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 3,
               "Title": "Application.cpp",
               "DocumentMoniker": "D:\\School\\3.ro\u010Dn\u00EDk\\ZPG\\Cviko_1\\Application.cpp",
               "RelativeDocumentMoniker": "Application.cpp",
               "ToolTip": "D:\\School\\3.ro\u010Dn\u00EDk\\ZPG\\Cviko_1\\Application.cpp",
               "RelativeToolTip": "Application.cpp",
-              "ViewState": "AgIAABgAAAAAAAAAAAAkwCUAAAAQAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-10-14T16:53:09.944Z",
               "EditorCaption": ""
@@ -98,59 +98,58 @@
               "RelativeDocumentMoniker": "Transformation.cpp",
               "ToolTip": "D:\\School\\3.ro\u010Dn\u00EDk\\ZPG\\Cviko_1\\Transformation.cpp",
               "RelativeToolTip": "Transformation.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAPAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-10-14T16:53:55.382Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 10,
               "Title": "Camera.cpp",
               "DocumentMoniker": "D:\\School\\3.ro\u010Dn\u00EDk\\ZPG\\Cviko_1\\Camera.cpp",
               "RelativeDocumentMoniker": "Camera.cpp",
               "ToolTip": "D:\\School\\3.ro\u010Dn\u00EDk\\ZPG\\Cviko_1\\Camera.cpp",
               "RelativeToolTip": "Camera.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAADAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAYwBsAAAADAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-10-14T16:49:02.576Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-14T16:49:02.576Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "ShaderProgram.cpp",
               "DocumentMoniker": "D:\\School\\3.ro\u010Dn\u00EDk\\ZPG\\Cviko_1\\ShaderProgram.cpp",
               "RelativeDocumentMoniker": "ShaderProgram.cpp",
               "ToolTip": "D:\\School\\3.ro\u010Dn\u00EDk\\ZPG\\Cviko_1\\ShaderProgram.cpp",
               "RelativeToolTip": "ShaderProgram.cpp",
-              "ViewState": "AgIAABUAAAAAAAAAAAAAAC0AAAABAAAAAAAAAA==",
+              "ViewState": "AgIAABIAAAAAAAAAAAAAACcAAAAgAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-10-14T16:24:26.09Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 0,
               "Title": "Scene.cpp",
               "DocumentMoniker": "D:\\School\\3.ro\u010Dn\u00EDk\\ZPG\\Cviko_1\\Scene.cpp",
               "RelativeDocumentMoniker": "Scene.cpp",
               "ToolTip": "D:\\School\\3.ro\u010Dn\u00EDk\\ZPG\\Cviko_1\\Scene.cpp",
               "RelativeToolTip": "Scene.cpp",
-              "ViewState": "AgIAAFkAAAAAAAAAAAAkwGoAAAACAAAAAAAAAA==",
+              "ViewState": "AgIAAJYAAAAAAAAAAAAYwK8AAAAXAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-10-09T20:00:22.206Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 2,
               "Title": "Shader.cpp",
               "DocumentMoniker": "D:\\School\\3.ro\u010Dn\u00EDk\\ZPG\\Cviko_1\\Shader.cpp",
               "RelativeDocumentMoniker": "Shader.cpp",
               "ToolTip": "D:\\School\\3.ro\u010Dn\u00EDk\\ZPG\\Cviko_1\\Shader.cpp",
               "RelativeToolTip": "Shader.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAATAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-10-14T16:44:09.135Z",
               "EditorCaption": ""
@@ -159,24 +158,24 @@
         },
         {
           "DockedWidth": 545,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 6,
               "Title": "ShaderProgram.h",
               "DocumentMoniker": "D:\\School\\3.ro\u010Dn\u00EDk\\ZPG\\Cviko_1\\ShaderProgram.h",
               "RelativeDocumentMoniker": "ShaderProgram.h",
               "ToolTip": "D:\\School\\3.ro\u010Dn\u00EDk\\ZPG\\Cviko_1\\ShaderProgram.h",
               "RelativeToolTip": "ShaderProgram.h",
-              "ViewState": "AgIAAAEAAAAAAAAAAAAAABIAAAATAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2024-10-15T09:10:32.94Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 12,
               "Title": "Transformation.h",
               "DocumentMoniker": "D:\\School\\3.ro\u010Dn\u00EDk\\ZPG\\Cviko_1\\Transformation.h",
               "RelativeDocumentMoniker": "Transformation.h",
@@ -188,54 +187,54 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 4,
               "Title": "DrawableObject.h",
               "DocumentMoniker": "D:\\School\\3.ro\u010Dn\u00EDk\\ZPG\\Cviko_1\\DrawableObject.h",
               "RelativeDocumentMoniker": "DrawableObject.h",
               "ToolTip": "D:\\School\\3.ro\u010Dn\u00EDk\\ZPG\\Cviko_1\\DrawableObject.h",
               "RelativeToolTip": "DrawableObject.h",
-              "ViewState": "AgIAAA8AAAAAAAAAAAAAABoAAAAUAAAAAAAAAA==",
+              "ViewState": "AgIAABEAAAAAAAAAAAAAwCAAAAAiAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2024-10-15T07:34:55.445Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 8,
               "Title": "Shader.h",
               "DocumentMoniker": "D:\\School\\3.ro\u010Dn\u00EDk\\ZPG\\Cviko_1\\Shader.h",
               "RelativeDocumentMoniker": "Shader.h",
               "ToolTip": "D:\\School\\3.ro\u010Dn\u00EDk\\ZPG\\Cviko_1\\Shader.h",
               "RelativeToolTip": "Shader.h",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2024-10-14T16:41:11.855Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 7,
               "Title": "Scene.h",
               "DocumentMoniker": "D:\\School\\3.ro\u010Dn\u00EDk\\ZPG\\Cviko_1\\Scene.h",
               "RelativeDocumentMoniker": "Scene.h",
               "ToolTip": "D:\\School\\3.ro\u010Dn\u00EDk\\ZPG\\Cviko_1\\Scene.h",
               "RelativeToolTip": "Scene.h",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAHAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAA1AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-10-14T16:45:03.142Z"
+              "WhenOpened": "2024-10-14T16:45:03.142Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 11,
               "Title": "Camera.h",
               "DocumentMoniker": "D:\\School\\3.ro\u010Dn\u00EDk\\ZPG\\Cviko_1\\Camera.h",
               "RelativeDocumentMoniker": "Camera.h",
               "ToolTip": "D:\\School\\3.ro\u010Dn\u00EDk\\ZPG\\Cviko_1\\Camera.h",
               "RelativeToolTip": "Camera.h",
-              "ViewState": "AgIAAA8AAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAABoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-10-14T16:48:49.897Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-14T16:48:49.897Z"
             }
           ]
         }

@@ -11,8 +11,7 @@ public:
 	Model();
 	~Model();
 	void init_model(std::vector<float>& model);
-	
-	GLuint GetVAO();
+	void draw_model();
 
 private:
 	 GLuint VBO;

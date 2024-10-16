@@ -22,11 +22,15 @@ class DrawableObject
 public:
 	DrawableObject();
 	~DrawableObject();
+
+
 	void init_sphere();
 	void init_tree();
 	void init_bushes();
 	void init_sphere_camera();
-	void Draw();
+
+	void init_shader(const char* vertex_shader_str, const char* fragment_shader_str);
+	void Draw(glm::mat4& viewMatrix, glm::mat4& projectionMatrix);
 
 	
 	void scale(float x, float y, float z);

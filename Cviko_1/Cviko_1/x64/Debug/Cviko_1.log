@@ -1,7 +1,3 @@
-﻿  Application.cpp
-  DrawableObjects.cpp
-D:\School\3.ročník\ZPG\Cviko_1\DrawableObjects.cpp(141,52): warning C4267: argument: Převod z: size_t na: GLsizei, může dojít ke ztrátě dat.
-  Scene.cpp
-  Source.cpp
-  Generování kódu...
+﻿  Scene.cpp
+D:\School\3.ročník\ZPG\Cviko_1\Scene.cpp(176,26): warning C4305: argument: zkrácení z: double na: float
   Cviko_1.vcxproj -> D:\School\3.ročník\ZPG\Cviko_1\x64\Debug\Cviko_1.exe
