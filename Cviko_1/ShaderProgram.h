@@ -6,20 +6,26 @@
 #include <stdio.h>
 
 #include "Shader.h"
+#include "Camera.h"
 
-
-
+class Camera;
 class ShaderProgram
 {
 public:
-	ShaderProgram();
+	ShaderProgram(Camera* camera);
 	~ShaderProgram();
 
 	void init_shader(const char* vertex_shader_str, const char* fragment_shader_str);
 	void use_shader();
 	GLuint GetShader();
 
+	void setMatrixUniform(const char* name, const glm::mat4& matrix);
+
+	void updateFromCam();
+
 private:
 	GLuint shaderProgram_id;
+
+	Camera* camera;
 };
 

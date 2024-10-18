@@ -90,37 +90,44 @@ const char* fragment_shader_camera =
 
 
 
-Scene::Scene(Camera* _camera)
+Scene::Scene() : camera(nullptr), viewMatrix(0), projectionMatrix(0)
 {
-	srand(static_cast<unsigned int>(time(0)));
+	srand(static_cast<unsigned int>(time(0)));	
+}
+
+Scene::~Scene()
+{
+	delete &objects;
+}
+
+void Scene::init_cameraScene(Camera* _camera)
+{
 	camera = _camera;
 }
 
-Scene::~Scene() {}
-
 void Scene::CrateScene() {
 	
-	DrawableObject* object1 = new DrawableObject();
+	DrawableObject* object1 = new DrawableObject(camera);
 	object1->init_sphere();
-	object1->init_shader(vertex_shader_trans, fragment_shader_better);
+	object1->init_shader(vertex_shader_camera, fragment_shader_camera);
 	object1->translate(0.4f, -0.5f, 0.f);
 	object1->scale(0.1f, 0.1f, 0.1f);
 	object1->rotateAngle = 0.02f;
 	object1->rotateX = 1.f;
 	objects.push_back(object1);
 
-	DrawableObject* object2 = new DrawableObject();
+	DrawableObject* object2 = new DrawableObject(camera);
 	object2->init_tree();
-	object2->init_shader(vertex_shader_trans, fragment_shader_with_color);
+	object2->init_shader(vertex_shader_camera, fragment_shader_camera);
 	object2->translate(-0.4f, -0.8f, 0.f);
 	object2->scale(0.3f, 0.3f, 0.3f);
 	object2->rotateAngle = 0.05f;
 	object2->rotateY = 1.f;
 	objects.push_back(object2);
 
-	DrawableObject* object3 = new DrawableObject();
+	DrawableObject* object3 = new DrawableObject(camera);
 	object3->init_bushes();
-	object3->init_shader(vertex_shader_trans, fragment_shader_green);
+	object3->init_shader(vertex_shader_camera, fragment_shader_camera);
 	object3->translate(0.5f, 0.6f, 0.f);
 	object3->scale(0.4f, 0.4f, 0.4f);
 	object3->rotateAngle = 0.025f;
@@ -136,10 +143,15 @@ void Scene::CrateScene() {
 
 void Scene::CreateForestScene(int numTrees, int numBushes) {
 	
-
+	//create plain here next for ground
+	DrawableObject* plain = new DrawableObject(camera);
+	plain->init_plain();
+	plain->init_shader(vertex_shader_camera, fragment_shader_camera);
+	plain->scale(5, 5, 5);
+	objects.push_back(plain);
 
 	for (int i = 0; i < numTrees; ++i) {
-		DrawableObject* tree = new DrawableObject();
+		DrawableObject* tree = new DrawableObject(camera);
 		tree->init_tree();
 		tree->init_shader(vertex_shader_camera, fragment_shader_camera);
 		RandomTransform(tree, i);
@@ -147,7 +159,7 @@ void Scene::CreateForestScene(int numTrees, int numBushes) {
 	}
 
 	for (int i = 0; i < numBushes; ++i) {
-		DrawableObject* bush = new DrawableObject();
+		DrawableObject* bush = new DrawableObject(camera);
 		bush->init_bushes();
 		bush->init_shader(vertex_shader_camera, fragment_shader_camera);
 		RandomTransform(bush, i);
@@ -155,26 +167,14 @@ void Scene::CreateForestScene(int numTrees, int numBushes) {
 	}
 }
 
-void Scene::CreateCameraBaseScene() {
-	DrawableObject* object1 = new DrawableObject();
-	object1->init_sphere();
-	object1->init_shader(vertex_shader_camera, fragment_shader_camera);
-	object1->scale(0.5f, 0.5f, 0.5f);
-	//object1->rotateAngle = 0.1f;
-	//object1->rotateX = 1.f;
-	objects.push_back(object1);
-}
-
 void Scene::RandomTransform(DrawableObject* object, int i) {
 	
 	float x = static_cast<float>(rand() % 10 - 5) / 10.0f;
 	//float y = static_cast<float>(rand() % 10 - 9) / 10.0f;
-	float z = static_cast<float>(rand() % 10 - 9) / 10.0f;
+	float z = static_cast<float>(rand() % 100 - 50) / 10.0f;
 	
-	float help = (i - 5) / 2.0f;
-	printf("x: %f\n", help);
-	printf("y: %f\n", z);
-	object->translate(help, -0.7, z);
+	float x_my = (i - 25) / 5.0f;
+	object->translate(x_my, 0, z);
 
 	// Random rotation (0, 0.3)
 	/*
@@ -195,7 +195,6 @@ void Scene::RandomTransform(DrawableObject* object, int i) {
 
 	// Random scale (0.1, 0.5)
 	float scale = static_cast<float>(rand() % 30 + 1) / 100.0f;
-	printf("scale %f\n", scale);
 	object->scale(scale, scale, scale);
 }
 
@@ -203,14 +202,10 @@ void Scene::RandomTransform(DrawableObject* object, int i) {
 
 void Scene::DrawScene() {
 
-	//glm::mat4 viewMatrix = glm::lookAt(glm::vec3(0.0f, 0.0f, 5.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-	glm::mat4 viewMatrix = camera->getViewMatrix();
-	glm::mat4 projectionMatrix = glm::perspective(glm::radians(45.0f), 1000.0f / 800.0f, 0.1f, 100.0f);
-
 	for (int i = 0; i < objects.size(); i++)
 	{
 		//objects[i]->rotate(objects[i]->rotateAngle, objects[i]->rotateX, objects[i]->rotateY, objects[i]->rotateZ);
-		objects[i]->Draw(viewMatrix, projectionMatrix);
+		objects[i]->Draw(camera->getViewMatrix(), camera->getProjectionMatrix());
 	}
 }
 
@@ -219,6 +214,7 @@ void Scene::ClearScene() {
 		delete obj;
 	}
 	objects.clear();
+	camera->clearLinkShaders();
 }
 
 void Scene::SwitchScene(int sceneId) {
@@ -228,6 +224,6 @@ void Scene::SwitchScene(int sceneId) {
 		CrateScene();
 	}
 	else if (sceneId == 2) {
-		CreateForestScene(10, 5);
+		CreateForestScene(50, 50);
 	}
 }

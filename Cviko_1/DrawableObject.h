@@ -20,23 +20,24 @@
 class DrawableObject
 {
 public:
-	DrawableObject();
+	DrawableObject(Camera* _camera);
 	~DrawableObject();
 
 
 	void init_sphere();
 	void init_tree();
 	void init_bushes();
-	void init_sphere_camera();
+	void init_plain();
+
 
 	void init_shader(const char* vertex_shader_str, const char* fragment_shader_str);
-	void Draw(glm::mat4& viewMatrix, glm::mat4& projectionMatrix);
+	void Draw(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix);
 
 	
+	//this will be done differently in future
 	void scale(float x, float y, float z);
 	void translate(float x, float y, float z);
 	void rotate(float angle, float x, float y, float z);
-	
 	float rotateAngle;
 	float rotateX;
 	float rotateY;

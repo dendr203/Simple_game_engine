@@ -1,7 +1,7 @@
 #include "Shader.h"
 
 
-Shader::Shader() {}
+Shader::Shader() : shader_id(-1) {}
 
 void Shader::init_shader(GLenum type, const char* shader_string)
 {

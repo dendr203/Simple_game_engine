@@ -1,14 +1,10 @@
 #include "DrawableObject.h"
 
-
-
-
-
-
-DrawableObject::DrawableObject()
+DrawableObject::DrawableObject(Camera* _camera) : rotateAngle(0), rotateX(0), rotateY(0), rotateZ(0)
 {
 	model = new Model();
-	shaderProgram = new ShaderProgram();
+	shaderProgram = new ShaderProgram(_camera);
+	_camera->addObserver(shaderProgram);
 	transformation = new Transformation();
 }
 
@@ -38,9 +34,9 @@ void DrawableObject::init_bushes()
 	model->init_model(vector_model);
 }
 
-void DrawableObject::init_sphere_camera()
+void DrawableObject::init_plain()
 {
-	vector_model = std::vector<float>(sphere, sphere + sizeof(sphere) / sizeof(sphere[0]));
+	vector_model = std::vector<float>(plain, plain + sizeof(plain) / sizeof(plain[0]));
 	model->init_model(vector_model);
 }
 
@@ -50,25 +46,24 @@ void DrawableObject::init_sphere_camera()
 void DrawableObject::init_shader(const char* vertex_shader_str, const char* fragment_shader_str)
 {
 	shaderProgram->init_shader(vertex_shader_str, fragment_shader_str);
+	//tady taky, jeslti je potøeba to nastavit jendou a pak chill
+	//shaderProgram->setMatrixUniform("viewMatrix", viewMatrix);
+	//shaderProgram->setMatrixUniform("projectMatrix", projectionMatrix);
 }
 
 
-void DrawableObject::Draw(glm::mat4& viewMatrix, glm::mat4& projectionMatrix)
+void DrawableObject::Draw(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix)
 {
 	glm::mat4 modelMatrix = transformation->getModelMatrix();
 	
 	shaderProgram->use_shader();
-
-	GLint modelLoc = glGetUniformLocation(shaderProgram->GetShader(), "modelMatrix");
-	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelMatrix));
+	shaderProgram->setMatrixUniform("modelMatrix", modelMatrix);
 	
-	GLint viewLoc = glGetUniformLocation(shaderProgram->GetShader(), "viewMatrix");
-	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(viewMatrix));
-
-	GLint projLoc = glGetUniformLocation(shaderProgram->GetShader(), "projectMatrix");
-	glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projectionMatrix));
+	//zeptat se nìmce na toto:
+	//shaderProgram->updateFromCam();
 	
-
+	shaderProgram->setMatrixUniform("viewMatrix", viewMatrix);
+	shaderProgram->setMatrixUniform("projectMatrix", projectionMatrix);
 
 	model->draw_model();
 }

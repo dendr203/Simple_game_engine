@@ -6,8 +6,7 @@
 int naklon = 0;
 
 
-Application::Application()
-	: camera(new Camera(glm::vec3(0.0f, 0.0f, 5.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f))) {}
+Application::Application() {}
 
 Application::~Application() {
 	delete camera;
@@ -18,16 +17,17 @@ Application::~Application() {
 void Application::initialization()
 {
 	window = new Window(1000, 800);
-
-	scene = new Scene(camera);
+	camera = new Camera(glm::vec3(0.0f, 1.0f, 5.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.05, 45.0, window->getAspect_ratio());
+	scene = new Scene();
+	scene->init_cameraScene(camera);
 }
 
 
 void Application::createModels()
 {
 	//scene->CrateScene();
-	//scene->CreateForestScene(10, 10);
-	scene->CreateCameraBaseScene();
+	scene->CreateForestScene(50, 50);
+	//scene->CreateCameraBaseScene();
 }
 
 void Application::run()
@@ -41,6 +41,7 @@ void Application::run()
 		HandleInput();
 		scene->DrawScene();
 		
+		
 		window->poolEvents();
 		window->swapBuffers();
 	}
@@ -51,27 +52,34 @@ void Application::run()
 
 void Application::HandleInput() 
 {	
-	int key = window->pressedKey;
-
 	if (Window::keyStates[GLFW_KEY_W]) {
-		camera->move(camera->front, 0.1f); // Adjust speed as needed
+		camera->moveForward();
 	}
 	if (Window::keyStates[GLFW_KEY_S]) {
-		camera->move(-camera->front, 0.1f);
+		camera->moveBackwards();
 	}
 	if (Window::keyStates[GLFW_KEY_A]) {
-		camera->move(-glm::normalize(glm::cross(camera->front, camera->up)), 0.1f);
+		camera->moveLeft();
 	}
 	if (Window::keyStates[GLFW_KEY_D]) {
-		camera->move(glm::normalize(glm::cross(camera->front, camera->up)), 0.1f);
+		camera->moveRight();
 	}
 
 	if (Window::keyStates[GLFW_KEY_1]) {
-		scene->SwitchScene(1); // Pøepnout na normální scénu
+		scene->SwitchScene(1);
 	}
 	if (Window::keyStates[GLFW_KEY_2]) {
-		scene->SwitchScene(2); // Pøepnout na scénu lesa
+		scene->SwitchScene(2);
 	}
+
+
+	// Process mouse movement only if there are offsets
+    if (Window::out_x != 0 || Window::out_y != 0) {
+        camera->processMouseMovement(Window::out_x, Window::out_y);
+        
+        Window::out_x = 0;
+        Window::out_y = 0;
+    }
 }
 
 

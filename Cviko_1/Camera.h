@@ -3,22 +3,34 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "ShaderProgram.h"
+#include <vector>
 
-class Shader;
+class ShaderProgram;
 class Camera
 {
 public:
     //Camera(Shader* _shader, glm::vec3 _position, float _fov, float _aspectRatio, float _nearPlane, float _farPlane);
-    Camera(glm::vec3 startPos, glm::vec3 startFront, glm::vec3 startUp)
-        : position(startPos), front(startFront), up(startUp) {}
+    Camera(glm::vec3 position, glm::vec3 front, glm::vec3 up, float speed, float _fov, float _aspectRatio);
 
-    void move(const glm::vec3& direction, float deltaTime) {
-        position += direction * deltaTime;
-    }
+    glm::mat4 getViewMatrix();
+    glm::mat4 getProjectionMatrix();
 
-    glm::mat4 getViewMatrix() {
-        return glm::lookAt(position, position + front, up);
-    }
+    void processMouseMovement(float xoffset, float yoffset);
+
+    
+    void moveForward();
+    void moveBackwards();
+    void moveLeft();
+    void moveRight();
+
+    void addObserver(ShaderProgram* shaderProgram);
+    void notifyObservers();
+
+    void clearLinkShaders();
+
+private:
+    Shader* shader;
 
     glm::vec3 position;
     glm::vec3 front;
@@ -26,37 +38,22 @@ public:
     glm::vec3 right;
     glm::vec3 worldUp;
 
-    void setViewMatrix(); // Nastavení pohledové matice
-    void setProjectionMatrix(); // Nastavení projekèní matice
-
-    void update(); // Aktualizace matic ve shaderu
-
-    // Metody pro pohyb kamery
-    void moveForward(float deltaTime);
-    void moveBackward(float deltaTime);
-    void moveLeft(float deltaTime);
-    void moveRight(float deltaTime);
-    void rotate(float yawOffset, float pitchOffset); // Otáèení kamery
-
-private:
-    Shader* shader;
-
-   
-
     float yaw;
     float pitch;
-
+    float sensitivity;
     float movementSpeed;
-    float mouseSensitivity;
-
-    glm::mat4 view_matrix;
-    glm::mat4 projection_matrix;
-
     float fov;
     float aspectRatio;
-    float nearPlane;
-    float farPlane;
+    
+    glm::mat4 viewMatrix;
+    glm::mat4 projectionMatrix;
 
-    void updateCameraVectors(); // Aktualizace vektorù pohybu na základì yaw/pitch
+    void move(const glm::vec3& direction);
+    void updateCameraVectors();
+    void setProjectionMatrix();
+    void updateViewMatrix();
+
+
+    std::vector<ShaderProgram*> shaderPrograms; // List of observers
 };
 

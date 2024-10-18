@@ -6,8 +6,17 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+
+float Window::lastX = 0;
+float Window::lastY = 0; 
+
+
 Window::Window(int witdth, int height)
 {
+	lastX = static_cast<float>(witdth) / 2;
+	lastY = static_cast<float>(height) / 2;
+
+
 	glfwSetErrorCallback(error_callback);
 	if (!glfwInit()) {
 		fprintf(stderr, "ERROR: could not start GLFW3\n");
@@ -28,6 +37,7 @@ Window::Window(int witdth, int height)
 	}
 
 	glfwSetWindowUserPointer(window, this);  // Set the user pointer to this instance
+
 	glfwSetCursorPosCallback(window, [](GLFWwindow* win, double x, double y) {
 		Window* instance = static_cast<Window*>(glfwGetWindowUserPointer(win));
 		if (instance) {
@@ -41,6 +51,11 @@ Window::Window(int witdth, int height)
 			instance->key_callback(win, key, scancode, action, mods);
 		}
 		});
+
+
+
+	
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 
 
@@ -80,7 +95,6 @@ void Window::error_callback(int error, const char* description)
 }
 
 
-int Window::pressedKey = 0;
 std::unordered_map<int, bool> Window::keyStates;
 
 void Window::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -96,7 +110,7 @@ void Window::key_callback(GLFWwindow* window, int key, int scancode, int action,
 		glfwSetWindowShouldClose(window, GL_TRUE);
 	}
 
-	printf("key_callback [%d,%d,%d,%d] \n", key, scancode, action, mods);
+	//printf("key_callback [%d,%d,%d,%d] \n", key, scancode, action, mods);
 }
 
 void Window::window_focus_callback(GLFWwindow* window, int focused)
@@ -115,9 +129,27 @@ void Window::window_size_callback(GLFWwindow* window, int width, int height)
 	glViewport(0, 0, width, height);
 }
 
-void Window::cursor_callback(GLFWwindow* window, double x, double y) 
+
+
+static bool firstMouse = true;
+float Window::out_x, Window::out_y;
+
+void Window::cursor_callback(GLFWwindow* window, float x, float y) 
 { 
-	printf("cursor_callback \n"); 
+	if (firstMouse)
+	{
+		lastX = x;
+		lastY = y;
+		firstMouse = false;
+	}
+
+	out_x = x - lastX;
+	out_y = lastY - y; 
+
+	lastX = x;
+	lastY = y;
+
+	//printf("cursor_callback \n"); 
 }
 
 void Window::button_callback(GLFWwindow* window, int button, int action, int mode)
@@ -126,6 +158,10 @@ void Window::button_callback(GLFWwindow* window, int button, int action, int mod
 
 }
 
+float Window::getAspect_ratio()
+{
+	return ratio;
+}
 
 
 bool Window::shouldClose()
