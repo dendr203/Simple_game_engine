@@ -108,7 +108,7 @@ void Scene::init_cameraScene(Camera* _camera)
 void Scene::CrateScene() {
 	
 	DrawableObject* object1 = new DrawableObject(camera);
-	object1->init_sphere();
+	//object1->init_sphere();
 	object1->init_shader(vertex_shader_camera, fragment_shader_camera);
 	object1->translate(0.4f, -0.5f, 0.f);
 	object1->scale(0.1f, 0.1f, 0.1f);
@@ -117,7 +117,7 @@ void Scene::CrateScene() {
 	objects.push_back(object1);
 
 	DrawableObject* object2 = new DrawableObject(camera);
-	object2->init_tree();
+	//object2->init_tree();
 	object2->init_shader(vertex_shader_camera, fragment_shader_camera);
 	object2->translate(-0.4f, -0.8f, 0.f);
 	object2->scale(0.3f, 0.3f, 0.3f);
@@ -126,7 +126,7 @@ void Scene::CrateScene() {
 	objects.push_back(object2);
 
 	DrawableObject* object3 = new DrawableObject(camera);
-	object3->init_bushes();
+	//object3->init_bushes();
 	object3->init_shader(vertex_shader_camera, fragment_shader_camera);
 	object3->translate(0.5f, 0.6f, 0.f);
 	object3->scale(0.4f, 0.4f, 0.4f);
@@ -143,16 +143,27 @@ void Scene::CrateScene() {
 
 void Scene::CreateForestScene(int numTrees, int numBushes) {
 	
+	Model* plain_model = new Model();
+	plain_model->init_model(std::vector<float>(plain, plain + sizeof(plain) / sizeof(plain[0])));
+
+	Model* tree_model = new Model();
+	tree_model->init_model(std::vector<float>(tree, tree + sizeof(tree) / sizeof(tree[0])));
+
+	Model* bush_model = new Model();
+	bush_model->init_model(std::vector<float>(bushes, bushes + sizeof(bushes) / sizeof(bushes[0])));
+
 	//create plain here next for ground
 	DrawableObject* plain = new DrawableObject(camera);
-	plain->init_plain();
+	plain->init_model(plain_model);
 	plain->init_shader(vertex_shader_camera, fragment_shader_camera);
 	plain->scale(5, 5, 5);
 	objects.push_back(plain);
 
+
+
 	for (int i = 0; i < numTrees; ++i) {
 		DrawableObject* tree = new DrawableObject(camera);
-		tree->init_tree();
+		tree->init_model(tree_model);
 		tree->init_shader(vertex_shader_camera, fragment_shader_camera);
 		RandomTransform(tree, i);
 		objects.push_back(tree);
@@ -160,7 +171,7 @@ void Scene::CreateForestScene(int numTrees, int numBushes) {
 
 	for (int i = 0; i < numBushes; ++i) {
 		DrawableObject* bush = new DrawableObject(camera);
-		bush->init_bushes();
+		bush->init_model(bush_model);
 		bush->init_shader(vertex_shader_camera, fragment_shader_camera);
 		RandomTransform(bush, i);
 		objects.push_back(bush);

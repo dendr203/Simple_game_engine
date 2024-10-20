@@ -16,28 +16,36 @@ DrawableObject::~DrawableObject()
 
 }
 
-void DrawableObject::init_sphere()
+/*
+void DrawableObject::init_sphere(std::vector<float>& vector_model)
 {
-	vector_model = std::vector<float>(sphere, sphere + sizeof(sphere) / sizeof(sphere[0]));
+	//vector_model = std::vector<float>(sphere, sphere + sizeof(sphere) / sizeof(sphere[0]));
 	model->init_model(vector_model);
 }
 
-void DrawableObject::init_tree()
+void DrawableObject::init_tree(std::vector<float>& vector_model)
 {
-	vector_model = std::vector<float>(tree, tree + sizeof(tree) / sizeof(tree[0]));
+	//vector_model = std::vector<float>(tree, tree + sizeof(tree) / sizeof(tree[0]));
 	model->init_model(vector_model);
 }
 
-void DrawableObject::init_bushes()
+void DrawableObject::init_bushes(std::vector<float>& vector_model)
 {
-	vector_model = std::vector<float>(bushes, bushes + sizeof(bushes) / sizeof(bushes[0]));
+	//vector_model = std::vector<float>(bushes, bushes + sizeof(bushes) / sizeof(bushes[0]));
 	model->init_model(vector_model);
 }
 
-void DrawableObject::init_plain()
+void DrawableObject::init_plainstd::vector<float>& vector_model()
 {
-	vector_model = std::vector<float>(plain, plain + sizeof(plain) / sizeof(plain[0]));
+	//vector_model = std::vector<float>(plain, plain + sizeof(plain) / sizeof(plain[0]));
 	model->init_model(vector_model);
+}
+*/
+
+
+void DrawableObject::init_model(Model* model)
+{
+	this->model = model;
 }
 
 

@@ -26,7 +26,7 @@ void Application::initialization()
 void Application::createModels()
 {
 	//scene->CrateScene();
-	scene->CreateForestScene(50, 50);
+	scene->CreateForestScene(500, 500);
 	//scene->CreateCameraBaseScene();
 }
 

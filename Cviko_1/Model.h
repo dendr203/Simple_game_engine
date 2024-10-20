@@ -10,7 +10,7 @@ class Model
 public:
 	Model();
 	~Model();
-	void init_model(std::vector<float>& model);
+	void init_model(const std::vector<float>& model);
 	void draw_model();
 
 private:

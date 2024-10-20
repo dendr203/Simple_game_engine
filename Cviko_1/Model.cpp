@@ -10,7 +10,7 @@ Model::~Model() {
 	glDeleteBuffers(1, &VBO);
 }
 
-void Model::init_model(std::vector<float>& vector_model)
+void Model::init_model(const std::vector<float>& vector_model)
 {
 	model = vector_model;
 	
