@@ -17,7 +17,9 @@ Application::~Application() {
 void Application::initialization()
 {
 	window = new Window(1000, 800);
-	camera = new Camera(glm::vec3(0.0f, 1.0f, 5.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.05, 45.0, window->getAspect_ratio());
+	camera = new Camera(glm::vec3(0.0f, 1.0f, 5.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.05, 45.0, window->getAspect_ratio(), -90.f, 0.f, 0.08f);
+	//camera = new Camera(glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), 0.f, 45.0, window->getAspect_ratio(), -90.0f, -90.0f, 0.f);
+	
 	scene = new Scene();
 	scene->init_cameraScene(camera);
 }
@@ -26,8 +28,9 @@ void Application::initialization()
 void Application::createModels()
 {
 	//scene->CrateScene();
-	scene->CreateForestScene(500, 500);
+	//scene->CreateForestScene(50, 50);
 	//scene->CreateCameraBaseScene();
+	scene->CreateConstantTestScene();
 }
 
 void Application::run()
@@ -67,9 +70,11 @@ void Application::HandleInput()
 
 	if (Window::keyStates[GLFW_KEY_1]) {
 		scene->SwitchScene(1);
+		Window::keyStates[GLFW_KEY_1] = false;
 	}
 	if (Window::keyStates[GLFW_KEY_2]) {
 		scene->SwitchScene(2);
+		Window::keyStates[GLFW_KEY_2] = false;
 	}
 
 

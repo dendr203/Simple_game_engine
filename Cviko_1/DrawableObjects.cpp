@@ -10,7 +10,6 @@ DrawableObject::DrawableObject(Camera* _camera) : rotateAngle(0), rotateX(0), ro
 
 DrawableObject::~DrawableObject()
 {
-	delete model;
 	delete shaderProgram;
 	delete transformation;
 
@@ -54,9 +53,6 @@ void DrawableObject::init_model(Model* model)
 void DrawableObject::init_shader(const char* vertex_shader_str, const char* fragment_shader_str)
 {
 	shaderProgram->init_shader(vertex_shader_str, fragment_shader_str);
-	//tady taky, jeslti je potøeba to nastavit jendou a pak chill
-	//shaderProgram->setMatrixUniform("viewMatrix", viewMatrix);
-	//shaderProgram->setMatrixUniform("projectMatrix", projectionMatrix);
 }
 
 
@@ -67,11 +63,10 @@ void DrawableObject::Draw(const glm::mat4& viewMatrix, const glm::mat4& projecti
 	shaderProgram->use_shader();
 	shaderProgram->setMatrixUniform("modelMatrix", modelMatrix);
 	
-	//zeptat se nìmce na toto:
-	//shaderProgram->updateFromCam();
-	
 	shaderProgram->setMatrixUniform("viewMatrix", viewMatrix);
-	shaderProgram->setMatrixUniform("projectMatrix", projectionMatrix);
+	shaderProgram->setMatrixUniform("projectionMatrix", projectionMatrix);
+
+
 
 	model->draw_model();
 }

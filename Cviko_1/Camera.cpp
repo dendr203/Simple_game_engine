@@ -1,7 +1,7 @@
 #include "Camera.h"
 
-Camera::Camera(glm::vec3 position, glm::vec3 front, glm::vec3 up, float speed, float _fov, float _aspectRatio)
-	: position(position), front(front), up(up), movementSpeed(speed), fov(_fov), aspectRatio(_aspectRatio), yaw(-90.0f), pitch(0.0f), sensitivity(0.08f)
+Camera::Camera(glm::vec3 position, glm::vec3 front, glm::vec3 up, float speed, float _fov, float _aspectRatio, float _yaw, float _pitch, float _sensitivity)
+	: position(position), front(front), up(up), movementSpeed(speed), fov(_fov), aspectRatio(_aspectRatio), yaw(_yaw), pitch(_pitch), sensitivity(_sensitivity)
 {
 	updateCameraVectors();
 	setProjectionMatrix();
@@ -37,7 +37,7 @@ void Camera::updateCameraVectors() {
 }
 
 void Camera::processMouseMovement(float xoffset, float yoffset) {
-	float sensitivity = 0.1f;
+	
 	xoffset *= sensitivity;
 	yoffset *= sensitivity;
 

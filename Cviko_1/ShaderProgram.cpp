@@ -69,6 +69,6 @@ void ShaderProgram::updateFromCam() {
 
 	// Set matrices in the shader program (pseudo-code)
 	setMatrixUniform("viewMatrix", viewMatrix);
-	setMatrixUniform("projectMatrix", projectionMatrix);
+	setMatrixUniform("projectionMatrix", projectionMatrix);
 }
 

@@ -11,7 +11,8 @@ class Camera
 {
 public:
     //Camera(Shader* _shader, glm::vec3 _position, float _fov, float _aspectRatio, float _nearPlane, float _farPlane);
-    Camera(glm::vec3 position, glm::vec3 front, glm::vec3 up, float speed, float _fov, float _aspectRatio);
+    Camera(glm::vec3 position, glm::vec3 front, glm::vec3 up,
+        float speed, float _fov, float _aspectRatio, float _yaw, float _pitch, float _sensitivity);
 
     glm::mat4 getViewMatrix();
     glm::mat4 getProjectionMatrix();

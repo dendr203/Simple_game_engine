@@ -13,6 +13,7 @@ public:
 	void init_cameraScene(Camera* _camera);
 	void CrateScene();
 	void CreateForestScene(int numTrees, int numBushes);
+	void CreateConstantTestScene();
 
 	void DrawScene();
 	void ClearScene();
