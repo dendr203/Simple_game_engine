@@ -3,14 +3,15 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "Subject.h"
+#include "Observer.h"
 #include "ShaderProgram.h"
 #include <vector>
 
 class ShaderProgram;
-class Camera
+class Camera : public Subject
 {
 public:
-    //Camera(Shader* _shader, glm::vec3 _position, float _fov, float _aspectRatio, float _nearPlane, float _farPlane);
     Camera(glm::vec3 position, glm::vec3 front, glm::vec3 up,
         float speed, float _fov, float _aspectRatio, float _yaw, float _pitch, float _sensitivity);
 
@@ -25,8 +26,9 @@ public:
     void moveLeft();
     void moveRight();
 
-    void addObserver(ShaderProgram* shaderProgram);
-    void notifyObservers();
+    void addObserver(Observer* observer) override;
+	void removeObserver(Observer* observer) override;
+    void notifyObservers() override;
 
     void clearLinkShaders();
 
@@ -55,6 +57,6 @@ private:
     void updateViewMatrix();
 
 
-    std::vector<ShaderProgram*> shaderPrograms; // List of observers
+    std::vector<Observer*> observers;
 };
 

@@ -112,7 +112,7 @@ const char* vertex_shader_light_lambert =
 "layout(location = 0) in vec3 in_Position;"
 "layout(location = 1) in vec3 in_Normal;"
 
-"out vec4 ex_worldPosition;" // Opraveno na vec3
+"out vec4 ex_worldPosition;" 
 "out vec3 ex_worldNormal;"
 
 "void main(void) {"
@@ -129,9 +129,9 @@ const char* fragment_shader_light_lambert =
 "in vec4 ex_worldPosition;"
 "in vec3 ex_worldNormal;"
 
-"uniform vec3 lightColor = vec3(1.0f, 1.0f, 1.0f);"
-"uniform vec3 lightPosition = vec3(0.0f, 0.0f, 0.0f);"
-"uniform vec4 ambientLight = vec4(0.1f, 0.1f, 0.1f, 0.1f);"
+"uniform vec3 lightColor;"
+"uniform vec3 lightPosition;"
+"uniform vec4 ambientLight;"
 
 "out vec4 out_Color;"
 "void main(void){"
@@ -163,12 +163,18 @@ void Scene::init_cameraScene(Camera* _camera)
 
 void Scene::CrateScene() {
 	
+	Light* light = new Light(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec4(0.1f, 0.1f, 0.1f, 0.1f));
+
+	ShaderProgram* shaderProgram = new ShaderProgram(camera, light);
+	shaderProgram->init_shader(vertex_shader_light_lambert, fragment_shader_light_lambert);
+	camera->addObserver(shaderProgram);
+	light->addObserver(shaderProgram);
+
 	Model* sphere_model = new Model();
 	sphere_model->init_model(std::vector<float>(sphere, sphere + sizeof(sphere) / sizeof(sphere[0])));
 	DrawableObject* object1 = new DrawableObject(camera);
-	//object1->init_sphere();
 	object1->init_model(sphere_model);
-	object1->init_shader(vertex_shader_camera, fragment_shader_camera);
+	object1->init_shader(shaderProgram);
 	object1->translate(0.4f, -0.5f, 0.f);
 	object1->scale(0.1f, 0.1f, 0.1f);
 	object1->rotateAngle = 0.02f;
@@ -178,9 +184,8 @@ void Scene::CrateScene() {
 	Model* tree_model = new Model();
 	tree_model->init_model(std::vector<float>(tree, tree + sizeof(tree) / sizeof(tree[0])));
 	DrawableObject* object2 = new DrawableObject(camera);
-	//object2->init_tree();
 	object2->init_model(tree_model);
-	object2->init_shader(vertex_shader_camera, fragment_shader_camera);
+	object2->init_shader(shaderProgram);
 	object2->translate(-0.4f, -0.8f, 0.f);
 	object2->scale(0.3f, 0.3f, 0.3f);
 	object2->rotateAngle = 0.05f;
@@ -192,7 +197,7 @@ void Scene::CrateScene() {
 	DrawableObject* object3 = new DrawableObject(camera);
 	//object3->init_bushes();
 	object3->init_model(bush_model);
-	object3->init_shader(vertex_shader_camera, fragment_shader_camera);
+	object3->init_shader(shaderProgram);
 	object3->translate(0.5f, 0.6f, 0.f);
 	object3->scale(0.4f, 0.4f, 0.4f);
 	object3->rotateAngle = 0.025f;
@@ -204,10 +209,19 @@ void Scene::CrateScene() {
 	object1->setTexture("textures/brick.jpg");
 	object1->setShader("shaders/vertex_shader.glsl", "shaders/fragment_shader.glsl");
 	*/
+
+	shaderProgram->setMatrixUniform("projectionMatrix", camera->getProjectionMatrix());
 }
 
 void Scene::CreateForestScene(int numTrees, int numBushes) {
 	
+	Light* light = new Light(glm::vec3(10.0f, 10.0f, 10.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec4(0.1f, 0.1f, 0.1f, 0.1f));
+
+	ShaderProgram* shaderProgram = new ShaderProgram(camera, light);
+	shaderProgram->init_shader(vertex_shader_light_lambert, fragment_shader_light_lambert);
+	camera->addObserver(shaderProgram);
+	light->addObserver(shaderProgram);
+
 	Model* plain_model = new Model();
 	plain_model->init_model(std::vector<float>(plain, plain + sizeof(plain) / sizeof(plain[0])));
 
@@ -220,7 +234,7 @@ void Scene::CreateForestScene(int numTrees, int numBushes) {
 	//create plain here next for ground
 	DrawableObject* plain = new DrawableObject(camera);
 	plain->init_model(plain_model);
-	plain->init_shader(vertex_shader_camera, fragment_shader_camera);
+	plain->init_shader(shaderProgram);
 	plain->scale(5, 5, 5);
 	objects.push_back(plain);
 
@@ -229,7 +243,7 @@ void Scene::CreateForestScene(int numTrees, int numBushes) {
 	for (int i = 0; i < numTrees; ++i) {
 		DrawableObject* tree = new DrawableObject(camera);
 		tree->init_model(tree_model);
-		tree->init_shader(vertex_shader_camera, fragment_shader_camera);
+		tree->init_shader(shaderProgram);
 		RandomTransform(tree, i);
 		objects.push_back(tree);
 	}
@@ -237,47 +251,56 @@ void Scene::CreateForestScene(int numTrees, int numBushes) {
 	for (int i = 0; i < numBushes; ++i) {
 		DrawableObject* bush = new DrawableObject(camera);
 		bush->init_model(bush_model);
-		bush->init_shader(vertex_shader_camera, fragment_shader_camera);
+		bush->init_shader(shaderProgram);
 		RandomTransform(bush, i);
 		objects.push_back(bush);
 	}
+
+	shaderProgram->setMatrixUniform("projectionMatrix", camera->getProjectionMatrix());
 }
 
 void Scene::CreateConstantTestScene()
 {
+	Light* light = new Light(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec4(0.1f, 0.1f, 0.1f, 0.1f));
+
+	ShaderProgram* shaderProgram = new ShaderProgram(camera, light);
+	shaderProgram->init_shader(vertex_shader_light_lambert, fragment_shader_light_lambert);
+	camera->addObserver(shaderProgram);
+	light->addObserver(shaderProgram);
+
 	Model* sphere_model = new Model();
 	sphere_model->init_model(std::vector<float>(sphere, sphere + sizeof(sphere) / sizeof(sphere[0])));
-	
+
 	DrawableObject* sphere_1 = new DrawableObject(camera);
 	sphere_1->init_model(sphere_model);
-	sphere_1->init_shader(vertex_shader_light_lambert, fragment_shader_light_lambert);
+	sphere_1->init_shader(shaderProgram);
 	sphere_1->translate(-0.3f, 0.f, 0.f);
 	sphere_1->scale(0.1f, 0.1f, 0.1f);
 	objects.push_back(sphere_1);
 
 	DrawableObject* sphere_2 = new DrawableObject(camera);
 	sphere_2->init_model(sphere_model);
-	sphere_2->init_shader(vertex_shader_light_lambert, fragment_shader_light_lambert);
+	sphere_2->init_shader(shaderProgram);
 	sphere_2->translate(0.3f, 0.f, 0.f);
 	sphere_2->scale(0.1f, 0.1f, 0.1f);
 	objects.push_back(sphere_2);
 
 	DrawableObject* sphere_3 = new DrawableObject(camera);
 	sphere_3->init_model(sphere_model);
-	sphere_3->init_shader(vertex_shader_light_lambert, fragment_shader_light_lambert);
+	sphere_3->init_shader(shaderProgram);
 	sphere_3->translate(0.f, 0.f, -0.3f);
 	sphere_3->scale(0.1f, 0.1f, 0.1f);
 	objects.push_back(sphere_3);
-
+	
 	DrawableObject* sphere_4 = new DrawableObject(camera);
 	sphere_4->init_model(sphere_model);
-	sphere_4->init_shader(vertex_shader_light_lambert, fragment_shader_light_lambert);
+	sphere_4->init_shader(shaderProgram);
 	sphere_4->translate(0.f, 0.f, 0.3f);
 	sphere_4->scale(0.1f, 0.1f, 0.1f);
 	objects.push_back(sphere_4);
 
 
-
+	shaderProgram->setMatrixUniform("projectionMatrix", camera->getProjectionMatrix());
 }
 
 void Scene::RandomTransform(DrawableObject* object, int i) {
@@ -318,7 +341,7 @@ void Scene::DrawScene() {
 	for (int i = 0; i < objects.size(); i++)
 	{
 		//objects[i]->rotate(objects[i]->rotateAngle, objects[i]->rotateX, objects[i]->rotateY, objects[i]->rotateZ);
-		objects[i]->Draw(camera->getViewMatrix(), camera->getProjectionMatrix());
+		objects[i]->Draw();
 	}
 }
 

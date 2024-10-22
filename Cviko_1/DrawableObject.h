@@ -23,17 +23,11 @@ public:
 	DrawableObject(Camera* _camera);
 	~DrawableObject();
 
-
-	void init_sphere();
-	void init_tree();
-	void init_bushes();
-	void init_plain();
-
 	void init_model(Model* model);
 
 
-	void init_shader(const char* vertex_shader_str, const char* fragment_shader_str);
-	void Draw(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix);
+	void init_shader(ShaderProgram* shaderprogram);
+	void Draw();
 
 	
 	//this will be done differently in future

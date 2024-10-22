@@ -1,6 +1,6 @@
 #include "ShaderProgram.h"
 
-ShaderProgram::ShaderProgram(Camera* _camera) : shaderProgram_id(-1), camera(_camera) {}
+ShaderProgram::ShaderProgram(Camera* _camera, Light* _light) : shaderProgram_id(-1), camera(_camera), light(_light) {}
 
 ShaderProgram::~ShaderProgram() {}
 
@@ -59,16 +59,34 @@ void ShaderProgram::setMatrixUniform(const char* name, const glm::mat4& matrix) 
 	}
 }
 
+void ShaderProgram::setVector3Uniform(const char* name, const glm::vec3& vector) {
+	GLuint location = glGetUniformLocation(shaderProgram_id, name);
+	if (location != -1) {
+		glUniform3fv(location, 1, glm::value_ptr(vector));
+	}
+	else {
+		printf("Uniform %s not found!\n", name);
+	}
+}
+
+void ShaderProgram::setVector4Uniform(const char* name, const glm::vec4& vector) {
+	GLuint location = glGetUniformLocation(shaderProgram_id, name);
+	if (location != -1) {
+		glUniform4fv(location, 1, glm::value_ptr(vector));
+	}
+	else {
+		printf("Uniform %s not found!\n", name);
+	}
+}
 
 void ShaderProgram::updateFromCam() {
-	// Get view and projection matrices from camera
-	glm::mat4 viewMatrix = camera->getViewMatrix();
-	glm::mat4 projectionMatrix = camera->getProjectionMatrix();
-	
-	printf("we were notified from camera\n");
+	//printf("we were notified from camera\n");
 
-	// Set matrices in the shader program (pseudo-code)
-	setMatrixUniform("viewMatrix", viewMatrix);
-	setMatrixUniform("projectionMatrix", projectionMatrix);
+	use_shader();
+	setMatrixUniform("viewMatrix", camera->getViewMatrix());
+
+	setVector3Uniform("lightPosition", light->getPosition());
+	setVector3Uniform("lightColor", light->getColor());
+	setVector4Uniform("ambientLight", light->getAmbient());
 }
 

@@ -3,9 +3,10 @@
 Camera::Camera(glm::vec3 position, glm::vec3 front, glm::vec3 up, float speed, float _fov, float _aspectRatio, float _yaw, float _pitch, float _sensitivity)
 	: position(position), front(front), up(up), movementSpeed(speed), fov(_fov), aspectRatio(_aspectRatio), yaw(_yaw), pitch(_pitch), sensitivity(_sensitivity)
 {
-	updateCameraVectors();
 	setProjectionMatrix();
 }
+
+
 
 void Camera::move(const glm::vec3& direction)
 {
@@ -87,18 +88,24 @@ void Camera::updateViewMatrix()
 }
 
 
-void Camera::addObserver(ShaderProgram* shaderProgram) {
-	shaderPrograms.push_back(shaderProgram);
+void Camera::addObserver(Observer* observer) {
+	observers.push_back(observer);
+	updateViewMatrix();
+}
+
+void Camera::removeObserver(Observer* observer) {
+	observers.erase(std::remove(observers.begin(), observers.end(), observer), observers.end());
 }
 
 void Camera::notifyObservers() {
-	for (auto shaderProgram : shaderPrograms)
+	for (Observer* obs : observers)
 	{
+		ShaderProgram* shaderProgram = dynamic_cast<ShaderProgram*>(obs);
 		shaderProgram->updateFromCam();
 	}
-}
+}	
 
 void Camera::clearLinkShaders() {
-	shaderPrograms.clear();
+	observers.clear();
 }
 

@@ -3,43 +3,10 @@
 DrawableObject::DrawableObject(Camera* _camera) : rotateAngle(0), rotateX(0), rotateY(0), rotateZ(0)
 {
 	model = new Model();
-	shaderProgram = new ShaderProgram(_camera);
-	_camera->addObserver(shaderProgram);
 	transformation = new Transformation();
 }
 
-DrawableObject::~DrawableObject()
-{
-	delete shaderProgram;
-	delete transformation;
-
-}
-
-/*
-void DrawableObject::init_sphere(std::vector<float>& vector_model)
-{
-	//vector_model = std::vector<float>(sphere, sphere + sizeof(sphere) / sizeof(sphere[0]));
-	model->init_model(vector_model);
-}
-
-void DrawableObject::init_tree(std::vector<float>& vector_model)
-{
-	//vector_model = std::vector<float>(tree, tree + sizeof(tree) / sizeof(tree[0]));
-	model->init_model(vector_model);
-}
-
-void DrawableObject::init_bushes(std::vector<float>& vector_model)
-{
-	//vector_model = std::vector<float>(bushes, bushes + sizeof(bushes) / sizeof(bushes[0]));
-	model->init_model(vector_model);
-}
-
-void DrawableObject::init_plainstd::vector<float>& vector_model()
-{
-	//vector_model = std::vector<float>(plain, plain + sizeof(plain) / sizeof(plain[0]));
-	model->init_model(vector_model);
-}
-*/
+DrawableObject::~DrawableObject() {}
 
 
 void DrawableObject::init_model(Model* model)
@@ -50,24 +17,18 @@ void DrawableObject::init_model(Model* model)
 
 
 
-void DrawableObject::init_shader(const char* vertex_shader_str, const char* fragment_shader_str)
+void DrawableObject::init_shader(ShaderProgram* shaderprogram)
 {
-	shaderProgram->init_shader(vertex_shader_str, fragment_shader_str);
+	shaderProgram = shaderprogram;
 }
 
 
-void DrawableObject::Draw(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix)
+void DrawableObject::Draw()
 {
 	glm::mat4 modelMatrix = transformation->getModelMatrix();
 	
 	shaderProgram->use_shader();
 	shaderProgram->setMatrixUniform("modelMatrix", modelMatrix);
-	
-	shaderProgram->setMatrixUniform("viewMatrix", viewMatrix);
-	shaderProgram->setMatrixUniform("projectionMatrix", projectionMatrix);
-
-
-
 	model->draw_model();
 }
 
