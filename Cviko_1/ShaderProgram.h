@@ -20,11 +20,12 @@ public:
 
 	void init_shader(const char* vertex_shader_str, const char* fragment_shader_str);
 	void use_shader();
-	GLuint GetShader();
+
 
 	void setMatrixUniform(const char* name, const glm::mat4& matrix);
 	void setVector3Uniform(const char* name, const glm::vec3& vector);
 	void setVector4Uniform(const char* name, const glm::vec4& vector);
+	void setFloatUniform(const char* name, float _float);
 
 	void updateFromCam();
 

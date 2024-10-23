@@ -1,12 +1,23 @@
 #include "Camera.h"
 
-Camera::Camera(glm::vec3 position, glm::vec3 front, glm::vec3 up, float speed, float _fov, float _aspectRatio, float _yaw, float _pitch, float _sensitivity)
-	: position(position), front(front), up(up), movementSpeed(speed), fov(_fov), aspectRatio(_aspectRatio), yaw(_yaw), pitch(_pitch), sensitivity(_sensitivity)
+Camera::Camera(float _aspectRatio)
 {
-	setProjectionMatrix();
+	aspectRatio = _aspectRatio;
 }
 
-
+void Camera::setCamera(glm::vec3 _position, glm::vec3 _front, glm::vec3 _up, float speed, float _fov, float _yaw, float _pitch, float _sensitivity)
+{
+	position = _position;
+	front = _front;
+	up = _up;
+	movementSpeed = speed;
+	fov = _fov;
+	yaw = _yaw;
+	pitch = _pitch;
+	sensitivity = _sensitivity;
+	setProjectionMatrix();
+	updateCameraVectors();
+}
 
 void Camera::move(const glm::vec3& direction)
 {

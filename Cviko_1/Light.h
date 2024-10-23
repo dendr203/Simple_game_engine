@@ -10,7 +10,7 @@ class ShaderProgram;
 class Light : public Subject
 {
 public:
-    Light(glm::vec3 position, glm::vec3 color, glm::vec4 ambient);
+    Light(glm::vec3 position, glm::vec3 color, glm::vec4 ambient, float shinines);
 
     // Settery pro nastavení atributù svìtla
     void setColor(const glm::vec3& color);
@@ -20,16 +20,19 @@ public:
     glm::vec3 getPosition();
     glm::vec3 getColor();
     glm::vec4 getAmbient();
+    float getShinines();
 
     // Pøidat/odebrat pozorovatele
     void addObserver(Observer* observer) override;
     void removeObserver(Observer* observer) override;
     void notifyObservers() override;
+    void clearLinkShaders() override;
 
 private:
     glm::vec3 position;
     glm::vec3 color;      
     glm::vec4 ambient;
+    float shinines;
 
     std::vector<Observer*> observers;
 };

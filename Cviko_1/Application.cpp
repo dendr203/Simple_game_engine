@@ -6,7 +6,7 @@
 int naklon = 0;
 
 
-Application::Application() {}
+Application::Application() : camera(nullptr), scene(nullptr), window(nullptr) {}
 
 Application::~Application() {
 	delete camera;
@@ -17,20 +17,19 @@ Application::~Application() {
 void Application::initialization()
 {
 	window = new Window(1000, 800);
-	camera = new Camera(glm::vec3(0.0f, 1.0f, 5.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.05, 45.0, window->getAspect_ratio(), -90.f, 0.f, 0.08f);
-	//camera = new Camera(glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), 0.f, 45.0, window->getAspect_ratio(), -90.0f, -90.0f, 0.f);
-	
-	scene = new Scene();
-	scene->init_cameraScene(camera);
+	camera = new Camera(window->getAspect_ratio());
+
+	scene = new Scene(camera);
 }
 
 
 void Application::createModels()
 {
 	//scene->CrateScene();
-	scene->CreateForestScene(50, 50);
+	//scene->CreateForestScene(50, 50);
 	//scene->CreateCameraBaseScene();
 	//scene->CreateConstantTestScene();
+	scene->CreateFourShaderLightsScene();
 }
 
 void Application::run()
@@ -75,6 +74,14 @@ void Application::HandleInput()
 	if (Window::keyStates[GLFW_KEY_2]) {
 		scene->SwitchScene(2);
 		Window::keyStates[GLFW_KEY_2] = false;
+	}
+	if (Window::keyStates[GLFW_KEY_3]) {
+		scene->SwitchScene(3);
+		Window::keyStates[GLFW_KEY_3] = false;
+	}
+	if (Window::keyStates[GLFW_KEY_4]) {
+		scene->SwitchScene(4);
+		Window::keyStates[GLFW_KEY_4] = false;
 	}
 
 

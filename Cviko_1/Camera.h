@@ -12,13 +12,14 @@ class ShaderProgram;
 class Camera : public Subject
 {
 public:
-    Camera(glm::vec3 position, glm::vec3 front, glm::vec3 up,
-        float speed, float _fov, float _aspectRatio, float _yaw, float _pitch, float _sensitivity);
+    Camera(float _aspectRatio);
 
     glm::mat4 getViewMatrix();
     glm::mat4 getProjectionMatrix();
 
     void processMouseMovement(float xoffset, float yoffset);
+    void setCamera(glm::vec3 position, glm::vec3 front, glm::vec3 up,
+        float speed, float _fov, float _yaw, float _pitch, float _sensitivity);
 
     
     void moveForward();
@@ -29,8 +30,7 @@ public:
     void addObserver(Observer* observer) override;
 	void removeObserver(Observer* observer) override;
     void notifyObservers() override;
-
-    void clearLinkShaders();
+    void clearLinkShaders() override;
 
 private:
     Shader* shader;

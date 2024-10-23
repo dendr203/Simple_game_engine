@@ -1,7 +1,7 @@
 #include "Light.h"
 
-Light::Light(glm::vec3 position, glm::vec3 color, glm::vec4 ambient)
-    : position(position), color(color), ambient(ambient) {}
+Light::Light(glm::vec3 position, glm::vec3 color, glm::vec4 ambient, float _shinines)
+    : position(position), color(color), ambient(ambient), shinines(_shinines) {}
 
 void Light::setPosition(const glm::vec3& newPosition) {
     position = newPosition;
@@ -30,6 +30,10 @@ glm::vec4 Light::getAmbient() {
 	return ambient;
 }
 
+float Light::getShinines() {
+    return shinines;
+}
+
 void Light::addObserver(Observer* observer) {
     observers.push_back(observer);
 }
@@ -45,4 +49,8 @@ void Light::notifyObservers() {
             shaderProgram->updateFromCam();
         }
     }
+}
+
+void Light::clearLinkShaders() {
+    observers.clear();
 }

@@ -12,6 +12,7 @@ void ShaderProgram::init_shader(const char* vertex_shader_str, const char* fragm
 	Shader* fragment_shader = new Shader();
 	fragment_shader->init_shader(GL_FRAGMENT_SHADER, fragment_shader_str);
 
+
 	shaderProgram_id = glCreateProgram();
 	glAttachShader(shaderProgram_id, fragment_shader->GetShader());
 	glAttachShader(shaderProgram_id, vertex_shader->GetShader());
@@ -43,10 +44,7 @@ void ShaderProgram::use_shader()
 	glUseProgram(shaderProgram_id);
 }
 
-GLuint ShaderProgram::GetShader()
-{
-	return shaderProgram_id;
-}
+
 
 
 void ShaderProgram::setMatrixUniform(const char* name, const glm::mat4& matrix) {
@@ -79,6 +77,16 @@ void ShaderProgram::setVector4Uniform(const char* name, const glm::vec4& vector)
 	}
 }
 
+void ShaderProgram::setFloatUniform(const char* name, float _float) {
+	GLuint location = glGetUniformLocation(shaderProgram_id, name);
+	if (location != -1) {
+		glUniform1f(location, _float);
+	}
+	else {
+		printf("Uniform %s not found!\n", name);
+	}
+}
+
 void ShaderProgram::updateFromCam() {
 	//printf("we were notified from camera\n");
 
@@ -88,5 +96,11 @@ void ShaderProgram::updateFromCam() {
 	setVector3Uniform("lightPosition", light->getPosition());
 	setVector3Uniform("lightColor", light->getColor());
 	setVector4Uniform("ambientLight", light->getAmbient());
+	
+
+	GLint shininessLocation = glGetUniformLocation(shaderProgram_id, "shininess");
+	if (shininessLocation != -1) {
+		setFloatUniform("shininess", light->getShinines());
+	}
 }
 
