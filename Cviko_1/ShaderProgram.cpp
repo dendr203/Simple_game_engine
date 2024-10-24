@@ -4,6 +4,7 @@ ShaderProgram::ShaderProgram(Camera* _camera, Light* _light) : shaderProgram_id(
 
 ShaderProgram::~ShaderProgram() {}
 
+/*
 void ShaderProgram::init_shader(const char* vertex_shader_str, const char* fragment_shader_str)
 {
 	Shader* vertex_shader = new Shader();
@@ -38,6 +39,36 @@ void ShaderProgram::init_shader(const char* vertex_shader_str, const char* fragm
 
 
 }
+*/
+
+void ShaderProgram::init_shader(const char* vertexFile, const char* fragmentFile)
+{
+	// Vytvoøíme instanci ShaderLoader a naèteme shader pomocí souborù
+	ShaderLoader shaderLoader(vertexFile, fragmentFile, &shaderProgram_id);
+
+	GLint status;
+	glGetProgramiv(shaderProgram_id, GL_LINK_STATUS, &status);
+	if (status == GL_FALSE)
+	{
+		GLint infoLogLength;
+		glGetProgramiv(shaderProgram_id, GL_INFO_LOG_LENGTH, &infoLogLength);
+		GLchar* strInfoLog = new GLchar[infoLogLength + 1];
+		glGetProgramInfoLog(shaderProgram_id, infoLogLength, NULL, strInfoLog);
+		fprintf(stderr, "Linker failure: %s\n", strInfoLog);
+		delete[] strInfoLog;
+		exit(EXIT_FAILURE);
+	}
+
+	// Zkontrolujeme, zda byl shader správnì naèten
+	if (shaderProgram_id == 0) {
+		fprintf(stderr, "Failed to load shaders from files: %s, %s\n", vertexFile, fragmentFile);
+		exit(EXIT_FAILURE);
+	}
+
+	printf("Shader program loaded successfully.\n");
+}
+
+
 
 void ShaderProgram::use_shader()
 {
@@ -92,10 +123,26 @@ void ShaderProgram::updateFromCam() {
 
 	use_shader();
 	setMatrixUniform("viewMatrix", camera->getViewMatrix());
+	setMatrixUniform("projectionMatrix", camera->getProjectionMatrix());
 
-	setVector3Uniform("lightPosition", light->getPosition());
-	setVector3Uniform("lightColor", light->getColor());
-	setVector4Uniform("ambientLight", light->getAmbient());
+
+	GLint lightPositionLocation = glGetUniformLocation(shaderProgram_id, "lightPosition");
+	if (lightPositionLocation != -1)
+	{
+		setVector3Uniform("lightPosition", light->getPosition());
+	}
+	
+	GLint lightColorLocation = glGetUniformLocation(shaderProgram_id, "lightColor");
+	if (lightColorLocation != -1)
+	{
+		setVector3Uniform("lightColor", light->getColor());
+	}
+	
+	GLint ambientLightLocation = glGetUniformLocation(shaderProgram_id, "ambientLight");
+	if (ambientLightLocation != -1)
+	{
+		setVector4Uniform("ambientLight", light->getAmbient());
+	}
 	
 
 	GLint shininessLocation = glGetUniformLocation(shaderProgram_id, "shininess");

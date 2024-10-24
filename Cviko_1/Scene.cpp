@@ -102,217 +102,9 @@ const char* fragment_shader_camera =
 
 
 
-//constant idk dodìlat
-const char* vertex_shader_light_constant =
-"#version 400\n"
-
-"uniform mat4 modelMatrix;"
-"uniform mat4 viewMatrix;"
-"uniform mat4 projectionMatrix;"
-
-"layout(location = 0) in vec3 in_Position;"
-"layout(location = 1) in vec3 in_Normal;"
-
-"out vec4 ex_worldPosition;"
-"out vec3 ex_worldNormal;"
-
-"void main(void) {"
-"	ex_worldPosition = modelMatrix * vec4(in_Position, 1.0f);"	//calculate world coordinates
-"	mat4 normalMatrix = transpose(inverse(modelMatrix));"
-"	ex_worldNormal = normalize(vec3(normalMatrix * vec4(in_Normal, 0.0)));" //calculate world normal in world coordinates
-"	gl_Position = projectionMatrix * viewMatrix * ex_worldPosition;"
-"}";
-
-
-const char* fragment_shader_light_constant =
-"#version 400\n"
-"in vec4 ex_worldPosition;"
-"in vec3 ex_worldNormal;"
-
-"uniform vec3 lightColor;"
-"uniform vec3 lightPosition;"
-"uniform vec4 ambientLight;"
-
-"out vec4 out_Color;"
-"void main(void){"
-"	vec3 lightDirection = lightPosition - vec3(ex_worldPosition);"
-
-"	float dot_product = max(dot(normalize(lightDirection), normalize(ex_worldNormal)), 0.0);"
-"	vec4 diffuse = dot_product * vec4(lightColor, 1.0);"	//better result
-
-"	out_Color = vec4(0.385, 0.647, 0.812, 1.0);"
-"}";
 
 
 
-
-//lambert
-const char* vertex_shader_light_lambert =
-"#version 400\n"
-
-"uniform mat4 modelMatrix;"
-"uniform mat4 viewMatrix;"
-"uniform mat4 projectionMatrix;"
-
-"layout(location = 0) in vec3 in_Position;"
-"layout(location = 1) in vec3 in_Normal;"
-
-"out vec4 ex_worldPosition;"
-"out vec3 ex_worldNormal;"
-
-"void main(void) {"
-"	ex_worldPosition = modelMatrix * vec4(in_Position, 1.0f);"	//calculate world coordinates
-"	mat4 normalMatrix = transpose(inverse(modelMatrix));"		
-"	ex_worldNormal = normalize(vec3(normalMatrix * vec4(in_Normal, 0.0)));" //calculate world normal in world coordinates
-"	gl_Position = projectionMatrix * viewMatrix * ex_worldPosition;"
-"}";
-
-const char* fragment_shader_light_lambert =
-"#version 400\n"
-"in vec4 ex_worldPosition;"
-"in vec3 ex_worldNormal;"
-
-"uniform vec3 lightColor;"
-"uniform vec3 lightPosition;"
-"uniform vec4 ambientLight;"
-
-"out vec4 out_Color;"
-"void main(void){"
-"	vec3 lightDirection = lightPosition - vec3(ex_worldPosition);"
-
-"	float dot_product = max(dot(normalize(lightDirection), normalize(ex_worldNormal)), 0.0);"
-"	vec4 diffuse = dot_product * vec4(lightColor, 1.0);"	//better result
-
-"	vec4 objectColor = vec4(0.385, 0.647, 0.812, 1.0);"
-"	out_Color = (ambientLight + diffuse) * objectColor;"
-"}";
-
-
-
-//phong
-const char* vertex_shader_light_phong =
-"#version 400\n"
-
-"uniform mat4 modelMatrix;"
-"uniform mat4 viewMatrix;"
-"uniform mat4 projectionMatrix;"
-"uniform vec3 lightPosition;"
-
-"layout(location = 0) in vec3 in_Position;"
-"layout(location = 1) in vec3 in_Normal;"
-
-"out vec4 ex_worldPosition;"
-"out vec3 ex_worldNormal;"
-"out vec3 ex_lightDirection;"
-"out vec3 ex_viewDirection;"
-
-"void main(void) {"
-"   ex_worldPosition = modelMatrix * vec4(in_Position, 1.0f);"
-"   mat4 normalMatrix = transpose(inverse(modelMatrix));"
-"   ex_worldNormal = normalize(vec3(normalMatrix * vec4(in_Normal, 0.0)));"
-"   gl_Position = projectionMatrix * viewMatrix * ex_worldPosition;"
-
-"   ex_lightDirection = normalize(lightPosition - vec3(ex_worldPosition));"
-"   vec3 cameraPosition = vec3(inverse(viewMatrix)[3]);" // Inver viewMatrix a get camera position
-"   ex_viewDirection = normalize(cameraPosition - vec3(ex_worldPosition));"
-"}";
-
-
-
-const char* fragment_shader_light_phong =
-"#version 400\n"
-"in vec4 ex_worldPosition;"
-"in vec3 ex_worldNormal;"
-"in vec3 ex_lightDirection;"
-"in vec3 ex_viewDirection;"
-
-"uniform vec3 lightColor;"
-"uniform vec4 ambientLight;"
-"uniform float shininess;"
-
-"out vec4 out_Color;"
-
-"void main(void) {"
-"   vec4 objectColor = vec4(0.385, 0.647, 0.812, 1.0);"
-
-	// Compute light direction and view direction
-"   vec3 lightDir = normalize(ex_lightDirection);"
-	// Diffuse light
-"   float dot_product = max(dot(normalize(ex_worldNormal), ex_lightDirection), 0.0);"
-"   vec4 diffuse = dot_product * vec4(lightColor, 1.0);"
-
-
-"   vec3 reflectDir = normalize(reflect(-ex_lightDirection, normalize(ex_worldNormal)));"
-	// Specular light
-"   float spec = pow(max(dot(ex_viewDirection, reflectDir), 0.0), shininess);"
-"   vec4 specular = vec4(lightColor, 1.0) * spec;"
-
-"   out_Color = ambientLight + (diffuse * objectColor) + specular;"
-"}";
-
-
-
-
-
-//blinn-phong
-const char* vertex_shader_light_blinn_phong =
-"#version 400\n"
-
-"uniform mat4 modelMatrix;"
-"uniform mat4 viewMatrix;"
-"uniform mat4 projectionMatrix;"
-"uniform vec3 lightPosition;"
-
-"layout(location = 0) in vec3 in_Position;"
-"layout(location = 1) in vec3 in_Normal;"
-
-"out vec4 ex_worldPosition;"
-"out vec3 ex_worldNormal;"
-"out vec3 ex_lightDirection;"
-"out vec3 ex_viewDirection;"
-
-"void main(void) {"
-"   ex_worldPosition = modelMatrix * vec4(in_Position, 1.0f);"
-"   mat4 normalMatrix = transpose(inverse(modelMatrix));"
-"   ex_worldNormal = normalize(vec3(normalMatrix * vec4(in_Normal, 0.0)));"
-"   gl_Position = projectionMatrix * viewMatrix * ex_worldPosition;"
-
-"   ex_lightDirection = normalize(lightPosition - vec3(ex_worldPosition));"
-"   vec3 cameraPosition = vec3(inverse(viewMatrix)[3]);" // Inver viewMatrix a get camera position
-"   ex_viewDirection = normalize(cameraPosition - vec3(ex_worldPosition));"
-"}";
-
-const char* fragment_shader_light_blin_phong =
-"#version 400\n"
-"in vec4 ex_worldPosition;"
-"in vec3 ex_worldNormal;"
-"in vec3 ex_lightDirection;"
-"in vec3 ex_viewDirection;"
-
-"uniform vec3 lightColor;"
-"uniform vec4 ambientLight;"
-"uniform float shininess;"
-
-"out vec4 out_Color;"
-
-"void main(void) {"
-"   vec4 objectColor = vec4(0.385, 0.647, 0.812, 1.0);"
-
-// Compute light direction and view direction
-"   vec3 lightDir = normalize(ex_lightDirection);"
-// Diffuse light
-"   float dot_product = max(dot(normalize(ex_worldNormal), ex_lightDirection), 0.0);"
-"   vec4 diffuse = dot_product * vec4(lightColor, 1.0);"
-
-"	vec3 halfwayVec = normalize(ex_viewDirection + ex_lightDirection);"
-
-"   vec3 reflectDir = normalize(reflect(-ex_lightDirection, normalize(ex_worldNormal)));"
-// Specular light
-"   float spec = pow(max(dot(ex_worldNormal, halfwayVec), 0.0), shininess);"
-"   vec4 specular = vec4(lightColor, 1.0) * spec;"
-
-"   out_Color = ambientLight + (diffuse * objectColor) + specular;"
-"}";
 
 
 
@@ -336,7 +128,7 @@ void Scene::CrateScene() {
 	Light* light = new Light(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec4(0.1f, 0.1f, 0.1f, 0.1f), 0);
 
 	shaderProgram = new ShaderProgram(camera, light);
-	shaderProgram->init_shader(vertex_shader_light_lambert, fragment_shader_light_lambert);
+	shaderProgram->init_shader("Shaders/lambert_vertex.glsl", "Shaders/lambert_fragment.glsl");
 	camera->addObserver(shaderProgram);
 	light->addObserver(shaderProgram);
 
@@ -386,10 +178,10 @@ void Scene::CrateScene() {
 void Scene::CreateForestScene(int numTrees, int numBushes) {
 	camera->setCamera(glm::vec3(0.0f, 1.0f, 5.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.05, 45.0, -90.f, 0.f, 0.08f);
 
-	Light* light = new Light(glm::vec3(0.0f, 10.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec4(0.1f, 0.1f, 0.1f, 0.1f), 10);
+	Light* light = new Light(glm::vec3(10.0f, 10.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec4(0.1f, 0.1f, 0.1f, 0.1f), 10);
 
 	shaderProgram = new ShaderProgram(camera, light);
-	shaderProgram->init_shader(vertex_shader_light_phong, fragment_shader_light_phong);
+	shaderProgram->init_shader("Shaders/blin_phong_vertex.glsl", "Shaders/blin_phong_fragment.glsl");
 	camera->addObserver(shaderProgram);
 	light->addObserver(shaderProgram);
 
@@ -432,12 +224,12 @@ void Scene::CreateForestScene(int numTrees, int numBushes) {
 
 void Scene::CreateConstantTestScene()
 {
-	camera->setCamera(glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.05f, 45.0, -90.0f, -90.0f, 0.08f);
+	camera->setCamera(glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.01f, 45.0, -90.0f, -90.0f, 0.03f);
 
 	Light* light = new Light(glm::vec3(0.0f, 0.2f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec4(0.1f, 0.1f, 0.1f, 0.1f), 32);
 
 	shaderProgram = new ShaderProgram(camera, light);
-	shaderProgram->init_shader(vertex_shader_light_phong, fragment_shader_light_phong);
+	shaderProgram->init_shader("Shaders/phong_vertex.glsl", "Shaders/phong_fragment.glsl");
 	camera->addObserver(shaderProgram);
 	light->addObserver(shaderProgram);
 
@@ -478,7 +270,7 @@ void Scene::CreateConstantTestScene()
 
 void Scene::CreateFourShaderLightsScene()
 {
-	camera->setCamera(glm::vec3(-0.4f, 0.1f, 0.6f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.05f, 45.0, -60.0f, 0.f, 0.08f);
+	camera->setCamera(glm::vec3(-0.4f, 0.1f, 0.6f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.01f, 45.0, -65.0f, -5.f, 0.03f);
 	Light* light = new Light(glm::vec3(-0.4f, 0.1f, 0.6f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec4(0.1f, 0.1f, 0.1f, 0.1f), 10);
 	shaderProgram = new ShaderProgram(camera, light);
 
@@ -487,51 +279,80 @@ void Scene::CreateFourShaderLightsScene()
 	sphere_model->init_model(std::vector<float>(sphere, sphere + sizeof(sphere) / sizeof(sphere[0])));
 
 	
-	shaderProgram->init_shader(vertex_shader_light_blinn_phong, fragment_shader_light_blin_phong);
+	//light
+	shaderProgram->init_shader("Shaders/constant_vertex.glsl", "Shaders/constant_fragment.glsl");
 	camera->addObserver(shaderProgram);
 	light->addObserver(shaderProgram);
 
 	DrawableObject* light_sphere = new DrawableObject(camera);
 	light_sphere->init_model(sphere_model);
 	light_sphere->init_shader(shaderProgram);
-	light_sphere->translate(-0.4f, 0.1f, 0.6f);
+	light_sphere->translate(-0.35f, 0.1f, 0.6f);
 	light_sphere->scale(0.01f, 0.01f, 0.01f);
 	objects.push_back(light_sphere);
 
 
 
-	//ShaderProgram* shaderProgram_dva = new ShaderProgram(camera, light);
-	//shaderProgram_dva->init_shader(vertex_shader_light_lambert, fragment_shader_light_lambert);
-	//camera->addObserver(shaderProgram_dva);
+	//bush
+	Model* bushes_model = new Model();
+	bushes_model->init_model(std::vector<float>(bushes, bushes + sizeof(bushes) / sizeof(bushes[0])));
 
+	DrawableObject* bush_object = new DrawableObject(camera);
+	bush_object->init_model(bushes_model);
+	bush_object->init_shader(shaderProgram);
+	bush_object->translate(-0.4f, -0.1f, 0.f);
+	bush_object->scale(0.3f, 0.3f, 0.3f);
+	objects.push_back(bush_object);
+
+
+
+
+	//suzi
+	ShaderProgram* shaderProgram_suzi = new ShaderProgram(camera, light);
+	shaderProgram_suzi->init_shader("Shaders/lambert_vertex.glsl", "Shaders/lambert_fragment.glsl");
+	camera->addObserver(shaderProgram_suzi);
+
+
+	Model* suzi_smooth_model = new Model();
+	suzi_smooth_model->init_model(std::vector<float>(suziSmooth, suziSmooth + sizeof(suziSmooth) / sizeof(suziSmooth[0])));
 
 	DrawableObject* sphere_1 = new DrawableObject(camera);
-	sphere_1->init_model(sphere_model);
-	sphere_1->init_shader(shaderProgram);
-	sphere_1->translate(-0.35f, 0.f, 0.f);
+	sphere_1->init_model(suzi_smooth_model);
+	sphere_1->init_shader(shaderProgram_suzi);
+	sphere_1->translate(-0.13f, 0.f, 0.f);
 	sphere_1->scale(0.1f, 0.1f, 0.1f);
 	objects.push_back(sphere_1);
 
-	DrawableObject* sphere_2 = new DrawableObject(camera);
-	sphere_2->init_model(sphere_model);
-	sphere_2->init_shader(shaderProgram);
-	sphere_2->translate(-0.13f, 0.f, 0.f);
-	sphere_2->scale(0.1f, 0.1f, 0.1f);
-	objects.push_back(sphere_2);
 
-	DrawableObject* sphere_3 = new DrawableObject(camera);
-	sphere_3->init_model(sphere_model);
-	sphere_3->init_shader(shaderProgram);
-	sphere_3->translate(0.13f, 0.f, 0.f);
-	sphere_3->scale(0.1f, 0.1f, 0.1f);
-	objects.push_back(sphere_3);
 
-	DrawableObject* sphere_4 = new DrawableObject(camera);
-	sphere_4->init_model(sphere_model);
-	sphere_4->init_shader(shaderProgram);
-	sphere_4->translate(0.35f, 0.f, 0.f);
-	sphere_4->scale(0.1f, 0.1f, 0.1f);
-	objects.push_back(sphere_4);
+	//gift
+	ShaderProgram* shaderProgram_gift = new ShaderProgram(camera, light);
+	shaderProgram_gift->init_shader("Shaders/phong_vertex.glsl", "Shaders/phong_fragment.glsl");
+	camera->addObserver(shaderProgram_gift);
+
+	Model* gift_model = new Model();
+	gift_model->init_model(std::vector<float>(gift, gift + sizeof(gift) / sizeof(gift[0])));
+
+	DrawableObject* gift_object = new DrawableObject(camera);
+	gift_object->init_model(gift_model);
+	gift_object->init_shader(shaderProgram_gift);
+	gift_object->translate(0.13f, -0.1f, 0.f);
+	gift_object->scale(0.4f, 0.4f, 0.4f);
+	objects.push_back(gift_object);
+
+
+
+	//sphere
+	ShaderProgram* shaderProgram_sphere = new ShaderProgram(camera, light);
+	shaderProgram_sphere->init_shader("Shaders/blin_phong_vertex.glsl", "Shaders/blin_phong_fragment.glsl");
+	camera->addObserver(shaderProgram_sphere);
+
+	DrawableObject* sphere_object = new DrawableObject(camera);
+	sphere_object->init_model(sphere_model);
+	sphere_object->init_shader(shaderProgram_sphere);
+	sphere_object->translate(0.4f, 0.f, 0.f);
+	sphere_object->scale(0.1f, 0.1f, 0.1f);
+	objects.push_back(sphere_object);
 
 
 	shaderProgram->setMatrixUniform("projectionMatrix", camera->getProjectionMatrix());
@@ -580,16 +401,17 @@ void Scene::DrawScene() {
 }
 
 void Scene::ClearScene() {
-	for (DrawableObject* obj : objects) {
-		delete obj;
-	}
-	objects.clear();
 	camera->clearLinkShaders();
 
 
 	for (Light* light : lights) {
 		light->clearLinkShaders();
 	}
+
+	for (DrawableObject* obj : objects) {
+		delete obj;
+	}
+	objects.clear();
 }
 
 void Scene::SwitchScene(int sceneId) {

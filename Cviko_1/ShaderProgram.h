@@ -6,9 +6,10 @@
 #include <stdio.h>
 
 #include "Observer.h"
-#include "Shader.h"
 #include "Camera.h"
 #include "Light.h"
+
+#include "ShaderLoader.h"
 
 class Light;
 class Camera;

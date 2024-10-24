@@ -1,6 +1,0 @@
-﻿  Application.cpp
-  Scene.cpp
-Z:\Programming\ZPG\Cviko_1\Scene.cpp(334,108): warning C4305: argument: zkrácení z: double na: float
-Z:\Programming\ZPG\Cviko_1\Scene.cpp(387,108): warning C4305: argument: zkrácení z: double na: float
-  Generování kódu...
-  Cviko_1.vcxproj -> Z:\Programming\ZPG\Cviko_1\x64\Debug\Cviko_1.exe
