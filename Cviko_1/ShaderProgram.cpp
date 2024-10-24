@@ -1,8 +1,11 @@
 #include "ShaderProgram.h"
 
-ShaderProgram::ShaderProgram(Camera* _camera, Light* _light) : shaderProgram_id(-1), camera(_camera), light(_light) {}
+ShaderProgram::ShaderProgram(Camera* _camera, Light* _light) : shaderProgram_id(-1), shaderLoader(nullptr), camera(_camera), light(_light) {}
 
-ShaderProgram::~ShaderProgram() {}
+ShaderProgram::~ShaderProgram()
+{
+	shaderLoader->deleteShader();
+}
 
 /*
 void ShaderProgram::init_shader(const char* vertex_shader_str, const char* fragment_shader_str)
@@ -43,8 +46,7 @@ void ShaderProgram::init_shader(const char* vertex_shader_str, const char* fragm
 
 void ShaderProgram::init_shader(const char* vertexFile, const char* fragmentFile)
 {
-	// Vytvoøíme instanci ShaderLoader a naèteme shader pomocí souborù
-	ShaderLoader shaderLoader(vertexFile, fragmentFile, &shaderProgram_id);
+	shaderLoader = new ShaderLoader(vertexFile, fragmentFile, &shaderProgram_id);
 
 	GLint status;
 	glGetProgramiv(shaderProgram_id, GL_LINK_STATUS, &status);
@@ -59,7 +61,7 @@ void ShaderProgram::init_shader(const char* vertexFile, const char* fragmentFile
 		exit(EXIT_FAILURE);
 	}
 
-	// Zkontrolujeme, zda byl shader správnì naèten
+
 	if (shaderProgram_id == 0) {
 		fprintf(stderr, "Failed to load shaders from files: %s, %s\n", vertexFile, fragmentFile);
 		exit(EXIT_FAILURE);

@@ -33,6 +33,8 @@ public:
 private:
 	GLuint shaderProgram_id;
 
+	ShaderLoader* shaderLoader;
+
 	Camera* camera;
 	Light* light;
 };

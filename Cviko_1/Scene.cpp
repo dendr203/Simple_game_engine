@@ -112,7 +112,7 @@ const char* fragment_shader_camera =
 
 
 
-Scene::Scene(Camera* _camera) : camera(_camera), shaderProgram(nullptr)
+Scene::Scene(Camera* _camera) : camera(_camera)
 {
 	srand(static_cast<unsigned int>(time(0)));
 }
@@ -127,10 +127,11 @@ void Scene::CrateScene() {
 
 	Light* light = new Light(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec4(0.1f, 0.1f, 0.1f, 0.1f), 0);
 
-	shaderProgram = new ShaderProgram(camera, light);
+	ShaderProgram* shaderProgram = new ShaderProgram(camera, light);
 	shaderProgram->init_shader("Shaders/lambert_vertex.glsl", "Shaders/lambert_fragment.glsl");
 	camera->addObserver(shaderProgram);
 	light->addObserver(shaderProgram);
+	shaderPrograms.push_back(shaderProgram);
 
 	Model* sphere_model = new Model();
 	sphere_model->init_model(std::vector<float>(sphere, sphere + sizeof(sphere) / sizeof(sphere[0])));
@@ -180,10 +181,11 @@ void Scene::CreateForestScene(int numTrees, int numBushes) {
 
 	Light* light = new Light(glm::vec3(10.0f, 10.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec4(0.1f, 0.1f, 0.1f, 0.1f), 10);
 
-	shaderProgram = new ShaderProgram(camera, light);
+	ShaderProgram* shaderProgram = new ShaderProgram(camera, light);
 	shaderProgram->init_shader("Shaders/blin_phong_vertex.glsl", "Shaders/blin_phong_fragment.glsl");
 	camera->addObserver(shaderProgram);
 	light->addObserver(shaderProgram);
+	shaderPrograms.push_back(shaderProgram);
 
 	Model* plain_model = new Model();
 	plain_model->init_model(std::vector<float>(plain, plain + sizeof(plain) / sizeof(plain[0])));
@@ -228,10 +230,11 @@ void Scene::CreateConstantTestScene()
 
 	Light* light = new Light(glm::vec3(0.0f, 0.2f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec4(0.1f, 0.1f, 0.1f, 0.1f), 32);
 
-	shaderProgram = new ShaderProgram(camera, light);
+	ShaderProgram* shaderProgram = new ShaderProgram(camera, light);
 	shaderProgram->init_shader("Shaders/phong_vertex.glsl", "Shaders/phong_fragment.glsl");
 	camera->addObserver(shaderProgram);
 	light->addObserver(shaderProgram);
+	shaderPrograms.push_back(shaderProgram);
 
 	Model* sphere_model = new Model();
 	sphere_model->init_model(std::vector<float>(sphere, sphere + sizeof(sphere) / sizeof(sphere[0])));
@@ -272,8 +275,8 @@ void Scene::CreateFourShaderLightsScene()
 {
 	camera->setCamera(glm::vec3(-0.4f, 0.1f, 0.6f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.01f, 45.0, -65.0f, -5.f, 0.03f);
 	Light* light = new Light(glm::vec3(-0.4f, 0.1f, 0.6f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec4(0.1f, 0.1f, 0.1f, 0.1f), 10);
-	shaderProgram = new ShaderProgram(camera, light);
-
+	ShaderProgram* shaderProgram = new ShaderProgram(camera, light);
+	shaderPrograms.push_back(shaderProgram);
 
 	Model* sphere_model = new Model();
 	sphere_model->init_model(std::vector<float>(sphere, sphere + sizeof(sphere) / sizeof(sphere[0])));
@@ -283,6 +286,7 @@ void Scene::CreateFourShaderLightsScene()
 	shaderProgram->init_shader("Shaders/constant_vertex.glsl", "Shaders/constant_fragment.glsl");
 	camera->addObserver(shaderProgram);
 	light->addObserver(shaderProgram);
+
 
 	DrawableObject* light_sphere = new DrawableObject(camera);
 	light_sphere->init_model(sphere_model);
@@ -311,7 +315,8 @@ void Scene::CreateFourShaderLightsScene()
 	ShaderProgram* shaderProgram_suzi = new ShaderProgram(camera, light);
 	shaderProgram_suzi->init_shader("Shaders/lambert_vertex.glsl", "Shaders/lambert_fragment.glsl");
 	camera->addObserver(shaderProgram_suzi);
-
+	light->addObserver(shaderProgram_suzi);
+	shaderPrograms.push_back(shaderProgram_suzi);
 
 	Model* suzi_smooth_model = new Model();
 	suzi_smooth_model->init_model(std::vector<float>(suziSmooth, suziSmooth + sizeof(suziSmooth) / sizeof(suziSmooth[0])));
@@ -329,6 +334,8 @@ void Scene::CreateFourShaderLightsScene()
 	ShaderProgram* shaderProgram_gift = new ShaderProgram(camera, light);
 	shaderProgram_gift->init_shader("Shaders/phong_vertex.glsl", "Shaders/phong_fragment.glsl");
 	camera->addObserver(shaderProgram_gift);
+	light->addObserver(shaderProgram_gift);
+	shaderPrograms.push_back(shaderProgram_gift);
 
 	Model* gift_model = new Model();
 	gift_model->init_model(std::vector<float>(gift, gift + sizeof(gift) / sizeof(gift[0])));
@@ -346,6 +353,8 @@ void Scene::CreateFourShaderLightsScene()
 	ShaderProgram* shaderProgram_sphere = new ShaderProgram(camera, light);
 	shaderProgram_sphere->init_shader("Shaders/blin_phong_vertex.glsl", "Shaders/blin_phong_fragment.glsl");
 	camera->addObserver(shaderProgram_sphere);
+	light->addObserver(shaderProgram_sphere);
+	shaderPrograms.push_back(shaderProgram_sphere);
 
 	DrawableObject* sphere_object = new DrawableObject(camera);
 	sphere_object->init_model(sphere_model);
@@ -402,16 +411,21 @@ void Scene::DrawScene() {
 
 void Scene::ClearScene() {
 	camera->clearLinkShaders();
-
-
 	for (Light* light : lights) {
 		light->clearLinkShaders();
 	}
+	lights.clear();
+
 
 	for (DrawableObject* obj : objects) {
 		delete obj;
 	}
 	objects.clear();
+
+	for (ShaderProgram* prg : shaderPrograms) {
+		delete prg;
+	}
+	shaderPrograms.clear();
 }
 
 void Scene::SwitchScene(int sceneId) {

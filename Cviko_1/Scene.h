@@ -25,7 +25,8 @@ private:
 	void RandomTransform(DrawableObject* object, int i);
 	Camera* camera;
 
-	ShaderProgram* shaderProgram;
+	
 	std::vector<Light*> lights;	//future use 
+	std::vector<ShaderProgram*> shaderPrograms;
 };
 

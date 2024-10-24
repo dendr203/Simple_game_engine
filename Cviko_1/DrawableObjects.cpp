@@ -1,6 +1,6 @@
 #include "DrawableObject.h"
 
-DrawableObject::DrawableObject(Camera* _camera) : rotateAngle(0), rotateX(0), rotateY(0), rotateZ(0)
+DrawableObject::DrawableObject(Camera* _camera) : shaderProgram(nullptr), model(nullptr), rotateAngle(0), rotateX(0), rotateY(0), rotateZ(0)
 {
 	model = new Model();
 	transformation = new Transformation();
