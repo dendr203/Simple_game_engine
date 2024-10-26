@@ -3,11 +3,11 @@ Models.zip
 .vs/
 Cviko_1/Cviko_1/
 Cviko_1/packages/
-*.vcxproj
-*.vcxproj.user
-*.vcxproj.filters
-*.proj
-*.config
+#*.vcxproj
+#*.vcxproj.user
+#*.vcxproj.filters
+#*.proj
+#*.config
 
 
 
