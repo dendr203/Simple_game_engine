@@ -1,9 +1,8 @@
 #include "Camera.h"
 
-Camera::Camera(float _aspectRatio)
-{
-	aspectRatio = _aspectRatio;
-}
+Camera::Camera(float _aspectRatio) : position(), front(), up(), movementSpeed(0.0f), 
+	fov(0.0f), yaw(0.0f), pitch(0.0f), sensitivity(0.0f), aspectRatio(_aspectRatio)
+{}
 
 void Camera::setCamera(glm::vec3 _position, glm::vec3 _front, glm::vec3 _up, float speed, float _fov, float _yaw, float _pitch, float _sensitivity)
 {
@@ -102,6 +101,7 @@ void Camera::updateViewMatrix()
 void Camera::addObserver(Observer* observer) {
 	observers.push_back(observer);
 	updateViewMatrix();
+	
 }
 
 void Camera::removeObserver(Observer* observer) {
@@ -112,7 +112,7 @@ void Camera::notifyObservers() {
 	for (Observer* obs : observers)
 	{
 		ShaderProgram* shaderProgram = dynamic_cast<ShaderProgram*>(obs);
-		shaderProgram->updateFromCam();
+		shaderProgram->updateFromSubject();
 	}
 }	
 

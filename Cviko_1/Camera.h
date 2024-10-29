@@ -45,6 +45,8 @@ private:
     float movementSpeed;
     float fov;
     float aspectRatio;
+
+    
     
     glm::mat4 viewMatrix;
     glm::mat4 projectionMatrix;

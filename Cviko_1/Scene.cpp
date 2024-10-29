@@ -123,7 +123,7 @@ Scene::~Scene()
 }
 
 void Scene::CrateScene() {
-	camera->setCamera(glm::vec3(0.0f, 1.0f, 5.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.05, 45.0, -90.f, 0.f, 0.08f);
+	camera->setCamera(glm::vec3(0.0f, 1.0f, 5.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.05f, 45.0f, -90.f, 0.f, 0.08f);
 
 	Light* light = new Light(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec4(0.1f, 0.1f, 0.1f, 0.1f), 0);
 
@@ -177,7 +177,7 @@ void Scene::CrateScene() {
 }
 
 void Scene::CreateForestScene(int numTrees, int numBushes) {
-	camera->setCamera(glm::vec3(0.0f, 1.0f, 5.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.05, 45.0, -90.f, 0.f, 0.08f);
+	camera->setCamera(glm::vec3(0.0f, 1.0f, 5.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.05f, 45.0f, -90.f, 0.f, 0.08f);
 
 	Light* light = new Light(glm::vec3(10.0f, 10.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec4(0.1f, 0.1f, 0.1f, 0.1f), 10);
 
@@ -228,7 +228,7 @@ void Scene::CreateConstantTestScene()
 {
 	camera->setCamera(glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.01f, 45.0, -90.0f, -90.0f, 0.03f);
 
-	Light* light = new Light(glm::vec3(0.0f, 0.2f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec4(0.1f, 0.1f, 0.1f, 0.1f), 32);
+	Light* light = new Light(glm::vec3(0.0f, 0.1f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec4(0.1f, 0.1f, 0.1f, 0.1f), 32);
 
 	ShaderProgram* shaderProgram = new ShaderProgram(camera, light);
 	shaderProgram->init_shader("Shaders/phong_vertex.glsl", "Shaders/phong_fragment.glsl");
@@ -273,8 +273,8 @@ void Scene::CreateConstantTestScene()
 
 void Scene::CreateFourShaderLightsScene()
 {
-	camera->setCamera(glm::vec3(-0.4f, 0.1f, 0.6f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.01f, 45.0, -65.0f, -5.f, 0.03f);
-	Light* light = new Light(glm::vec3(-0.4f, 0.1f, 0.6f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec4(0.1f, 0.1f, 0.1f, 0.1f), 10);
+	camera->setCamera(glm::vec3(-0.4f, 0.1f, 0.6f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.01f, 45.0, -65.0f, -5.f, 0.1f);
+	Light* light = new Light(glm::vec3(-0.4f, 0.1f, 0.6f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec4(0.1f, 0.1f, 0.1f, 0.1f), 40);
 	ShaderProgram* shaderProgram = new ShaderProgram(camera, light);
 	shaderPrograms.push_back(shaderProgram);
 

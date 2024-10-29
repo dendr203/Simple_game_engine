@@ -46,7 +46,7 @@ void Light::notifyObservers() {
     for (Observer* observer : observers) {
         ShaderProgram* shaderProgram = dynamic_cast<ShaderProgram*>(observer);
         if (shaderProgram) {
-            shaderProgram->updateFromCam();
+            shaderProgram->updateFromSubject();
         }
     }
 }

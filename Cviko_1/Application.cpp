@@ -86,7 +86,7 @@ void Application::HandleInput()
 
 
 	// Process mouse movement only if there are offsets
-    if (Window::out_x != 0 || Window::out_y != 0) {
+    if ((Window::out_x != 0 || Window::out_y != 0) && Window::keyStates[GLFW_MOUSE_BUTTON_RIGHT]) {
         camera->processMouseMovement(Window::out_x, Window::out_y);
         
         Window::out_x = 0;

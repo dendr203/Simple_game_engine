@@ -28,7 +28,7 @@ public:
 	void setVector4Uniform(const char* name, const glm::vec4& vector);
 	void setFloatUniform(const char* name, float _float);
 
-	void updateFromCam();
+	void updateFromSubject();
 
 private:
 	GLuint shaderProgram_id;

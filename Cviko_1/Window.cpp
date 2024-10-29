@@ -52,10 +52,17 @@ Window::Window(int witdth, int height)
 		}
 		});
 
+	glfwSetMouseButtonCallback(window, [](GLFWwindow* win, int button, int action, int mods) {
+		Window* instance = static_cast<Window*>(glfwGetWindowUserPointer(win));
+		if (instance) {
+			instance->button_callback(win, button, action, mods);
+		}
+		});
+
 
 
 	
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 
 
 
@@ -152,9 +159,20 @@ void Window::cursor_callback(GLFWwindow* window, float x, float y)
 	//printf("cursor_callback \n"); 
 }
 
+
+
+
 void Window::button_callback(GLFWwindow* window, int button, int action, int mode)
 {
-	if (action == GLFW_PRESS) printf("button_callback [%d,%d,%d]\n", button, action, mode);
+
+	if (action == GLFW_PRESS) {
+		keyStates[button] = true;
+	}
+	else if (action == GLFW_RELEASE) {
+		keyStates[button] = false;
+	}
+
+	//printf("button_callback [%d,%d,%d]\n", button, action, mode);
 
 }
 
