@@ -13,7 +13,7 @@
 
 class Light;
 class Camera;
-class ShaderProgram : public Observer
+class ShaderProgram : public Observer, public ShaderLoader
 {
 public:
 	ShaderProgram(Camera* camera, Light* light);
@@ -29,12 +29,9 @@ public:
 	void setFloatUniform(const char* name, float _float);
 
 	void updateFromSubject();
+	void setProjectionMatrix();
 
 private:
-	GLuint shaderProgram_id;
-
-	ShaderLoader* shaderLoader;
-
 	Camera* camera;
 	Light* light;
 };

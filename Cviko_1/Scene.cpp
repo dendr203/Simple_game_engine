@@ -135,6 +135,7 @@ void Scene::CrateScene() {
 
 	Model* sphere_model = new Model();
 	sphere_model->init_model(std::vector<float>(sphere, sphere + sizeof(sphere) / sizeof(sphere[0])));
+	models.push_back(sphere_model);
 	DrawableObject* object1 = new DrawableObject(camera);
 	object1->init_model(sphere_model);
 	object1->init_shader(shaderProgram);
@@ -146,6 +147,7 @@ void Scene::CrateScene() {
 
 	Model* tree_model = new Model();
 	tree_model->init_model(std::vector<float>(tree, tree + sizeof(tree) / sizeof(tree[0])));
+	models.push_back(tree_model);
 	DrawableObject* object2 = new DrawableObject(camera);
 	object2->init_model(tree_model);
 	object2->init_shader(shaderProgram);
@@ -157,6 +159,7 @@ void Scene::CrateScene() {
 
 	Model* bush_model = new Model();
 	bush_model->init_model(std::vector<float>(bushes, bushes + sizeof(bushes) / sizeof(bushes[0])));
+	models.push_back(bush_model);
 	DrawableObject* object3 = new DrawableObject(camera);
 	//object3->init_bushes();
 	object3->init_model(bush_model);
@@ -173,7 +176,6 @@ void Scene::CrateScene() {
 	object1->setShader("shaders/vertex_shader.glsl", "shaders/fragment_shader.glsl");
 	*/
 
-	shaderProgram->setMatrixUniform("projectionMatrix", camera->getProjectionMatrix());
 }
 
 void Scene::CreateForestScene(int numTrees, int numBushes) {
@@ -189,12 +191,15 @@ void Scene::CreateForestScene(int numTrees, int numBushes) {
 
 	Model* plain_model = new Model();
 	plain_model->init_model(std::vector<float>(plain, plain + sizeof(plain) / sizeof(plain[0])));
+	models.push_back(plain_model);
 
 	Model* tree_model = new Model();
 	tree_model->init_model(std::vector<float>(tree, tree + sizeof(tree) / sizeof(tree[0])));
+	models.push_back(tree_model);
 
 	Model* bush_model = new Model();
 	bush_model->init_model(std::vector<float>(bushes, bushes + sizeof(bushes) / sizeof(bushes[0])));
+	models.push_back(bush_model);
 
 	//create plain here next for ground
 	DrawableObject* plain = new DrawableObject(camera);
@@ -221,7 +226,7 @@ void Scene::CreateForestScene(int numTrees, int numBushes) {
 		objects.push_back(bush);
 	}
 
-	shaderProgram->setMatrixUniform("projectionMatrix", camera->getProjectionMatrix());
+	
 }
 
 void Scene::CreateConstantTestScene()
@@ -238,6 +243,7 @@ void Scene::CreateConstantTestScene()
 
 	Model* sphere_model = new Model();
 	sphere_model->init_model(std::vector<float>(sphere, sphere + sizeof(sphere) / sizeof(sphere[0])));
+	models.push_back(sphere_model);
 
 	DrawableObject* sphere_1 = new DrawableObject(camera);
 	sphere_1->init_model(sphere_model);
@@ -268,46 +274,53 @@ void Scene::CreateConstantTestScene()
 	objects.push_back(sphere_4);
 
 
-	shaderProgram->setMatrixUniform("projectionMatrix", camera->getProjectionMatrix());
+	
 }
 
 void Scene::CreateFourShaderLightsScene()
 {
 	camera->setCamera(glm::vec3(-0.4f, 0.1f, 0.6f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.01f, 45.0, -65.0f, -5.f, 0.1f);
 	Light* light = new Light(glm::vec3(-0.4f, 0.1f, 0.6f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec4(0.1f, 0.1f, 0.1f, 0.1f), 40);
-	ShaderProgram* shaderProgram = new ShaderProgram(camera, light);
-	shaderPrograms.push_back(shaderProgram);
-
+	
+	
 	Model* sphere_model = new Model();
 	sphere_model->init_model(std::vector<float>(sphere, sphere + sizeof(sphere) / sizeof(sphere[0])));
+	models.push_back(sphere_model);
+
+
+
 
 	
 	//light
-	shaderProgram->init_shader("Shaders/constant_vertex.glsl", "Shaders/constant_fragment.glsl");
-	camera->addObserver(shaderProgram);
-	light->addObserver(shaderProgram);
+	ShaderProgram* shaderProgram_light = new ShaderProgram(camera, light);
+	shaderPrograms.push_back(shaderProgram_light);
+	shaderProgram_light->init_shader("Shaders/constant_vertex.glsl", "Shaders/constant_fragment.glsl");
+	camera->addObserver(shaderProgram_light);
+	light->addObserver(shaderProgram_light);
 
 
 	DrawableObject* light_sphere = new DrawableObject(camera);
 	light_sphere->init_model(sphere_model);
-	light_sphere->init_shader(shaderProgram);
+	light_sphere->init_shader(shaderProgram_light);
 	light_sphere->translate(-0.35f, 0.1f, 0.6f);
 	light_sphere->scale(0.01f, 0.01f, 0.01f);
 	objects.push_back(light_sphere);
 
 
 
+
 	//bush
 	Model* bushes_model = new Model();
 	bushes_model->init_model(std::vector<float>(bushes, bushes + sizeof(bushes) / sizeof(bushes[0])));
+	models.push_back(bushes_model);
 
 	DrawableObject* bush_object = new DrawableObject(camera);
 	bush_object->init_model(bushes_model);
-	bush_object->init_shader(shaderProgram);
+	bush_object->init_shader(shaderProgram_light);
 	bush_object->translate(-0.4f, -0.1f, 0.f);
 	bush_object->scale(0.3f, 0.3f, 0.3f);
 	objects.push_back(bush_object);
-
+	
 
 
 
@@ -320,6 +333,7 @@ void Scene::CreateFourShaderLightsScene()
 
 	Model* suzi_smooth_model = new Model();
 	suzi_smooth_model->init_model(std::vector<float>(suziSmooth, suziSmooth + sizeof(suziSmooth) / sizeof(suziSmooth[0])));
+	models.push_back(suzi_smooth_model);
 
 	DrawableObject* sphere_1 = new DrawableObject(camera);
 	sphere_1->init_model(suzi_smooth_model);
@@ -327,6 +341,7 @@ void Scene::CreateFourShaderLightsScene()
 	sphere_1->translate(-0.13f, 0.f, 0.f);
 	sphere_1->scale(0.1f, 0.1f, 0.1f);
 	objects.push_back(sphere_1);
+	
 
 
 
@@ -339,6 +354,7 @@ void Scene::CreateFourShaderLightsScene()
 
 	Model* gift_model = new Model();
 	gift_model->init_model(std::vector<float>(gift, gift + sizeof(gift) / sizeof(gift[0])));
+	models.push_back(gift_model);
 
 	DrawableObject* gift_object = new DrawableObject(camera);
 	gift_object->init_model(gift_model);
@@ -346,6 +362,8 @@ void Scene::CreateFourShaderLightsScene()
 	gift_object->translate(0.13f, -0.1f, 0.f);
 	gift_object->scale(0.4f, 0.4f, 0.4f);
 	objects.push_back(gift_object);
+	
+	
 
 
 
@@ -363,8 +381,6 @@ void Scene::CreateFourShaderLightsScene()
 	sphere_object->scale(0.1f, 0.1f, 0.1f);
 	objects.push_back(sphere_object);
 
-
-	shaderProgram->setMatrixUniform("projectionMatrix", camera->getProjectionMatrix());
 }
 
 void Scene::RandomTransform(DrawableObject* object, int i) {
@@ -416,6 +432,10 @@ void Scene::ClearScene() {
 	}
 	lights.clear();
 
+	for (Model* model : models) {
+		delete model;
+	}
+	models.clear();
 
 	for (DrawableObject* obj : objects) {
 		delete obj;

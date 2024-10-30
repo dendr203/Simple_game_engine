@@ -15,6 +15,7 @@ void main(void) {
 
 // Compute light direction and view direction
 	vec3 lightDir = normalize(ex_lightDirection);
+
 // Diffuse light
    float dot_product = max(dot(normalize(ex_worldNormal), ex_lightDirection), 0.0);
    vec4 diffuse = dot_product * vec4(lightColor, 1.0);

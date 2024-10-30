@@ -6,6 +6,7 @@
 
 #include <unordered_map>
 
+#include "Camera.h"
 
 class Window
 {
@@ -26,16 +27,19 @@ public:
 	static std::unordered_map<int, bool> keyStates;
 	static float lastX, lastY;
 	static float out_x, out_y;
-
+	static int width, height;
+	static float ratio;
 
 	bool shouldClose();
 	void poolEvents();
 	void swapBuffers();
 
+	void attachCamera(Camera* _camera);
 
 private:
 	GLFWwindow* window;
-	int width, height, major, minor, revision;
-	float ratio;
+	int major, minor, revision;
+	
+	Camera* camera;
 };
 

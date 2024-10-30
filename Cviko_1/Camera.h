@@ -14,6 +14,8 @@ class Camera : public Subject
 public:
     Camera(float _aspectRatio);
 
+    void updateAspectRatio(float _aspectRatio);
+
     glm::mat4 getViewMatrix();
     glm::mat4 getProjectionMatrix();
 
@@ -53,9 +55,10 @@ private:
 
     void move(const glm::vec3& direction);
     void updateCameraVectors();
-    void setProjectionMatrix();
+    void updateProjectionMatrix();
     void updateViewMatrix();
 
+    void updateObserversProjection();
 
     std::vector<Observer*> observers;
 };

@@ -9,6 +9,9 @@
 
 float Window::lastX = 0;
 float Window::lastY = 0; 
+int Window::width = 0;
+int Window::height = 0;
+float Window::ratio = 0;
 
 
 Window::Window(int witdth, int height)
@@ -56,6 +59,13 @@ Window::Window(int witdth, int height)
 		Window* instance = static_cast<Window*>(glfwGetWindowUserPointer(win));
 		if (instance) {
 			instance->button_callback(win, button, action, mods);
+		}
+		});
+
+	glfwSetWindowSizeCallback(window, [](GLFWwindow* win, int width, int height) {
+		Window* instance = static_cast<Window*>(glfwGetWindowUserPointer(win));
+		if (instance) {
+			instance->window_size_callback(win, width, height);
 		}
 		});
 
@@ -130,10 +140,31 @@ void Window::window_iconify_callback(GLFWwindow* window, int iconified)
 	printf("window_iconify_callback \n");
 }
 
-void Window::window_size_callback(GLFWwindow* window, int width, int height)
+void Window::window_size_callback(GLFWwindow* window, int _width, int _height)
 {
-	printf("resize %d, %d \n", width, height);
-	glViewport(0, 0, width, height);
+	Window* instance = static_cast<Window*>(glfwGetWindowUserPointer(window));
+	
+	if (instance)
+	{
+		instance->width = _width;
+		instance->height = _height;
+
+		instance->ratio = static_cast<float>(width) / static_cast<float>(height);
+
+		//printf("resize %d, %d \n", _width, _height);
+		glViewport(0, 0, instance->width, instance->height);
+
+		if (instance->camera)
+		{
+			instance->camera->updateAspectRatio(instance->ratio);
+		}
+		else
+		{
+			printf("Camera is not attached to window!!!\n");
+		}
+	}
+	
+
 }
 
 
@@ -197,4 +228,9 @@ void Window::swapBuffers()
 {
 	// put the stuff we’ve been drawing onto the display
 	glfwSwapBuffers(window);
+}
+
+void Window::attachCamera(Camera* _camera)
+{
+	camera = _camera;
 }

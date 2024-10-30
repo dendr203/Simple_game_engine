@@ -26,7 +26,8 @@ private:
 	Camera* camera;
 
 	
-	std::vector<Light*> lights;	//future use 
+	std::vector<Light*> lights;
 	std::vector<ShaderProgram*> shaderPrograms;
+	std::vector<Model*> models;
 };
 

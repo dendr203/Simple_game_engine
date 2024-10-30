@@ -18,7 +18,8 @@ void Application::initialization()
 {
 	window = new Window(1000, 800);
 	camera = new Camera(window->getAspect_ratio());
-
+	window->attachCamera(camera);
+	
 	scene = new Scene(camera);
 }
 
@@ -38,13 +39,11 @@ void Application::run()
 	while (!window->shouldClose()) {
 		// clear color and depth buffer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+		window->poolEvents();
 
 		HandleInput();
 		scene->DrawScene();
 		
-		
-		window->poolEvents();
 		window->swapBuffers();
 	}
 

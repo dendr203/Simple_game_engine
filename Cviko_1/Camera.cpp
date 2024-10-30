@@ -1,8 +1,9 @@
 #include "Camera.h"
 
-Camera::Camera(float _aspectRatio) : position(), front(), up(), movementSpeed(0.0f), 
-	fov(0.0f), yaw(0.0f), pitch(0.0f), sensitivity(0.0f), aspectRatio(_aspectRatio)
+Camera::Camera(float _aspectRatio) : position(), front(), up(), movementSpeed(0.0f),
+	fov(0.0f), yaw(0.0f), pitch(0.0f), sensitivity(0.0f), aspectRatio(_aspectRatio), viewMatrix(), projectionMatrix(), right(), worldUp()
 {}
+
 
 void Camera::setCamera(glm::vec3 _position, glm::vec3 _front, glm::vec3 _up, float speed, float _fov, float _yaw, float _pitch, float _sensitivity)
 {
@@ -14,7 +15,7 @@ void Camera::setCamera(glm::vec3 _position, glm::vec3 _front, glm::vec3 _up, flo
 	yaw = _yaw;
 	pitch = _pitch;
 	sensitivity = _sensitivity;
-	setProjectionMatrix();
+	updateProjectionMatrix();
 	updateCameraVectors();
 }
 
@@ -24,6 +25,26 @@ void Camera::move(const glm::vec3& direction)
 	updateViewMatrix();
 }
 
+void Camera::moveForward()
+{
+	move(front);
+}
+
+void Camera::moveBackwards()
+{
+	move(-front);
+}
+
+void Camera::moveLeft()
+{
+	move(-glm::normalize(glm::cross(front, up)));
+}
+
+void Camera::moveRight()
+{
+	move(glm::normalize(glm::cross(front, up)));
+}
+
 glm::mat4 Camera::getViewMatrix(){
 	return viewMatrix;
 }
@@ -31,6 +52,8 @@ glm::mat4 Camera::getViewMatrix(){
 glm::mat4 Camera::getProjectionMatrix(){
 	return projectionMatrix;
 }
+
+
 
 
 void Camera::updateCameraVectors() {
@@ -62,34 +85,31 @@ void Camera::processMouseMovement(float xoffset, float yoffset) {
 
 
 	updateCameraVectors();
-
 };
 
 
-void Camera::moveForward()
+
+void Camera::updateAspectRatio(float _aspectRatio)
 {
-	move(front);
+	aspectRatio = _aspectRatio;
+	updateProjectionMatrix();
 }
 
-void Camera::moveBackwards()
-{
-	move(-front);
-}
-
-void Camera::moveLeft()
-{
-	move(-glm::normalize(glm::cross(front, up)));
-}
-
-void Camera::moveRight()
-{
-	move(glm::normalize(glm::cross(front, up)));
-}
-
-void Camera::setProjectionMatrix()
+void Camera::updateProjectionMatrix()
 {
 	projectionMatrix = glm::perspective(fov, aspectRatio, 0.1f, 100.0f);
+	updateObserversProjection();
 }
+
+void Camera::updateObserversProjection()
+{
+	for (Observer* obs : observers)
+	{
+		ShaderProgram* shaderProgram = (ShaderProgram*)obs;
+		shaderProgram->setProjectionMatrix();
+	}
+}
+
 
 void Camera::updateViewMatrix()
 {
@@ -101,7 +121,9 @@ void Camera::updateViewMatrix()
 void Camera::addObserver(Observer* observer) {
 	observers.push_back(observer);
 	updateViewMatrix();
-	
+
+	ShaderProgram* shader_prg = (ShaderProgram*) observer;
+	shader_prg->setProjectionMatrix();
 }
 
 void Camera::removeObserver(Observer* observer) {
