@@ -12,7 +12,7 @@ public:
 
 	void CrateScene();
 	void CreateForestScene(int numTrees, int numBushes);
-	void CreateConstantTestScene();
+	void CreateLightTestScene();
 	void CreateFourShaderLightsScene();
 
 	void DrawScene();

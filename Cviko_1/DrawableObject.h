@@ -40,6 +40,9 @@ public:
 	float rotateY;
 	float rotateZ;
 
+
+	void setColor(glm::vec4 _color);
+
 private:
 	ShaderProgram* shaderProgram;
 	Model* model;
@@ -47,6 +50,6 @@ private:
 	//std::vector<float> vector_model;
 	Transformation* transformation;
 
-	
+	glm::vec4 color;
 };
 

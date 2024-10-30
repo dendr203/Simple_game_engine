@@ -29,6 +29,7 @@ void DrawableObject::Draw()
 	
 	shaderProgram->use_shader();
 	shaderProgram->setMatrixUniform("modelMatrix", modelMatrix);
+	shaderProgram->setVector4Uniform("objectColor", color);
 	model->draw_model();
 }
 
@@ -46,4 +47,10 @@ void DrawableObject::translate(float x, float y, float z)
 void DrawableObject::rotate(float angle, float x, float y, float z)
 {
 	transformation->rotate(angle, x, y, z);
+}
+
+
+void DrawableObject::setColor(glm::vec4 _color)
+{
+	color = _color;
 }

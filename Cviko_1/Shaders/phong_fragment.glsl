@@ -8,11 +8,11 @@ in vec3 ex_viewDirection;
 uniform vec3 lightColor;
 uniform vec4 ambientLight;
 uniform float shininess;
+uniform vec4 objectColor;
 
 out vec4 out_Color;
 
 void main(void) {
-   vec4 objectColor = vec4(0.385, 0.647, 0.812, 1.0);
 
    // Compute light direction and view direction
    vec3 lightDir = normalize(ex_lightDirection);

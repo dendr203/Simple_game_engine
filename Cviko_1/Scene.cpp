@@ -143,6 +143,7 @@ void Scene::CrateScene() {
 	object1->scale(0.1f, 0.1f, 0.1f);
 	object1->rotateAngle = 0.02f;
 	object1->rotateX = 1.f;
+	object1->setColor(glm::vec4(0.385, 0.647, 0.812, 1.0));
 	objects.push_back(object1);
 
 	Model* tree_model = new Model();
@@ -155,6 +156,7 @@ void Scene::CrateScene() {
 	object2->scale(0.3f, 0.3f, 0.3f);
 	object2->rotateAngle = 0.05f;
 	object2->rotateY = 1.f;
+	object2->setColor(glm::vec4(0.385, 0.647, 0.812, 1.0));
 	objects.push_back(object2);
 
 	Model* bush_model = new Model();
@@ -168,6 +170,7 @@ void Scene::CrateScene() {
 	object3->scale(0.4f, 0.4f, 0.4f);
 	object3->rotateAngle = 0.025f;
 	object3->rotateZ = 1.f;
+	object3->setColor(glm::vec4(0.385, 0.647, 0.812, 1.0));
 	objects.push_back(object3);
 
 	/*
@@ -180,8 +183,8 @@ void Scene::CrateScene() {
 
 void Scene::CreateForestScene(int numTrees, int numBushes) {
 	camera->setCamera(glm::vec3(0.0f, 1.0f, 5.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.05f, 45.0f, -90.f, 0.f, 0.08f);
-
 	Light* light = new Light(glm::vec3(10.0f, 10.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec4(0.1f, 0.1f, 0.1f, 0.1f), 10);
+
 
 	ShaderProgram* shaderProgram = new ShaderProgram(camera, light);
 	shaderProgram->init_shader("Shaders/blin_phong_vertex.glsl", "Shaders/blin_phong_fragment.glsl");
@@ -189,24 +192,34 @@ void Scene::CreateForestScene(int numTrees, int numBushes) {
 	light->addObserver(shaderProgram);
 	shaderPrograms.push_back(shaderProgram);
 
+
+
+	//plain
 	Model* plain_model = new Model();
 	plain_model->init_model(std::vector<float>(plain, plain + sizeof(plain) / sizeof(plain[0])));
 	models.push_back(plain_model);
-
-	Model* tree_model = new Model();
-	tree_model->init_model(std::vector<float>(tree, tree + sizeof(tree) / sizeof(tree[0])));
-	models.push_back(tree_model);
-
-	Model* bush_model = new Model();
-	bush_model->init_model(std::vector<float>(bushes, bushes + sizeof(bushes) / sizeof(bushes[0])));
-	models.push_back(bush_model);
-
-	//create plain here next for ground
+	
 	DrawableObject* plain = new DrawableObject(camera);
 	plain->init_model(plain_model);
 	plain->init_shader(shaderProgram);
 	plain->scale(5, 5, 5);
+	plain->setColor(glm::vec4(0.659f, 0.408f, 0.165f, 1.0f));
 	objects.push_back(plain);
+
+
+
+	//tree
+	Model* tree_model = new Model();
+	tree_model->init_model(std::vector<float>(tree, tree + sizeof(tree) / sizeof(tree[0])));
+	models.push_back(tree_model);
+
+
+	//bushes
+	Model* bush_model = new Model();
+	bush_model->init_model(std::vector<float>(bushes, bushes + sizeof(bushes) / sizeof(bushes[0])));
+	models.push_back(bush_model);
+
+
 
 
 
@@ -215,6 +228,7 @@ void Scene::CreateForestScene(int numTrees, int numBushes) {
 		tree->init_model(tree_model);
 		tree->init_shader(shaderProgram);
 		RandomTransform(tree, i);
+		tree->setColor(glm::vec4(1.0f, 0.f, 0.f, 1.0f));
 		objects.push_back(tree);
 	}
 
@@ -223,13 +237,14 @@ void Scene::CreateForestScene(int numTrees, int numBushes) {
 		bush->init_model(bush_model);
 		bush->init_shader(shaderProgram);
 		RandomTransform(bush, i);
+		bush->setColor(glm::vec4(0.0f, 1.f, 0.f, 1.0f));
 		objects.push_back(bush);
 	}
 
 	
 }
 
-void Scene::CreateConstantTestScene()
+void Scene::CreateLightTestScene()
 {
 	camera->setCamera(glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.01f, 45.0, -90.0f, -90.0f, 0.03f);
 
@@ -250,6 +265,7 @@ void Scene::CreateConstantTestScene()
 	sphere_1->init_shader(shaderProgram);
 	sphere_1->translate(-0.3f, 0.f, 0.f);
 	sphere_1->scale(0.1f, 0.1f, 0.1f);
+	sphere_1->setColor(glm::vec4(0.385, 0.647, 0.812, 1.0));
 	objects.push_back(sphere_1);
 
 	DrawableObject* sphere_2 = new DrawableObject(camera);
@@ -257,6 +273,7 @@ void Scene::CreateConstantTestScene()
 	sphere_2->init_shader(shaderProgram);
 	sphere_2->translate(0.3f, 0.f, 0.f);
 	sphere_2->scale(0.1f, 0.1f, 0.1f);
+	sphere_2->setColor(glm::vec4(0.385, 0.647, 0.812, 1.0));
 	objects.push_back(sphere_2);
 
 	DrawableObject* sphere_3 = new DrawableObject(camera);
@@ -264,6 +281,7 @@ void Scene::CreateConstantTestScene()
 	sphere_3->init_shader(shaderProgram);
 	sphere_3->translate(0.f, 0.f, -0.3f);
 	sphere_3->scale(0.1f, 0.1f, 0.1f);
+	sphere_3->setColor(glm::vec4(0.385, 0.647, 0.812, 1.0));
 	objects.push_back(sphere_3);
 
 	DrawableObject* sphere_4 = new DrawableObject(camera);
@@ -271,6 +289,7 @@ void Scene::CreateConstantTestScene()
 	sphere_4->init_shader(shaderProgram);
 	sphere_4->translate(0.f, 0.f, 0.3f);
 	sphere_4->scale(0.1f, 0.1f, 0.1f);
+	sphere_4->setColor(glm::vec4(0.385, 0.647, 0.812, 1.0));
 	objects.push_back(sphere_4);
 
 
@@ -304,21 +323,29 @@ void Scene::CreateFourShaderLightsScene()
 	light_sphere->init_shader(shaderProgram_light);
 	light_sphere->translate(-0.35f, 0.1f, 0.6f);
 	light_sphere->scale(0.01f, 0.01f, 0.01f);
+	light_sphere->setColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 	objects.push_back(light_sphere);
 
 
 
 
 	//bush
+	ShaderProgram* shaderProgram_bush = new ShaderProgram(camera, light);
+	shaderProgram_bush->init_shader("Shaders/lambert_vertex.glsl", "Shaders/lambert_fragment.glsl");
+	camera->addObserver(shaderProgram_bush);
+	light->addObserver(shaderProgram_bush);
+	shaderPrograms.push_back(shaderProgram_bush);
+
 	Model* bushes_model = new Model();
 	bushes_model->init_model(std::vector<float>(bushes, bushes + sizeof(bushes) / sizeof(bushes[0])));
 	models.push_back(bushes_model);
 
 	DrawableObject* bush_object = new DrawableObject(camera);
 	bush_object->init_model(bushes_model);
-	bush_object->init_shader(shaderProgram_light);
+	bush_object->init_shader(shaderProgram_bush);
 	bush_object->translate(-0.4f, -0.1f, 0.f);
 	bush_object->scale(0.3f, 0.3f, 0.3f);
+	bush_object->setColor(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
 	objects.push_back(bush_object);
 	
 
@@ -335,12 +362,13 @@ void Scene::CreateFourShaderLightsScene()
 	suzi_smooth_model->init_model(std::vector<float>(suziSmooth, suziSmooth + sizeof(suziSmooth) / sizeof(suziSmooth[0])));
 	models.push_back(suzi_smooth_model);
 
-	DrawableObject* sphere_1 = new DrawableObject(camera);
-	sphere_1->init_model(suzi_smooth_model);
-	sphere_1->init_shader(shaderProgram_suzi);
-	sphere_1->translate(-0.13f, 0.f, 0.f);
-	sphere_1->scale(0.1f, 0.1f, 0.1f);
-	objects.push_back(sphere_1);
+	DrawableObject* suzi_object = new DrawableObject(camera);
+	suzi_object->init_model(suzi_smooth_model);
+	suzi_object->init_shader(shaderProgram_suzi);
+	suzi_object->translate(-0.13f, 0.f, 0.f);
+	suzi_object->scale(0.1f, 0.1f, 0.1f);
+	suzi_object->setColor(glm::vec4(0.631f, 0.412f, 0.106f, 1.0f));
+	objects.push_back(suzi_object);
 	
 
 
@@ -361,6 +389,7 @@ void Scene::CreateFourShaderLightsScene()
 	gift_object->init_shader(shaderProgram_gift);
 	gift_object->translate(0.13f, -0.1f, 0.f);
 	gift_object->scale(0.4f, 0.4f, 0.4f);
+	gift_object->setColor(glm::vec4(1.f, 0.f, 0.f, 1.0f));
 	objects.push_back(gift_object);
 	
 	
@@ -379,6 +408,7 @@ void Scene::CreateFourShaderLightsScene()
 	sphere_object->init_shader(shaderProgram_sphere);
 	sphere_object->translate(0.4f, 0.f, 0.f);
 	sphere_object->scale(0.1f, 0.1f, 0.1f);
+	sphere_object->setColor(glm::vec4(0.385, 0.647, 0.812, 1.0));
 	objects.push_back(sphere_object);
 
 }
@@ -458,7 +488,7 @@ void Scene::SwitchScene(int sceneId) {
 		CreateForestScene(50, 50);
 	}
 	else if (sceneId == 3) {
-		CreateConstantTestScene();
+		CreateLightTestScene();
 	}
 	else if (sceneId == 4) {
 		CreateFourShaderLightsScene();
