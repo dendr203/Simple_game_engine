@@ -4,7 +4,13 @@
 
 #include "ShaderProgram.h"
 #include "Model.h"
-#include "Transformation.h"
+#include "TransformationComposite.h"
+
+//maybe different next time
+#include "Translation.h"
+#include "Rotation.h"
+#include "Scaling.h"
+
 
 #include <vector>
 
@@ -32,13 +38,13 @@ public:
 
 	
 	//this will be done differently in future
-	void scale(float x, float y, float z);
-	void translate(float x, float y, float z);
-	void rotate(float angle, float x, float y, float z);
-	float rotateAngle;
-	float rotateX;
-	float rotateY;
-	float rotateZ;
+	void addScale(float x, float y, float z);
+	void addTranslation(float x, float y, float z);
+	void addRotation(float angle, float x, float y, float z);
+	void clearTransformations();
+
+
+	glm::mat4 getModelMatrix();
 
 
 	void setColor(glm::vec4 _color);
@@ -47,8 +53,7 @@ private:
 	ShaderProgram* shaderProgram;
 	Model* model;
 
-	//std::vector<float> vector_model;
-	Transformation* transformation;
+	TransformationComposite* transformationComposite;
 
 	glm::vec4 color;
 };

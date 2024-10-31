@@ -51,6 +51,7 @@ GLuint ShaderProgram::getLocation(const char* name)
 }
 
 
+
 void ShaderProgram::setUniformLocation(const char* name, const glm::mat4& matrix) {
 	GLuint location = getLocation(name);
 	if (location != -1) {
@@ -91,41 +92,79 @@ void ShaderProgram::setUniformLocation(const char* name, float _float) {
 	}
 }
 
-void ShaderProgram::updateFromSubject() {
-	//printf("we were notified from camera\n");
 
 
-	setUniformLocation("viewMatrix", camera->getViewMatrix());
-
-
-	GLint lightPositionLocation = getLocation("lightPosition");
-	if (lightPositionLocation != -1)
-	{
-		setUniformLocation("lightPosition", light->getPosition());
-	}
-	
-	GLint lightColorLocation = getLocation("lightColor");
-	if (lightColorLocation != -1)
-	{
-		setUniformLocation("lightColor", light->getColor());
-	}
-	
-	GLint ambientLightLocation = getLocation("ambientLight");
-	if (ambientLightLocation != -1)
-	{
-		setUniformLocation("ambientLight", light->getAmbient());
-	}
-	
-
-	GLint shininessLocation = getLocation("shininess");
-	if (shininessLocation != -1) {
-		setUniformLocation("shininess", light->getShinines());
-	}
+void ShaderProgram::setModelMatrix(const glm::mat4& model_matrix)
+{
+	setUniformLocation("modelMatrix", model_matrix);
 }
 
+void ShaderProgram::setViewMatrix()
+{
+	setUniformLocation("viewMatrix", camera->getViewMatrix());
+}
 
 void ShaderProgram::setProjectionMatrix()
 {
 	setUniformLocation("projectionMatrix", camera->getProjectionMatrix());
 }
+
+void ShaderProgram::setObjectColor(const glm::vec4& color)
+{
+	setUniformLocation("objectColor", color);
+}
+
+void ShaderProgram::setLightPosition()
+{
+	setUniformLocation("lightPosition", light->getPosition());
+}
+
+void ShaderProgram::setLightColor()
+{
+	setUniformLocation("lightColor", light->getColor());
+}
+
+void ShaderProgram::setAmbient()
+{
+	setUniformLocation("ambientLight", light->getAmbient());
+}
+
+void ShaderProgram::setShinines()
+{
+	setUniformLocation("shininess", light->getShinines());
+}
+
+void ShaderProgram::updateFromSubject() {
+	//printf("we were notified from camera\n");
+
+
+	setViewMatrix();
+
+
+	GLint lightPositionLocation = getLocation("lightPosition");
+	if (lightPositionLocation != -1)
+	{
+		setLightPosition();
+	}
+	
+	GLint lightColorLocation = getLocation("lightColor");
+	if (lightColorLocation != -1)
+	{
+		setLightColor();
+	}
+	
+	GLint ambientLightLocation = getLocation("ambientLight");
+	if (ambientLightLocation != -1)
+	{
+		setAmbient();
+	}
+	
+	GLint shininessLocation = getLocation("shininess");
+	if (shininessLocation != -1) {
+		setShinines();
+	}
+}
+
+
+
 

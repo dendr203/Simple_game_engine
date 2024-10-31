@@ -1,4 +1,5 @@
 #pragma once
+
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
@@ -28,8 +29,18 @@ public:
 	void setUniformLocation(const char* name, const glm::vec4& vector);
 	void setUniformLocation(const char* name, float _float);
 
-	void updateFromSubject();
+	void setModelMatrix(const glm::mat4& model_matrix);
+	void setViewMatrix();
 	void setProjectionMatrix();
+
+	void setObjectColor(const glm::vec4& obj_color);
+	void setLightPosition();
+	void setLightColor();
+	void setAmbient();
+	void setShinines();
+
+	void updateFromSubject();
+	
 
 private:
 	Camera* camera;

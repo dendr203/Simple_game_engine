@@ -139,10 +139,9 @@ void Scene::CrateScene() {
 	DrawableObject* object1 = new DrawableObject(camera);
 	object1->init_model(sphere_model);
 	object1->init_shader(shaderProgram);
-	object1->translate(0.4f, -0.5f, 0.f);
-	object1->scale(0.1f, 0.1f, 0.1f);
-	object1->rotateAngle = 0.02f;
-	object1->rotateX = 1.f;
+	object1->addTranslation(0.4f, -0.5f, 0.f);
+	object1->addScale(0.1f, 0.1f, 0.1f);
+	object1->addRotation(0.02f, 1.f, 0.f, 0.f);
 	object1->setColor(glm::vec4(0.385, 0.647, 0.812, 1.0));
 	objects.push_back(object1);
 
@@ -152,10 +151,9 @@ void Scene::CrateScene() {
 	DrawableObject* object2 = new DrawableObject(camera);
 	object2->init_model(tree_model);
 	object2->init_shader(shaderProgram);
-	object2->translate(-0.4f, -0.8f, 0.f);
-	object2->scale(0.3f, 0.3f, 0.3f);
-	object2->rotateAngle = 0.05f;
-	object2->rotateY = 1.f;
+	object2->addTranslation(-0.4f, -0.8f, 0.f);
+	object2->addScale(0.3f, 0.3f, 0.3f);
+	object2->addRotation(0.05, 0.f, 1.f, 0.f);
 	object2->setColor(glm::vec4(0.385, 0.647, 0.812, 1.0));
 	objects.push_back(object2);
 
@@ -166,10 +164,9 @@ void Scene::CrateScene() {
 	//object3->init_bushes();
 	object3->init_model(bush_model);
 	object3->init_shader(shaderProgram);
-	object3->translate(0.5f, 0.6f, 0.f);
-	object3->scale(0.4f, 0.4f, 0.4f);
-	object3->rotateAngle = 0.025f;
-	object3->rotateZ = 1.f;
+	object3->addTranslation(0.5f, 0.6f, 0.f);
+	object3->addScale(0.4f, 0.4f, 0.4f);
+	object3->addRotation(0.025f, 0.f, 0.f, 1.f);
 	object3->setColor(glm::vec4(0.385, 0.647, 0.812, 1.0));
 	objects.push_back(object3);
 
@@ -202,7 +199,7 @@ void Scene::CreateForestScene(int numTrees, int numBushes) {
 	DrawableObject* plain = new DrawableObject(camera);
 	plain->init_model(plain_model);
 	plain->init_shader(shaderProgram);
-	plain->scale(5, 5, 5);
+	plain->addScale(5, 5, 5);
 	plain->setColor(glm::vec4(0.659f, 0.408f, 0.165f, 1.0f));
 	objects.push_back(plain);
 
@@ -263,32 +260,32 @@ void Scene::CreateLightTestScene()
 	DrawableObject* sphere_1 = new DrawableObject(camera);
 	sphere_1->init_model(sphere_model);
 	sphere_1->init_shader(shaderProgram);
-	sphere_1->translate(-0.3f, 0.f, 0.f);
-	sphere_1->scale(0.1f, 0.1f, 0.1f);
+	sphere_1->addTranslation(-0.3f, 0.f, 0.f);
+	sphere_1->addScale(0.1f, 0.1f, 0.1f);
 	sphere_1->setColor(glm::vec4(0.385, 0.647, 0.812, 1.0));
 	objects.push_back(sphere_1);
 
 	DrawableObject* sphere_2 = new DrawableObject(camera);
 	sphere_2->init_model(sphere_model);
 	sphere_2->init_shader(shaderProgram);
-	sphere_2->translate(0.3f, 0.f, 0.f);
-	sphere_2->scale(0.1f, 0.1f, 0.1f);
+	sphere_2->addTranslation(0.3f, 0.f, 0.f);
+	sphere_2->addScale(0.1f, 0.1f, 0.1f);
 	sphere_2->setColor(glm::vec4(0.385, 0.647, 0.812, 1.0));
 	objects.push_back(sphere_2);
 
 	DrawableObject* sphere_3 = new DrawableObject(camera);
 	sphere_3->init_model(sphere_model);
 	sphere_3->init_shader(shaderProgram);
-	sphere_3->translate(0.f, 0.f, -0.3f);
-	sphere_3->scale(0.1f, 0.1f, 0.1f);
+	sphere_3->addTranslation(0.f, 0.f, -0.3f);
+	sphere_3->addScale(0.1f, 0.1f, 0.1f);
 	sphere_3->setColor(glm::vec4(0.385, 0.647, 0.812, 1.0));
 	objects.push_back(sphere_3);
 
 	DrawableObject* sphere_4 = new DrawableObject(camera);
 	sphere_4->init_model(sphere_model);
 	sphere_4->init_shader(shaderProgram);
-	sphere_4->translate(0.f, 0.f, 0.3f);
-	sphere_4->scale(0.1f, 0.1f, 0.1f);
+	sphere_4->addTranslation(0.f, 0.f, 0.3f);
+	sphere_4->addScale(0.1f, 0.1f, 0.1f);
 	sphere_4->setColor(glm::vec4(0.385, 0.647, 0.812, 1.0));
 	objects.push_back(sphere_4);
 
@@ -321,8 +318,8 @@ void Scene::CreateFourShaderLightsScene()
 	DrawableObject* light_sphere = new DrawableObject(camera);
 	light_sphere->init_model(sphere_model);
 	light_sphere->init_shader(shaderProgram_light);
-	light_sphere->translate(-0.35f, 0.1f, 0.6f);
-	light_sphere->scale(0.01f, 0.01f, 0.01f);
+	light_sphere->addTranslation(-0.35f, 0.1f, 0.6f);
+	light_sphere->addScale(0.01f, 0.01f, 0.01f);
 	light_sphere->setColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 	objects.push_back(light_sphere);
 
@@ -343,8 +340,8 @@ void Scene::CreateFourShaderLightsScene()
 	DrawableObject* bush_object = new DrawableObject(camera);
 	bush_object->init_model(bushes_model);
 	bush_object->init_shader(shaderProgram_bush);
-	bush_object->translate(-0.4f, -0.1f, 0.f);
-	bush_object->scale(0.3f, 0.3f, 0.3f);
+	bush_object->addTranslation(-0.4f, -0.1f, 0.f);
+	bush_object->addScale(0.3f, 0.3f, 0.3f);
 	bush_object->setColor(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
 	objects.push_back(bush_object);
 	
@@ -365,8 +362,8 @@ void Scene::CreateFourShaderLightsScene()
 	DrawableObject* suzi_object = new DrawableObject(camera);
 	suzi_object->init_model(suzi_smooth_model);
 	suzi_object->init_shader(shaderProgram_suzi);
-	suzi_object->translate(-0.13f, 0.f, 0.f);
-	suzi_object->scale(0.1f, 0.1f, 0.1f);
+	suzi_object->addTranslation(-0.13f, 0.f, 0.f);
+	suzi_object->addScale(0.1f, 0.1f, 0.1f);
 	suzi_object->setColor(glm::vec4(0.631f, 0.412f, 0.106f, 1.0f));
 	objects.push_back(suzi_object);
 	
@@ -387,8 +384,8 @@ void Scene::CreateFourShaderLightsScene()
 	DrawableObject* gift_object = new DrawableObject(camera);
 	gift_object->init_model(gift_model);
 	gift_object->init_shader(shaderProgram_gift);
-	gift_object->translate(0.13f, -0.1f, 0.f);
-	gift_object->scale(0.4f, 0.4f, 0.4f);
+	gift_object->addTranslation(0.13f, -0.1f, 0.f);
+	gift_object->addScale(0.4f, 0.4f, 0.4f);
 	gift_object->setColor(glm::vec4(1.f, 0.f, 0.f, 1.0f));
 	objects.push_back(gift_object);
 	
@@ -406,8 +403,8 @@ void Scene::CreateFourShaderLightsScene()
 	DrawableObject* sphere_object = new DrawableObject(camera);
 	sphere_object->init_model(sphere_model);
 	sphere_object->init_shader(shaderProgram_sphere);
-	sphere_object->translate(0.4f, 0.f, 0.f);
-	sphere_object->scale(0.1f, 0.1f, 0.1f);
+	sphere_object->addTranslation(0.4f, 0.f, 0.f);
+	sphere_object->addScale(0.1f, 0.1f, 0.1f);
 	sphere_object->setColor(glm::vec4(0.385, 0.647, 0.812, 1.0));
 	objects.push_back(sphere_object);
 
@@ -420,7 +417,7 @@ void Scene::RandomTransform(DrawableObject* object, int i) {
 	float z = static_cast<float>(rand() % 100 - 50) / 10.0f;
 
 	float x_my = (i - 25) / 5.0f;
-	object->translate(x_my, 0, z);
+	object->addTranslation(x_my, 0, z);
 
 	// Random rotation (0, 0.3)
 	/*
@@ -441,7 +438,7 @@ void Scene::RandomTransform(DrawableObject* object, int i) {
 
 	// Random scale (0.1, 0.5)
 	float scale = static_cast<float>(rand() % 30 + 1) / 100.0f;
-	object->scale(scale, scale, scale);
+	object->addScale(scale, scale, scale);
 }
 
 
