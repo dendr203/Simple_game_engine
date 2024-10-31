@@ -27,9 +27,9 @@ void DrawableObject::Draw()
 {
 	glm::mat4 modelMatrix = transformation->getModelMatrix();
 	
+	shaderProgram->setUniformLocation("modelMatrix", modelMatrix);
+	shaderProgram->setUniformLocation("objectColor", color);
 	shaderProgram->use_shader();
-	shaderProgram->setMatrixUniform("modelMatrix", modelMatrix);
-	shaderProgram->setVector4Uniform("objectColor", color);
 	model->draw_model();
 }
 

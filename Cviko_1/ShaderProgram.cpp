@@ -45,41 +45,46 @@ void ShaderProgram::use_shader()
 
 
 
+GLuint ShaderProgram::getLocation(const char* name)
+{
+	return glGetUniformLocation(shaderProgramID, name);
+}
 
-void ShaderProgram::setMatrixUniform(const char* name, const glm::mat4& matrix) {
-	GLuint location = glGetUniformLocation(shaderProgramID, name);
+
+void ShaderProgram::setUniformLocation(const char* name, const glm::mat4& matrix) {
+	GLuint location = getLocation(name);
 	if (location != -1) {
-		glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
+		glProgramUniformMatrix4fv(shaderProgramID, location, 1, GL_FALSE, glm::value_ptr(matrix));
 	}
 	else {
 		printf("Uniform %s not found!\n", name);
 	}
 }
 
-void ShaderProgram::setVector3Uniform(const char* name, const glm::vec3& vector) {
-	GLuint location = glGetUniformLocation(shaderProgramID, name);
+void ShaderProgram::setUniformLocation(const char* name, const glm::vec3& vector) {
+	GLuint location = getLocation(name);
 	if (location != -1) {
-		glUniform3fv(location, 1, glm::value_ptr(vector));
+		glProgramUniform3f(shaderProgramID, location, vector.x, vector.y, vector.z);
 	}
 	else {
 		printf("Uniform %s not found!\n", name);
 	}
 }
 
-void ShaderProgram::setVector4Uniform(const char* name, const glm::vec4& vector) {
-	GLuint location = glGetUniformLocation(shaderProgramID, name);
+void ShaderProgram::setUniformLocation(const char* name, const glm::vec4& vector) {
+	GLuint location = getLocation(name);
 	if (location != -1) {
-		glUniform4fv(location, 1, glm::value_ptr(vector));
+		glProgramUniform4f(shaderProgramID, location, vector.x, vector.y, vector.z, vector.w);
 	}
 	else {
 		printf("Uniform %s not found!\n", name);
 	}
 }
 
-void ShaderProgram::setFloatUniform(const char* name, float _float) {
-	GLuint location = glGetUniformLocation(shaderProgramID, name);
+void ShaderProgram::setUniformLocation(const char* name, float _float) {
+	GLuint location = getLocation(name);
 	if (location != -1) {
-		glUniform1f(location, _float);
+		glProgramUniform1f(shaderProgramID, location, _float);
 	}
 	else {
 		printf("Uniform %s not found!\n", name);
@@ -89,39 +94,38 @@ void ShaderProgram::setFloatUniform(const char* name, float _float) {
 void ShaderProgram::updateFromSubject() {
 	//printf("we were notified from camera\n");
 
-	use_shader();
-	setMatrixUniform("viewMatrix", camera->getViewMatrix());
+
+	setUniformLocation("viewMatrix", camera->getViewMatrix());
 
 
-	GLint lightPositionLocation = glGetUniformLocation(shaderProgramID, "lightPosition");
+	GLint lightPositionLocation = getLocation("lightPosition");
 	if (lightPositionLocation != -1)
 	{
-		setVector3Uniform("lightPosition", light->getPosition());
+		setUniformLocation("lightPosition", light->getPosition());
 	}
 	
-	GLint lightColorLocation = glGetUniformLocation(shaderProgramID, "lightColor");
+	GLint lightColorLocation = getLocation("lightColor");
 	if (lightColorLocation != -1)
 	{
-		setVector3Uniform("lightColor", light->getColor());
+		setUniformLocation("lightColor", light->getColor());
 	}
 	
-	GLint ambientLightLocation = glGetUniformLocation(shaderProgramID, "ambientLight");
+	GLint ambientLightLocation = getLocation("ambientLight");
 	if (ambientLightLocation != -1)
 	{
-		setVector4Uniform("ambientLight", light->getAmbient());
+		setUniformLocation("ambientLight", light->getAmbient());
 	}
 	
 
-	GLint shininessLocation = glGetUniformLocation(shaderProgramID, "shininess");
+	GLint shininessLocation = getLocation("shininess");
 	if (shininessLocation != -1) {
-		setFloatUniform("shininess", light->getShinines());
+		setUniformLocation("shininess", light->getShinines());
 	}
 }
 
 
 void ShaderProgram::setProjectionMatrix()
 {
-	use_shader();
-	setMatrixUniform("projectionMatrix", camera->getProjectionMatrix());
+	setUniformLocation("projectionMatrix", camera->getProjectionMatrix());
 }
 

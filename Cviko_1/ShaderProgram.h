@@ -23,10 +23,10 @@ public:
 	void use_shader();
 
 
-	void setMatrixUniform(const char* name, const glm::mat4& matrix);
-	void setVector3Uniform(const char* name, const glm::vec3& vector);
-	void setVector4Uniform(const char* name, const glm::vec4& vector);
-	void setFloatUniform(const char* name, float _float);
+	void setUniformLocation(const char* name, const glm::mat4& matrix);
+	void setUniformLocation(const char* name, const glm::vec3& vector);
+	void setUniformLocation(const char* name, const glm::vec4& vector);
+	void setUniformLocation(const char* name, float _float);
 
 	void updateFromSubject();
 	void setProjectionMatrix();
@@ -34,5 +34,7 @@ public:
 private:
 	Camera* camera;
 	Light* light;
+
+	GLuint getLocation(const char* name);
 };
 
