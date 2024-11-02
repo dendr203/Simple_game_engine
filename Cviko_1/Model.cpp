@@ -19,9 +19,9 @@ void Model::init_model(const std::vector<float>& vector_model)
 	
 	glBindVertexArray(VAO);
 	glEnableVertexAttribArray(0);
-	glEnableVertexAttribArray(1); //colors from fragment shader
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (GLvoid*)0); //pozice
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (GLvoid*)(sizeof(float) * 3)); // barva
+	glEnableVertexAttribArray(1); // colors from fragment shader
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (GLvoid*)0); // position
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (GLvoid*)(sizeof(float) * 3)); // color
 }
 
 void Model::draw_model(){

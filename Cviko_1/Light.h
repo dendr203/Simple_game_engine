@@ -12,7 +12,7 @@ class Light : public Subject
 public:
     Light(glm::vec3 position, glm::vec3 color, glm::vec4 ambient, float shinines);
 
-    // Settery pro nastavení atributù svìtla
+    // Settery not in work now
     void setColor(const glm::vec3& color);
     void setPosition(const glm::vec3& position);
 	void setAmbient(const glm::vec4& ambient);
@@ -22,7 +22,7 @@ public:
     glm::vec4 getAmbient();
     float getShinines();
 
-    // Pøidat/odebrat pozorovatele
+    
     void addObserver(Observer* observer) override;
     void removeObserver(Observer* observer) override;
     void notifyObservers() override;

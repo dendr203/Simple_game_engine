@@ -9,9 +9,10 @@ ShaderProgram::~ShaderProgram()
 
 void ShaderProgram::init_shader(const char* vertexFile, const char* fragmentFile)
 {
-	ShaderLoader* shader_loader = new ShaderLoader(vertexFile, fragmentFile, &shaderProgramID);
-	delete(shader_loader);
-
+	//ShaderLoader* shader_loader = new ShaderLoader(vertexFile, fragmentFile, &shaderProgramID);
+	//delete(shader_loader);
+	
+	this->shaderProgramID = loadShader(vertexFile, fragmentFile);
 
 	GLint status;
 	glGetProgramiv(shaderProgramID, GL_LINK_STATUS, &status);
