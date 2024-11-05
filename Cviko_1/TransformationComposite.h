@@ -7,7 +7,7 @@
 class TransformationComposite : public TransformationComponent {
 public:
     
-    void apply(glm::mat4& modelMatrix) override;
+    void transform(glm::mat4& modelMatrix) override;
     void AddTransformation(TransformationComponent* transformation);
 
     void clearTransformations();

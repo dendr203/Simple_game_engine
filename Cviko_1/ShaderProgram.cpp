@@ -52,7 +52,6 @@ GLuint ShaderProgram::getLocation(const char* name)
 }
 
 
-
 void ShaderProgram::setUniformLocation(const char* name, const glm::mat4& matrix) {
 	GLuint location = getLocation(name);
 	if (location != -1) {
@@ -141,7 +140,7 @@ void ShaderProgram::updateFromSubject() {
 
 	setViewMatrix();
 
-
+	/*
 	GLint lightPositionLocation = getLocation("lightPosition");
 	if (lightPositionLocation != -1)
 	{
@@ -164,6 +163,7 @@ void ShaderProgram::updateFromSubject() {
 	if (shininessLocation != -1) {
 		setShinines();
 	}
+	*/
 }
 
 

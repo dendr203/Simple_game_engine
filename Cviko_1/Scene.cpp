@@ -18,6 +18,7 @@ void Scene::CrateScene() {
 	camera->setCamera(glm::vec3(0.0f, 1.0f, 5.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.05f, 45.0f, -90.f, 0.f, 0.08f);
 
 	Light* light = new Light(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec4(0.1f, 0.1f, 0.1f, 0.1f), 0);
+	lights.push_back(light);
 
 	ShaderProgram* shaderProgram = new ShaderProgram(camera, light);
 	shaderProgram->init_shader("Shaders/lambert_vertex.glsl", "Shaders/lambert_fragment.glsl");
@@ -25,9 +26,8 @@ void Scene::CrateScene() {
 	light->addObserver(shaderProgram);
 	shaderPrograms.push_back(shaderProgram);
 
-	Model* sphere_model = new Model();
-	sphere_model->init_model(std::vector<float>(sphere, sphere + sizeof(sphere) / sizeof(sphere[0])));
-	models.push_back(sphere_model);
+	Model* sphere_model = new Model(std::vector<float>(sphere, sphere + sizeof(sphere) / sizeof(sphere[0])));
+	
 	DrawableObject* object1 = new DrawableObject(camera);
 	object1->init_model(sphere_model);
 	object1->init_shader(shaderProgram);
@@ -37,8 +37,7 @@ void Scene::CrateScene() {
 	object1->setColor(glm::vec4(0.385, 0.647, 0.812, 1.0));
 	objects.push_back(object1);
 
-	Model* tree_model = new Model();
-	tree_model->init_model(std::vector<float>(tree, tree + sizeof(tree) / sizeof(tree[0])));
+	Model* tree_model = new Model(std::vector<float>(tree, tree + sizeof(tree) / sizeof(tree[0])));
 	models.push_back(tree_model);
 	DrawableObject* object2 = new DrawableObject(camera);
 	object2->init_model(tree_model);
@@ -49,11 +48,9 @@ void Scene::CrateScene() {
 	object2->setColor(glm::vec4(0.385, 0.647, 0.812, 1.0));
 	objects.push_back(object2);
 
-	Model* bush_model = new Model();
-	bush_model->init_model(std::vector<float>(bushes, bushes + sizeof(bushes) / sizeof(bushes[0])));
+	Model* bush_model = new Model(std::vector<float>(bushes, bushes + sizeof(bushes) / sizeof(bushes[0])));
 	models.push_back(bush_model);
 	DrawableObject* object3 = new DrawableObject(camera);
-	//object3->init_bushes();
 	object3->init_model(bush_model);
 	object3->init_shader(shaderProgram);
 	object3->addTranslation(0.5f, 0.6f, 0.f);
@@ -71,9 +68,9 @@ void Scene::CrateScene() {
 }
 
 void Scene::CreateForestScene(int numTrees, int numBushes) {
-	camera->setCamera(glm::vec3(0.0f, 1.0f, 5.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.05f, 45.0f, -90.f, 0.f, 0.08f);
+	camera->setCamera(glm::vec3(0.0f, 1.0f, 5.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.05f, 60.0f, -90.f, 0.f, 0.08f);
 	Light* light = new Light(glm::vec3(10.0f, 10.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec4(0.1f, 0.1f, 0.1f, 0.1f), 10);
-
+	lights.push_back(light);
 
 	ShaderProgram* shaderProgram = new ShaderProgram(camera, light);
 	shaderProgram->init_shader("Shaders/blin_phong_vertex.glsl", "Shaders/blin_phong_fragment.glsl");
@@ -84,8 +81,7 @@ void Scene::CreateForestScene(int numTrees, int numBushes) {
 
 
 	//plain
-	Model* plain_model = new Model();
-	plain_model->init_model(std::vector<float>(plain, plain + sizeof(plain) / sizeof(plain[0])));
+	Model* plain_model = new Model(std::vector<float>(plain, plain + sizeof(plain) / sizeof(plain[0])));
 	models.push_back(plain_model);
 	
 	DrawableObject* plain = new DrawableObject(camera);
@@ -98,14 +94,12 @@ void Scene::CreateForestScene(int numTrees, int numBushes) {
 
 
 	//tree
-	Model* tree_model = new Model();
-	tree_model->init_model(std::vector<float>(tree, tree + sizeof(tree) / sizeof(tree[0])));
+	Model* tree_model = new Model(std::vector<float>(tree, tree + sizeof(tree) / sizeof(tree[0])));
 	models.push_back(tree_model);
 
 
 	//bushes
-	Model* bush_model = new Model();
-	bush_model->init_model(std::vector<float>(bushes, bushes + sizeof(bushes) / sizeof(bushes[0])));
+	Model* bush_model = new Model(std::vector<float>(bushes, bushes + sizeof(bushes) / sizeof(bushes[0])));
 	models.push_back(bush_model);
 
 
@@ -135,9 +129,11 @@ void Scene::CreateForestScene(int numTrees, int numBushes) {
 
 void Scene::CreateLightTestScene()
 {
-	camera->setCamera(glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.01f, 45.0, -90.0f, -90.0f, 0.03f);
+	camera->setCamera(glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.01f, 60.0, -90.0f, -90.0f, 0.05f);
 
-	Light* light = new Light(glm::vec3(0.0f, 0.1f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec4(0.1f, 0.1f, 0.1f, 0.1f), 32);
+	Light* light = new Light(glm::vec3(0.0f, 0.1f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec4(0.1f, 0.1f, 0.1f, 0.1f), 1);
+	lights.push_back(light);
+
 
 	ShaderProgram* shaderProgram = new ShaderProgram(camera, light);
 	shaderProgram->init_shader("Shaders/phong_vertex.glsl", "Shaders/phong_fragment.glsl");
@@ -145,8 +141,7 @@ void Scene::CreateLightTestScene()
 	light->addObserver(shaderProgram);
 	shaderPrograms.push_back(shaderProgram);
 
-	Model* sphere_model = new Model();
-	sphere_model->init_model(std::vector<float>(sphere, sphere + sizeof(sphere) / sizeof(sphere[0])));
+	Model* sphere_model = new Model(std::vector<float>(sphere, sphere + sizeof(sphere) / sizeof(sphere[0])));
 	models.push_back(sphere_model);
 
 	DrawableObject* sphere_1 = new DrawableObject(camera);
@@ -187,14 +182,12 @@ void Scene::CreateLightTestScene()
 
 void Scene::CreateFourShaderLightsScene()
 {
-	camera->setCamera(glm::vec3(-0.4f, 0.1f, 0.6f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.01f, 45.0, -65.0f, -5.f, 0.1f);
+	camera->setCamera(glm::vec3(-0.4f, 0.1f, 0.6f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.01f, 60.0, -65.0f, -5.f, 0.1f);
 	Light* light = new Light(glm::vec3(-0.4f, 0.1f, 0.6f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec4(0.1f, 0.1f, 0.1f, 0.1f), 40);
+	lights.push_back(light);
 	
-	
-	Model* sphere_model = new Model();
-	sphere_model->init_model(std::vector<float>(sphere, sphere + sizeof(sphere) / sizeof(sphere[0])));
+	Model* sphere_model = new Model(std::vector<float>(sphere, sphere + sizeof(sphere) / sizeof(sphere[0])));
 	models.push_back(sphere_model);
-
 
 
 
@@ -225,8 +218,7 @@ void Scene::CreateFourShaderLightsScene()
 	light->addObserver(shaderProgram_bush);
 	shaderPrograms.push_back(shaderProgram_bush);
 
-	Model* bushes_model = new Model();
-	bushes_model->init_model(std::vector<float>(bushes, bushes + sizeof(bushes) / sizeof(bushes[0])));
+	Model* bushes_model = new Model(std::vector<float>(bushes, bushes + sizeof(bushes) / sizeof(bushes[0])));
 	models.push_back(bushes_model);
 
 	DrawableObject* bush_object = new DrawableObject(camera);
@@ -247,8 +239,7 @@ void Scene::CreateFourShaderLightsScene()
 	light->addObserver(shaderProgram_suzi);
 	shaderPrograms.push_back(shaderProgram_suzi);
 
-	Model* suzi_smooth_model = new Model();
-	suzi_smooth_model->init_model(std::vector<float>(suziSmooth, suziSmooth + sizeof(suziSmooth) / sizeof(suziSmooth[0])));
+	Model* suzi_smooth_model = new Model(std::vector<float>(suziSmooth, suziSmooth + sizeof(suziSmooth) / sizeof(suziSmooth[0])));
 	models.push_back(suzi_smooth_model);
 
 	DrawableObject* suzi_object = new DrawableObject(camera);
@@ -269,8 +260,7 @@ void Scene::CreateFourShaderLightsScene()
 	light->addObserver(shaderProgram_gift);
 	shaderPrograms.push_back(shaderProgram_gift);
 
-	Model* gift_model = new Model();
-	gift_model->init_model(std::vector<float>(gift, gift + sizeof(gift) / sizeof(gift[0])));
+	Model* gift_model = new Model(std::vector<float>(gift, gift + sizeof(gift) / sizeof(gift[0])));
 	models.push_back(gift_model);
 
 	DrawableObject* gift_object = new DrawableObject(camera);
@@ -302,6 +292,16 @@ void Scene::CreateFourShaderLightsScene()
 
 }
 
+void Scene::CreateMultipleLightsScene()
+{
+	camera->setCamera(glm::vec3(-0.4f, 0.1f, 0.6f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.01f, 45.0, -65.0f, -5.f, 0.1f);
+	Light* light = new Light(glm::vec3(-0.4f, 0.1f, 0.6f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec4(0.1f, 0.1f, 0.1f, 0.1f), 40);
+
+
+	Model* sphere_model = new Model(std::vector<float>(sphere, sphere + sizeof(sphere) / sizeof(sphere[0])));
+	models.push_back(sphere_model);
+}
+
 void Scene::RandomTransform(DrawableObject* object, int i) {
 
 	float x = static_cast<float>(rand() % 10 - 5) / 10.0f;
@@ -312,21 +312,9 @@ void Scene::RandomTransform(DrawableObject* object, int i) {
 	object->addTranslation(x_my, 0, z);
 
 	// Random rotation (0, 0.3)
-	/*
-	object->rotateAngle = rand() % 3 / 10.0f;
-	int axis = rand() % 3;
-	switch (axis) {
-	case 0: // Rotation around X axis
-		object->rotateX = 1.f;
-		break;
-	case 1: // Rotation around Y axis
-		object->rotateY = 1.f;
-		break;
-	case 2: // Rotation around Z axis
-		object->rotateZ = 1.f;
-		break;
-	}
-	*/
+	float random_rotate = rand() % 360;
+	object->addRotation(random_rotate, 0.f, 1.f, 0.f);
+
 
 	// Random scale (0.1, 0.5)
 	float scale = static_cast<float>(rand() % 30 + 1) / 100.0f;
@@ -339,7 +327,6 @@ void Scene::DrawScene() {
 
 	for (int i = 0; i < objects.size(); i++)
 	{
-		//objects[i]->rotate(objects[i]->rotateAngle, objects[i]->rotateX, objects[i]->rotateY, objects[i]->rotateZ);
 		objects[i]->Draw();
 	}
 }
@@ -351,10 +338,12 @@ void Scene::ClearScene() {
 	}
 	lights.clear();
 
+	
 	for (Model* model : models) {
 		delete model;
 	}
 	models.clear();
+	
 
 	for (DrawableObject* obj : objects) {
 		delete obj;

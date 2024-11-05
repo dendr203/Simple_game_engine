@@ -43,10 +43,16 @@ void Light::removeObserver(Observer* observer) {
 }
 
 void Light::notifyObservers() {
-    for (Observer* observer : observers) {
+    for (Observer* observer : observers)
+    {
         ShaderProgram* shaderProgram = dynamic_cast<ShaderProgram*>(observer);
-        if (shaderProgram) {
+        if (shaderProgram)
+        {
             shaderProgram->updateFromSubject();
+        }
+        else
+        {
+            printf("ShaderProgram not found!!!\n");
         }
     }
 }

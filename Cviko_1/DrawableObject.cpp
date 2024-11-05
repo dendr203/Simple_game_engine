@@ -2,7 +2,6 @@
 
 DrawableObject::DrawableObject(Camera* _camera) : shaderProgram(nullptr), model(nullptr), color(0)
 {
-	model = new Model();
 	transformationComposite = new TransformationComposite();
 }
 
@@ -20,6 +19,10 @@ void DrawableObject::init_model(Model* model)
 void DrawableObject::init_shader(ShaderProgram* shaderprogram)
 {
 	shaderProgram = shaderprogram;
+	shaderProgram->setLightPosition();
+	shaderProgram->setLightColor();
+	shaderProgram->setAmbient();
+	shaderProgram->setShinines();
 }
 
 
@@ -58,7 +61,7 @@ void DrawableObject::clearTransformations()
 glm::mat4 DrawableObject::getModelMatrix() 
 {
 	glm::mat4 modelMatrix = glm::mat4(1.0f); // Základní jednotková matice
-	transformationComposite->apply(modelMatrix); // Aplikuj transformace na jednotkovou matici
+	transformationComposite->transform(modelMatrix); // Aplikuj transformace na jednotkovou matici
 	return modelMatrix;
 }
 

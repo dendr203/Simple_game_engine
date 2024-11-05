@@ -4,5 +4,5 @@
 class TransformationComponent {
 public:
     virtual ~TransformationComponent() {}
-    virtual void apply(glm::mat4& modelMatrix) = 0;
+    virtual void transform(glm::mat4& modelMatrix) = 0;
 };

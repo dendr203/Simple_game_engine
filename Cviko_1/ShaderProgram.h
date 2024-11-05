@@ -39,7 +39,7 @@ public:
 	void setAmbient();
 	void setShinines();
 
-	void updateFromSubject();
+	void updateFromSubject() override;
 	
 
 private:

@@ -1,8 +1,12 @@
 #include "Model.h"
-Model::Model()
+Model::Model(const std::vector<float>& vertices)
 {
+	numVertices = vertices.size() / 6;
+
 	glGenBuffers(1, &VBO);
 	glGenVertexArrays(1, &VAO);
+
+	init_model(vertices);
 }
 
 Model::~Model() {
@@ -10,12 +14,11 @@ Model::~Model() {
 	glDeleteBuffers(1, &VBO);
 }
 
-void Model::init_model(const std::vector<float>& vector_model)
+void Model::init_model(const std::vector<float>& verticies)
 {
-	model = vector_model;
 	
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, model.size() * sizeof(float), model.data(), GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, verticies.size() * sizeof(float), verticies.data(), GL_STATIC_DRAW);
 	
 	glBindVertexArray(VAO);
 	glEnableVertexAttribArray(0);
@@ -26,5 +29,5 @@ void Model::init_model(const std::vector<float>& vector_model)
 
 void Model::draw_model(){
 	glBindVertexArray(VAO);
-	glDrawArrays(GL_TRIANGLES, 0, model.size() / 6); // Or any number based on vertices count
+	glDrawArrays(GL_TRIANGLES, 0, numVertices); // Or any number based on vertices count
 }	

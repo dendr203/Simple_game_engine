@@ -1,8 +1,7 @@
 #version 400
-in vec4 ex_worldPosition;
-in vec3 ex_worldNormal;
-in vec3 ex_lightDirection;
-in vec3 ex_viewDirection;
+in vec3 worldNormal;
+in vec3 lightDirection;
+in vec3 viewDirection;
 
 uniform vec3 lightColor;
 uniform vec4 ambientLight;
@@ -14,18 +13,25 @@ out vec4 out_Color;
 void main(void) {
 
 // Compute light direction and view direction
-	vec3 lightDir = normalize(ex_lightDirection);
+	vec3 lightDir = normalize(lightDirection);
 
 // Diffuse light
-   float dot_product = max(dot(normalize(ex_worldNormal), ex_lightDirection), 0.0);
+   float dot_product = max(dot(normalize(worldNormal), lightDirection), 0.0);
    vec4 diffuse = dot_product * vec4(lightColor, 1.0);
 
-	vec3 halfwayVec = normalize(ex_viewDirection + ex_lightDirection);
+   vec3 halfwayVec = normalize(viewDirection + lightDirection);
 
-   vec3 reflectDir = normalize(reflect(-ex_lightDirection, normalize(ex_worldNormal)));
+   vec3 reflectDir = normalize(reflect(-lightDirection, normalize(worldNormal)));
 // Specular light
-   float spec = pow(max(dot(ex_worldNormal, halfwayVec), 0.0), shininess);
+   float spec = pow(max(dot(worldNormal, halfwayVec), 0.0), shininess);
    vec4 specular = vec4(lightColor, 1.0) * spec;
+
+
+   if (dot(normalize(worldNormal), lightDirection) < 0.0)
+   {
+        specular = vec4(0.0, 0.0, 0.0, 0.0);
+   }
+   
 
    out_Color = ambientLight + (diffuse * objectColor) + specular;
 };

@@ -8,16 +8,15 @@
 class Model
 {
 public:
-	Model();
+	Model(const std::vector<float>& vertices);
 	~Model();
-	void init_model(const std::vector<float>& model);
 	void draw_model();
 
 private:
-	 GLuint VBO;
-	 GLuint VAO;
-	 
-	 std::vector<float> model;
+	 GLuint VBO, VAO;
+	 GLsizei numVertices;
+
+	 void init_model(const std::vector<float>& verticies);
 };
 
 

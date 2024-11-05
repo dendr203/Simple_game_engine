@@ -1,10 +1,10 @@
 #include "TransformationComposite.h"
 
-void TransformationComposite::apply(glm::mat4& matrix)
+void TransformationComposite::transform(glm::mat4& matrix)
 {
     for (auto& transformation : this->childs)
     {
-        transformation->apply(matrix);
+        transformation->transform(matrix);
     }
 }
 

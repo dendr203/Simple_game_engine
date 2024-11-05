@@ -14,6 +14,7 @@ public:
 	void CreateForestScene(int numTrees, int numBushes);
 	void CreateLightTestScene();
 	void CreateFourShaderLightsScene();
+	void CreateMultipleLightsScene();
 
 	void DrawScene();
 	void ClearScene();

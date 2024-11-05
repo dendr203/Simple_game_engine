@@ -97,7 +97,7 @@ void Camera::updateAspectRatio(float _aspectRatio)
 
 void Camera::updateProjectionMatrix()
 {
-	projectionMatrix = glm::perspective(fov, aspectRatio, 0.1f, 100.0f);
+	projectionMatrix = glm::perspective(glm::radians(fov), aspectRatio, 0.1f, 100.0f);
 	updateObserversProjection();
 }
 
@@ -134,7 +134,15 @@ void Camera::notifyObservers() {
 	for (Observer* obs : observers)
 	{
 		ShaderProgram* shaderProgram = dynamic_cast<ShaderProgram*>(obs);
-		shaderProgram->updateFromSubject();
+		if (shaderProgram)
+		{
+			shaderProgram->updateFromSubject();
+		}
+		else
+		{
+			printf("ShaderProgram not found!!!\n");
+		}
+		
 	}
 }	
 
