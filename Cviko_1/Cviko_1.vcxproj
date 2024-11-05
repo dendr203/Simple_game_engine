@@ -144,7 +144,6 @@
     <ClCompile Include="ShaderLoader.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
     <ClCompile Include="Source.cpp" />
-    <ClCompile Include="Transformation.cpp" />
     <ClCompile Include="TransformationComposite.cpp" />
     <ClCompile Include="Translation.cpp" />
     <ClCompile Include="Window.cpp" />
@@ -169,7 +168,6 @@
     <ClInclude Include="ShaderLoader.h" />
     <ClInclude Include="ShaderProgram.h" />
     <ClInclude Include="Subject.h" />
-    <ClInclude Include="Transformation.h" />
     <ClInclude Include="TransformationComponent.h" />
     <ClInclude Include="TransformationComposite.h" />
     <ClInclude Include="Translation.h" />

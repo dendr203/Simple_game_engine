@@ -27,10 +27,7 @@ void main(void) {
    vec4 specular = vec4(lightColor, 1.0) * spec;
 
 
-   if (dot(normalize(worldNormal), lightDirection) < 0.0)
-   {
-        specular = vec4(0.0, 0.0, 0.0, 0.0);
-   }
+
    
 
    out_Color = ambientLight + (diffuse * objectColor) + specular;
