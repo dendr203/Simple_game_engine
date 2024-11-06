@@ -4,7 +4,7 @@
 
 class Scaling : public TransformationComponent {
 public:
-    Scaling(float x, float y, float z);
+    Scaling(glm::vec3 _scaleVector);
 
     void transform(glm::mat4& modelMatrix) override;
 

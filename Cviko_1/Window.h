@@ -25,10 +25,13 @@ public:
 	float getAspect_ratio();
 	
 	static std::unordered_map<int, bool> keyStates;
-	static float lastX, lastY;
 	static float out_x, out_y;
-	static int width, height;
-	static float ratio;
+
+	float lastX;
+	float lastY;
+
+	int width, height;
+	float ratio;
 
 	bool shouldClose();
 	void poolEvents();

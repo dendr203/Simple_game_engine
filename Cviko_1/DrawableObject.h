@@ -10,6 +10,7 @@
 #include "Translation.h"
 #include "Rotation.h"
 #include "Scaling.h"
+#include "DynamicRotation.h"
 
 
 #include <vector>
@@ -34,13 +35,15 @@ public:
 
 
 	void init_shader(ShaderProgram* shaderprogram);
+	void updateTime(float deltaTime);
 	void Draw();
 
 	
 	//this will be done differently in future
-	void addScale(float x, float y, float z);
-	void addTranslation(float x, float y, float z);
-	void addRotation(float angle, float x, float y, float z);
+	void addScale(glm::vec3 scaleVector);
+	void addTranslation(glm::vec3 translateVector);
+	void addRotation(float angle, glm::vec3 axis);
+	void addDynamicRotation(float speed, glm::vec3 axis);
 	void clearTransformations();
 
 
@@ -56,5 +59,7 @@ private:
 	TransformationComposite* transformationComposite;
 
 	glm::vec4 color;
+
+	DynamicRotation* dynamicRotation;
 };
 

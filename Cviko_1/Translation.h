@@ -4,7 +4,7 @@
 
 class Translation : public TransformationComponent {
 public:
-    Translation(float x, float y, float z);
+    Translation(glm::vec3 _translationVector);
 
     void transform(glm::mat4& modelMatrix) override;
 

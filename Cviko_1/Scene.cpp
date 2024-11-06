@@ -36,8 +36,8 @@ void Scene::CreateForestScene(int numTrees, int numBushes) {
 	DrawableObject* light_sphere = new DrawableObject(camera);
 	light_sphere->init_model(sphere_model);
 	light_sphere->init_shader(shaderProgram_light);
-	light_sphere->addTranslation(light->getPosition().x, light->getPosition().y, light->getPosition().z);
-	light_sphere->addScale(0.5f, 0.5f, 0.5f);
+	light_sphere->addTranslation(glm::vec3(light->getPosition().x, light->getPosition().y, light->getPosition().z));
+	light_sphere->addScale(glm::vec3(0.5f, 0.5f, 0.5f));
 	light_sphere->setColor(glm::vec4(light->getColor().x, light->getColor().y, light->getColor().z, 1.0f));
 	objects.push_back(light_sphere);
 
@@ -60,7 +60,7 @@ void Scene::CreateForestScene(int numTrees, int numBushes) {
 	DrawableObject* plain = new DrawableObject(camera);
 	plain->init_model(plain_model);
 	plain->init_shader(shaderProgram);
-	plain->addScale(500, 500, 500);
+	plain->addScale(glm::vec3(500, 500, 500));
 	plain->setColor(glm::vec4(0.659f, 0.408f, 0.165f, 1.0f));
 	objects.push_back(plain);
 
@@ -76,6 +76,14 @@ void Scene::CreateForestScene(int numTrees, int numBushes) {
 	models.push_back(bush_model);
 
 
+	DrawableObject* tree_rotate = new DrawableObject(camera);
+	tree_rotate->init_model(tree_model);
+	tree_rotate->init_shader(shaderProgram);
+	tree_rotate->addTranslation(glm::vec3(5.f, 3.f, 0.f));
+	tree_rotate->addScale(glm::vec3(0.5, 0.5f, 0.5f));
+	tree_rotate->setColor(glm::vec4(1.0f, 1.f, 1.f, 1.0f));
+	tree_rotate->addDynamicRotation(45.f, glm::vec3(0.f, 0.f, 1.f));
+	objects.push_back(tree_rotate);
 
 
 
@@ -83,7 +91,7 @@ void Scene::CreateForestScene(int numTrees, int numBushes) {
 		DrawableObject* tree = new DrawableObject(camera);
 		tree->init_model(tree_model);
 		tree->init_shader(shaderProgram);
-		RandomTransform(tree, i, 100.f);
+		RandomTransform(tree, 100.f);
 		tree->setColor(glm::vec4(1.0f, 0.f, 0.f, 1.0f));
 		objects.push_back(tree);
 	}
@@ -92,7 +100,7 @@ void Scene::CreateForestScene(int numTrees, int numBushes) {
 		DrawableObject* bush = new DrawableObject(camera);
 		bush->init_model(bush_model);
 		bush->init_shader(shaderProgram);
-		RandomTransform(bush, i, 30.f);
+		RandomTransform(bush, 30.f);
 		bush->setColor(glm::vec4(0.0f, 1.f, 0.f, 1.0f));
 		objects.push_back(bush);
 	}
@@ -100,21 +108,21 @@ void Scene::CreateForestScene(int numTrees, int numBushes) {
 	
 }
 
-void Scene::RandomTransform(DrawableObject* object, int i, float scale_base) {
+void Scene::RandomTransform(DrawableObject* object, float scale_base) {
 
-	float z = static_cast<float>(rand() % 100 - 50) / 10.0f;
 
-	float x_my = (rand() % 100 - 50) / 10.0f;
-	object->addTranslation(x_my, 0, z);
+	float x = (rand() % 500 - 250) / 10.0f;
+	float z = static_cast<float>(rand() % 500 - 250) / 10.0f;
+	object->addTranslation(glm::vec3(x, 0, z));
 
 	// Random rotation
 	float random_rotate = rand() % 360;
-	object->addRotation(random_rotate, 0.f, 1.f, 0.f);
+	object->addRotation(random_rotate, glm::vec3(0.f, 1.f, 0.f));
 
 
 	// Random scale
 	float scale = static_cast<float>(rand() % 30 + 1) / scale_base;
-	object->addScale(scale, scale, scale);
+	object->addScale(glm::vec3(scale, scale, scale));
 }
 
 
@@ -123,7 +131,7 @@ void Scene::CreateLightTestScene()
 	camera->setCamera(glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f),
 		0.01f, 60.0, -89.9f, -89.9f, 0.05f);
 
-	Light* light = new Light(glm::vec3(0.0f, 0.1f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec4(0.1f, 0.1f, 0.1f, 0.1f), 32);
+	Light* light = new Light(glm::vec3(0.0f, 0.1f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec4(0.1f, 0.1f, 0.1f, 0.1f), 1);
 	lights.push_back(light);
 
 	Light* light_2 = new Light(glm::vec3(-2.f, 0.f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec4(0.1f, 0.1f, 0.1f, 0.1f), 32);
@@ -147,8 +155,8 @@ void Scene::CreateLightTestScene()
 	DrawableObject* light_sphere_1 = new DrawableObject(camera);
 	light_sphere_1->init_model(sphere_model);
 	light_sphere_1->init_shader(shaderProgram_light);
-	light_sphere_1->addTranslation(light->getPosition().x, light->getPosition().y, light->getPosition().z);
-	light_sphere_1->addScale(0.01f, 0.01f, 0.01f);
+	light_sphere_1->addTranslation(glm::vec3(light->getPosition().x, light->getPosition().y, light->getPosition().z));
+	light_sphere_1->addScale(glm::vec3(0.01f, 0.01f, 0.01f));
 	light_sphere_1->setColor(glm::vec4(light->getColor().x, light->getColor().y, light->getColor().z, 1.0f));
 	objects.push_back(light_sphere_1);
 
@@ -156,10 +164,10 @@ void Scene::CreateLightTestScene()
 	DrawableObject* light_sphere_2 = new DrawableObject(camera);
 	light_sphere_2->init_model(sphere_model);
 	light_sphere_2->init_shader(shaderProgram_light);
-	light_sphere_2->addTranslation(light_2->getPosition().x, light_2->getPosition().y, light_2->getPosition().z);
-	light_sphere_2->addScale(0.01f, 0.01f, 0.01f);
+	light_sphere_2->addTranslation(glm::vec3(light_2->getPosition().x, light_2->getPosition().y, light_2->getPosition().z));
+	light_sphere_2->addScale(glm::vec3(0.01f, 0.01f, 0.01f));
 	light_sphere_2->setColor(glm::vec4(light_2->getColor().x, light_2->getColor().y, light_2->getColor().z, 1.0f));
-	objects.push_back(light_sphere_2);
+	//objects.push_back(light_sphere_2);
 
 
 
@@ -167,7 +175,7 @@ void Scene::CreateLightTestScene()
 	//spheres
 	ShaderProgram* shaderProgram = new ShaderProgram(camera);
 	shaderProgram->addLight(light);
-	shaderProgram->addLight(light_2);
+	//shaderProgram->addLight(light_2);
 	shaderProgram->init_shader("Shaders/blin_phong_vertex.glsl", "Shaders/blin_phong_fragment.glsl");
 	camera->addObserver(shaderProgram);
 	light->addObserver(shaderProgram);
@@ -177,32 +185,32 @@ void Scene::CreateLightTestScene()
 	DrawableObject* sphere_1 = new DrawableObject(camera);
 	sphere_1->init_model(sphere_model);
 	sphere_1->init_shader(shaderProgram);
-	sphere_1->addTranslation(-0.3f, 0.f, 0.f);
-	sphere_1->addScale(0.1f, 0.1f, 0.1f);
+	sphere_1->addTranslation(glm::vec3(-0.3f, 0.f, 0.f));
+	sphere_1->addScale(glm::vec3(0.1f, 0.1f, 0.1f));
 	sphere_1->setColor(glm::vec4(0.385, 0.647, 0.812, 1.0));
 	objects.push_back(sphere_1);
 
 	DrawableObject* sphere_2 = new DrawableObject(camera);
 	sphere_2->init_model(sphere_model);
 	sphere_2->init_shader(shaderProgram);
-	sphere_2->addTranslation(0.3f, 0.f, 0.f);
-	sphere_2->addScale(0.1f, 0.1f, 0.1f);
+	sphere_2->addTranslation(glm::vec3(0.3f, 0.f, 0.f));
+	sphere_2->addScale(glm::vec3(0.1f, 0.1f, 0.1f));
 	sphere_2->setColor(glm::vec4(0.385, 0.647, 0.812, 1.0));
 	objects.push_back(sphere_2);
 
 	DrawableObject* sphere_3 = new DrawableObject(camera);
 	sphere_3->init_model(sphere_model);
 	sphere_3->init_shader(shaderProgram);
-	sphere_3->addTranslation(0.f, 0.f, -0.3f);
-	sphere_3->addScale(0.1f, 0.1f, 0.1f);
+	sphere_3->addTranslation(glm::vec3(0.f, 0.f, -0.3f));
+	sphere_3->addScale(glm::vec3(0.1f, 0.1f, 0.1f));
 	sphere_3->setColor(glm::vec4(0.385, 0.647, 0.812, 1.0));
 	objects.push_back(sphere_3);
 
 	DrawableObject* sphere_4 = new DrawableObject(camera);
 	sphere_4->init_model(sphere_model);
 	sphere_4->init_shader(shaderProgram);
-	sphere_4->addTranslation(0.f, 0.f, 0.3f);
-	sphere_4->addScale(0.1f, 0.1f, 0.1f);
+	sphere_4->addTranslation(glm::vec3(0.f, 0.f, 0.3f));
+	sphere_4->addScale(glm::vec3(0.1f, 0.1f, 0.1f));
 	sphere_4->setColor(glm::vec4(0.385, 0.647, 0.812, 1.0));
 	objects.push_back(sphere_4);
 
@@ -235,8 +243,8 @@ void Scene::CreateFourShaderLightsScene()
 	DrawableObject* light_sphere_1 = new DrawableObject(camera);
 	light_sphere_1->init_model(sphere_model);
 	light_sphere_1->init_shader(shaderProgram_light);
-	light_sphere_1->addTranslation(light->getPosition().x, light->getPosition().y, light->getPosition().z);
-	light_sphere_1->addScale(0.01f, 0.01f, 0.01f);
+	light_sphere_1->addTranslation(glm::vec3(light->getPosition().x, light->getPosition().y, light->getPosition().z));
+	light_sphere_1->addScale(glm::vec3(0.01f, 0.01f, 0.01f));
 	light_sphere_1->setColor(glm::vec4(light->getColor().x, light->getColor().y, light->getColor().z, 1.0f));
 	objects.push_back(light_sphere_1);
 
@@ -257,8 +265,8 @@ void Scene::CreateFourShaderLightsScene()
 	DrawableObject* bush_object = new DrawableObject(camera);
 	bush_object->init_model(bushes_model);
 	bush_object->init_shader(shaderProgram_bush);
-	bush_object->addTranslation(-0.4f, -0.1f, 0.f);
-	bush_object->addScale(0.3f, 0.3f, 0.3f);
+	bush_object->addTranslation(glm::vec3(-0.4f, -0.1f, 0.f));
+	bush_object->addScale(glm::vec3(0.3f, 0.3f, 0.3f));
 	bush_object->setColor(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
 	objects.push_back(bush_object);
 	
@@ -279,8 +287,8 @@ void Scene::CreateFourShaderLightsScene()
 	DrawableObject* suzi_object = new DrawableObject(camera);
 	suzi_object->init_model(suzi_smooth_model);
 	suzi_object->init_shader(shaderProgram_suzi);
-	suzi_object->addTranslation(-0.13f, 0.f, 0.f);
-	suzi_object->addScale(0.1f, 0.1f, 0.1f);
+	suzi_object->addTranslation(glm::vec3(-0.13f, 0.f, 0.f));
+	suzi_object->addScale(glm::vec3(0.1f, 0.1f, 0.1f));
 	suzi_object->setColor(glm::vec4(0.631f, 0.412f, 0.106f, 1.0f));
 	objects.push_back(suzi_object);
 	
@@ -301,8 +309,8 @@ void Scene::CreateFourShaderLightsScene()
 	DrawableObject* gift_object = new DrawableObject(camera);
 	gift_object->init_model(gift_model);
 	gift_object->init_shader(shaderProgram_gift);
-	gift_object->addTranslation(0.13f, -0.1f, 0.f);
-	gift_object->addScale(0.4f, 0.4f, 0.4f);
+	gift_object->addTranslation(glm::vec3(0.13f, -0.1f, 0.f));
+	gift_object->addScale(glm::vec3(0.4f, 0.4f, 0.4f));
 	gift_object->setColor(glm::vec4(1.f, 0.f, 0.f, 1.0f));
 	objects.push_back(gift_object);
 	
@@ -321,8 +329,8 @@ void Scene::CreateFourShaderLightsScene()
 	DrawableObject* sphere_object = new DrawableObject(camera);
 	sphere_object->init_model(sphere_model);
 	sphere_object->init_shader(shaderProgram_sphere);
-	sphere_object->addTranslation(0.4f, 0.f, 0.f);
-	sphere_object->addScale(0.1f, 0.1f, 0.1f);
+	sphere_object->addTranslation(glm::vec3(0.4f, 0.f, 0.f));
+	sphere_object->addScale(glm::vec3(0.1f, 0.1f, 0.1f));
 	sphere_object->setColor(glm::vec4(0.385, 0.647, 0.812, 1.0));
 	objects.push_back(sphere_object);
 
@@ -354,16 +362,16 @@ void Scene::CreateMultipleLightsScene()
 	DrawableObject* light_sphere_red = new DrawableObject(camera);
 	light_sphere_red->init_model(sphere_model);
 	light_sphere_red->init_shader(shaderProgram_light);
-	light_sphere_red->addTranslation(light_red->getPosition().x, light_red->getPosition().y, light_red->getPosition().z);
-	light_sphere_red->addScale(0.1f, 0.1f, 0.1f);
+	light_sphere_red->addTranslation(glm::vec3(light_red->getPosition().x, light_red->getPosition().y, light_red->getPosition().z));
+	light_sphere_red->addScale(glm::vec3(0.1f, 0.1f, 0.1f));
 	light_sphere_red->setColor(glm::vec4(light_red->getColor().x, light_red->getColor().y, light_red->getColor().z, 1.0f));
 	objects.push_back(light_sphere_red);
 
 	DrawableObject* light_sphere_white = new DrawableObject(camera);
 	light_sphere_white->init_model(sphere_model);
 	light_sphere_white->init_shader(shaderProgram_light);
-	light_sphere_white->addTranslation(light_white->getPosition().x, light_white->getPosition().y, light_white->getPosition().z);
-	light_sphere_white->addScale(0.1f, 0.1f, 0.1f);
+	light_sphere_white->addTranslation(glm::vec3(light_white->getPosition().x, light_white->getPosition().y, light_white->getPosition().z));
+	light_sphere_white->addScale(glm::vec3(0.1f, 0.1f, 0.1f));
 	light_sphere_white->setColor(glm::vec4(light_white->getColor().x, light_white->getColor().y, light_white->getColor().z, 1.0f));
 	objects.push_back(light_sphere_white);
 
@@ -381,8 +389,8 @@ void Scene::CreateMultipleLightsScene()
 	DrawableObject* light_red_sphere = new DrawableObject(camera);
 	light_red_sphere->init_model(sphere_model);
 	light_red_sphere->init_shader(shaderProgram_sphere);
-	light_red_sphere->addTranslation(0.f, 0.f, 0.f);
-	light_red_sphere->addScale(0.3f, 0.3f, 0.3f);
+	light_red_sphere->addTranslation(glm::vec3(0.f, 0.f, 0.f));
+	light_red_sphere->addScale(glm::vec3(0.3f, 0.3f, 0.3f));
 	light_red_sphere->setColor(glm::vec4(0.385, 0.647, 0.812, 1.0));
 	objects.push_back(light_red_sphere);
 
@@ -393,11 +401,12 @@ void Scene::CreateMultipleLightsScene()
 
 
 
-void Scene::DrawScene() {
+void Scene::DrawScene(float deltaTime) {
 
-	for (int i = 0; i < objects.size(); i++)
+	for (DrawableObject* object : objects)
 	{
-		objects[i]->Draw();
+		object->updateTime(deltaTime);
+		object->Draw();
 	}
 }
 
@@ -416,6 +425,7 @@ void Scene::ClearScene() {
 	
 
 	for (DrawableObject* obj : objects) {
+		obj->clearTransformations();
 		delete obj;
 	}
 	objects.clear();
@@ -430,7 +440,7 @@ void Scene::SwitchScene(int sceneId) {
 	ClearScene();
 
 	if (sceneId == 1) {
-		CreateForestScene(50, 100);
+		CreateForestScene(500, 1000);
 	}
 	else if (sceneId == 2) {
 		CreateLightTestScene();

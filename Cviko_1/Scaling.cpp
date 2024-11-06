@@ -1,6 +1,6 @@
 #include "Scaling.h"
 
-Scaling::Scaling(float x, float y, float z) : scaleVector(x, y, z) {}
+Scaling::Scaling(glm::vec3 _scaleVector) : scaleVector(_scaleVector) {}
 
 void Scaling::transform(glm::mat4& modelMatrix)
 {

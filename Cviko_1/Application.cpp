@@ -33,16 +33,25 @@ void Application::createModels()
 	scene->CreateMultipleLightsScene();
 }
 
+
 void Application::run()
 {	
+	auto previousTime = std::chrono::high_resolution_clock::now();
+
 	glEnable(GL_DEPTH_TEST);//Do depth comparisons and update the depth buffer.
 	while (!window->shouldClose()) {
+
+		auto currentTime = std::chrono::high_resolution_clock::now();
+		float deltaTime = std::chrono::duration<float>(currentTime - previousTime).count();
+		previousTime = currentTime;
+
+
 		// clear color and depth buffer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		window->poolEvents();
 
 		HandleInput();
-		scene->DrawScene();
+		scene->DrawScene(deltaTime);
 		
 		window->swapBuffers();
 	}

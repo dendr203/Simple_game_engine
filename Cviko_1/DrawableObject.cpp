@@ -1,6 +1,6 @@
 #include "DrawableObject.h"
 
-DrawableObject::DrawableObject(Camera* _camera) : shaderProgram(nullptr), model(nullptr), color(0)
+DrawableObject::DrawableObject(Camera* _camera) : shaderProgram(nullptr), model(nullptr), color(0), dynamicRotation(nullptr)
 {
 	transformationComposite = new TransformationComposite();
 }
@@ -19,8 +19,16 @@ void DrawableObject::init_model(Model* model)
 void DrawableObject::init_shader(ShaderProgram* shaderprogram)
 {
 	shaderProgram = shaderprogram;
+	shaderProgram->setLights();
 }
 
+void DrawableObject::updateTime(float deltaTime)
+{
+	if (dynamicRotation)
+	{
+		dynamicRotation->update(deltaTime);
+	}
+}
 
 void DrawableObject::Draw()
 {
@@ -29,32 +37,36 @@ void DrawableObject::Draw()
 	shaderProgram->setObjectColor(color);
 	
 	shaderProgram->use_shader();
-	shaderProgram->setLights();
 	
 	model->draw_model();
 }
 
 
-void DrawableObject::addScale(float x, float y, float z)
+void DrawableObject::addScale(glm::vec3 scaleVector)
 {
-	transformationComposite->AddTransformation(new Scaling(x, y, z));
+	transformationComposite->AddTransformation(new Scaling(scaleVector));
 }
 
-void DrawableObject::addTranslation(float x, float y, float z)
+void DrawableObject::addTranslation(glm::vec3 translateVector)
 {
-	transformationComposite->AddTransformation(new Translation(x, y, z));
+	transformationComposite->AddTransformation(new Translation(translateVector));
 }
 
-void DrawableObject::addRotation(float angle, float x, float y, float z)
+void DrawableObject::addRotation(float angle, glm::vec3 axis)
 {
-	transformationComposite->AddTransformation(new Rotation(angle, glm::vec3(x, y, z)));
+	transformationComposite->AddTransformation(new Rotation(angle, axis));
+}
+
+void DrawableObject::addDynamicRotation(float speed, glm::vec3 axis)
+{
+	dynamicRotation = new DynamicRotation(speed, axis);
+	transformationComposite->AddTransformation(dynamicRotation);
 }
 
 void DrawableObject::clearTransformations()
 {
 	transformationComposite->clearTransformations();
 }
-
 
 glm::mat4 DrawableObject::getModelMatrix() 
 {

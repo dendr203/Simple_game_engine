@@ -58,17 +58,64 @@ void ShaderProgram::setLights()
 		if (numberOfLightsLoc != -1) {
 
 			setUniformLocation("cameraPosition", camera->getCameraPosition());
-			glUniform1i(numberOfLightsLoc, lights.size());
+			glProgramUniform1i(shaderProgramID, numberOfLightsLoc, lights.size());
+
 
 			std::string positionName = "lights[" + std::to_string(counter) + "].position";
-			std::string l_colorName = "lights[" + std::to_string(counter) + "].lightC";
-			std::string ambientName = "lights[" + std::to_string(counter) + "].ambient";
-			std::string shininessName = "lights[" + std::to_string(counter) + "].shininess";
+			GLint lightPositionLocation = getLocation(positionName.c_str());
+			if (lightPositionLocation != -1)
+			{
+				setUniformLocation(positionName.c_str(), light->getPosition());
+			}
 
-			setUniformLocation(positionName.c_str(), light->getPosition());
-			setUniformLocation(l_colorName.c_str(), light->getColor());
-			setUniformLocation(ambientName.c_str(), light->getAmbient());
-			setUniformLocation(shininessName.c_str(), light->getShinines());
+
+			std::string l_colorName = "lights[" + std::to_string(counter) + "].lightC";
+			GLint lightColorLocation = getLocation(l_colorName.c_str());
+			if (lightColorLocation != -1)
+			{
+				setUniformLocation(l_colorName.c_str(), light->getColor());
+			}
+
+
+			std::string ambientName = "lights[" + std::to_string(counter) + "].ambient";
+			GLint lightAmbientLocation = getLocation(ambientName.c_str());
+			if (lightAmbientLocation != -1)
+			{
+				setUniformLocation(ambientName.c_str(), light->getAmbient());
+			}
+
+
+			std::string shininessName = "lights[" + std::to_string(counter) + "].shininess";
+			GLint lightShininessLocation = getLocation(shininessName.c_str());
+			if (lightShininessLocation != -1)
+			{
+				setUniformLocation(shininessName.c_str(), light->getShinines());
+			}
+
+
+			std::string constantName = "lights[" + std::to_string(counter) + "].constant";
+			GLint lightConstantLocation = getLocation(constantName.c_str());
+			if (lightConstantLocation != -1)
+			{
+				setUniformLocation(constantName.c_str(), 1.0f);
+			}
+
+
+			std::string linearName = "lights[" + std::to_string(counter) + "].linear";
+			GLint lightLinearLocation = getLocation(linearName.c_str());
+			if (lightLinearLocation != -1)
+			{
+				setUniformLocation(linearName.c_str(), 0.09f);
+			}
+
+
+			std::string quadraticName = "lights[" + std::to_string(counter) + "].quadratic";
+			GLint lightquadraticLocation = getLocation(quadraticName.c_str());
+			if (lightquadraticLocation != -1)
+			{
+				setUniformLocation(quadraticName.c_str(), 0.07f);
+			}
+			
 		}
 		else
 		{
@@ -81,7 +128,7 @@ void ShaderProgram::setLights()
 			GLint lightColorLocation = getLocation("lightColor");
 			if (lightColorLocation != -1)
 			{
-				setLightColor(light);
+				setLightColor(light); //maybe not now every time
 			}
 
 			GLint ambientLightLocation = getLocation("ambientLight");
@@ -190,6 +237,7 @@ void ShaderProgram::setShinines(Light* light)
 
 void ShaderProgram::updateFromSubject() {
 	setViewMatrix();
+	setLights();
 }
 
 

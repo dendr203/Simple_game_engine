@@ -7,17 +7,14 @@
 #include <stdio.h>
 
 
-float Window::lastX = 0;
-float Window::lastY = 0; 
-int Window::width = 0;
-int Window::height = 0;
-float Window::ratio = 0;
 
 
-Window::Window(int witdth, int height)
+
+Window::Window(int width, int height) : ratio(0), width(0), height(0), lastX(0), lastY(0), camera(nullptr)
 {
-	lastX = static_cast<float>(witdth) / 2;
-	lastY = static_cast<float>(height) / 2;
+	lastX = (float) width / 2;
+	lastY = (float) height / 2;
+	
 
 
 	glfwSetErrorCallback(error_callback);
@@ -33,7 +30,7 @@ Window::Window(int witdth, int height)
 	glfwWindowHint(GLFW_OPENGL_PROFILE,
 	GLFW_OPENGL_CORE_PROFILE);  //*/
 
-	window = glfwCreateWindow(witdth, height, "ZPG", NULL, NULL);
+	window = glfwCreateWindow(width, height, "ZPG", NULL, NULL);
 	if (!window) {
 		glfwTerminate();
 		exit(EXIT_FAILURE);
@@ -149,7 +146,7 @@ void Window::window_size_callback(GLFWwindow* window, int _width, int _height)
 		instance->width = _width;
 		instance->height = _height;
 
-		instance->ratio = static_cast<float>(width) / static_cast<float>(height);
+		instance->ratio = (float) instance->width / (float)instance->height;
 
 		//printf("resize %d, %d \n", _width, _height);
 		glViewport(0, 0, instance->width, instance->height);
@@ -174,18 +171,23 @@ float Window::out_x, Window::out_y;
 
 void Window::cursor_callback(GLFWwindow* window, float x, float y) 
 { 
-	if (firstMouse)
+	Window* instance = static_cast<Window*>(glfwGetWindowUserPointer(window));
+
+	if (instance)
 	{
-		lastX = x;
-		lastY = y;
-		firstMouse = false;
+		if (firstMouse)
+		{
+			instance->lastX = x;
+			instance->lastY = y;
+			firstMouse = false;
+		}
+
+		out_x = x - instance->lastX;
+		out_y = instance->lastY - y;
+
+		instance->lastX = x;
+		instance->lastY = y;
 	}
-
-	out_x = x - lastX;
-	out_y = lastY - y; 
-
-	lastX = x;
-	lastY = y;
 
 	//printf("cursor_callback \n"); 
 }

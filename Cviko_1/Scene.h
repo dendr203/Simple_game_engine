@@ -15,14 +15,14 @@ public:
 	void CreateFourShaderLightsScene();
 	void CreateMultipleLightsScene();
 
-	void DrawScene();
+	void DrawScene(float deltaTime);
 	void ClearScene();
 	void SwitchScene(int sceneId);
 
 
 private:
 	std::vector<DrawableObject*> objects;
-	void RandomTransform(DrawableObject* object, int i, float scale_base);
+	void RandomTransform(DrawableObject* object, float scale_base);
 	Camera* camera;
 
 	

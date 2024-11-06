@@ -5,6 +5,10 @@ struct Light {
     vec3 lightC; // Light color
     vec4 ambient; // Ambient light
     float shininess;
+
+    float constant;
+    float linear;
+    float quadratic;
 };
 
 uniform Light lights[2];
@@ -27,10 +31,13 @@ void main(void) {
 //      Compute light direction
 	    vec3 lightDir = normalize(lights[i].position - fragPosition);
 
-//      Diffuse light
-        float diff = max(dot(normal, lightDir), 0.0);
-        vec4 diffuse = diff * vec4(lights[i].lightC, 1.0); //* objectColor;
+//      Compute attenuation
+        float distance = length(lights[i].position - fragPosition);
+        float attenuation = 1.0 / (lights[i].constant + lights[i].linear * distance + lights[i].quadratic * (distance * distance));
 
+//      Diffuse light
+        float diff = max(dot(lightDir, normal), 0.0);
+        vec4 diffuse = diff * vec4(lights[i].lightC, 1.0); //* objectColor;
 
 
 //      Specular light
@@ -38,13 +45,18 @@ void main(void) {
         vec3 reflectDir = reflect(-lightDir, normal);
 
 
-        float spec = 0.0;
-        if (diff > 0.0) { 
+        float spec;
+        if (diff == 0.0)
+        {
+			spec = 0.0;
+		}
+		else
+        { 
             spec = pow(max(dot(viewDirection, reflectDir), 0.0), lights[i].shininess);
         }
         vec4 specular = vec4(lights[i].lightC, 1.0) * spec;
    
-        finalColor += lights[i].ambient + (diffuse * objectColor) + specular;
+        finalColor += (lights[i].ambient + (diffuse + specular) * attenuation) * objectColor;
         //finalColor += lights[i].ambient + diffuse + specular;
     }
 
