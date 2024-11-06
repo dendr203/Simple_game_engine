@@ -19,10 +19,6 @@ void DrawableObject::init_model(Model* model)
 void DrawableObject::init_shader(ShaderProgram* shaderprogram)
 {
 	shaderProgram = shaderprogram;
-	shaderProgram->setLightPosition();
-	shaderProgram->setLightColor();
-	shaderProgram->setAmbient();
-	shaderProgram->setShinines();
 }
 
 
@@ -33,6 +29,8 @@ void DrawableObject::Draw()
 	shaderProgram->setObjectColor(color);
 	
 	shaderProgram->use_shader();
+	shaderProgram->setLights();
+	
 	model->draw_model();
 }
 

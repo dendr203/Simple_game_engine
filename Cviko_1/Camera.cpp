@@ -1,7 +1,7 @@
 #include "Camera.h"
 
 Camera::Camera(float _aspectRatio) : position(), front(), up(), movementSpeed(0.0f),
-	fov(0.0f), yaw(0.0f), pitch(0.0f), sensitivity(0.0f), aspectRatio(_aspectRatio), viewMatrix(), projectionMatrix(), right(), worldUp()
+	fov(0.0f), yaw(0.0f), pitch(0.0f), sensitivity(0.0f), aspectRatio(_aspectRatio), viewMatrix(), projectionMatrix(), right()
 {}
 
 
@@ -43,6 +43,11 @@ void Camera::moveLeft()
 void Camera::moveRight()
 {
 	move(glm::normalize(glm::cross(front, up)));
+}
+
+glm::vec3 Camera::getCameraPosition()
+{
+	return position;
 }
 
 glm::mat4 Camera::getViewMatrix(){

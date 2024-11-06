@@ -16,6 +16,7 @@ public:
 
     void updateAspectRatio(float _aspectRatio);
 
+    glm::vec3 getCameraPosition();
     glm::mat4 getViewMatrix();
     glm::mat4 getProjectionMatrix();
 
@@ -39,7 +40,6 @@ private:
     glm::vec3 front;
     glm::vec3 up;
     glm::vec3 right;
-    glm::vec3 worldUp;
 
     float yaw;
     float pitch;

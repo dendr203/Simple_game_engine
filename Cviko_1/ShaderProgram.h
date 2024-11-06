@@ -17,11 +17,13 @@ class Camera;
 class ShaderProgram : public Observer, public ShaderLoader
 {
 public:
-	ShaderProgram(Camera* camera, Light* light);
+	ShaderProgram(Camera* camera);
 	~ShaderProgram();
 
 	void init_shader(const char* vertex_shader_str, const char* fragment_shader_str);
 	void use_shader();
+	void addLight(Light* light);
+	void setLights();
 
 
 	void setUniformLocation(const char* name, const glm::mat4& matrix);
@@ -34,18 +36,19 @@ public:
 	void setProjectionMatrix();
 
 	void setObjectColor(const glm::vec4& obj_color);
-	void setLightPosition();
-	void setLightColor();
-	void setAmbient();
-	void setShinines();
+	void setLightPosition(Light* light);
+	void setLightColor(Light* light);
+	void setAmbient(Light* light);
+	void setShinines(Light* light);
 
 	void updateFromSubject() override;
 	
 
 private:
 	Camera* camera;
-	Light* light;
+	std::vector<Light*> lights;
 
 	GLuint getLocation(const char* name);
+	
 };
 

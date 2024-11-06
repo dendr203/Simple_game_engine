@@ -10,7 +10,6 @@ public:
 	Scene(Camera* _camera);
 	~Scene();
 
-	void CrateScene();
 	void CreateForestScene(int numTrees, int numBushes);
 	void CreateLightTestScene();
 	void CreateFourShaderLightsScene();
@@ -23,7 +22,7 @@ public:
 
 private:
 	std::vector<DrawableObject*> objects;
-	void RandomTransform(DrawableObject* object, int i);
+	void RandomTransform(DrawableObject* object, int i, float scale_base);
 	Camera* camera;
 
 	

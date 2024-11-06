@@ -1,6 +1,6 @@
 #include "ShaderProgram.h"
 
-ShaderProgram::ShaderProgram(Camera* _camera, Light* _light) : camera(_camera), light(_light) {}
+ShaderProgram::ShaderProgram(Camera* _camera) : camera(_camera) {}
 
 ShaderProgram::~ShaderProgram()
 {
@@ -8,10 +8,7 @@ ShaderProgram::~ShaderProgram()
 }
 
 void ShaderProgram::init_shader(const char* vertexFile, const char* fragmentFile)
-{
-	//ShaderLoader* shader_loader = new ShaderLoader(vertexFile, fragmentFile, &shaderProgramID);
-	//delete(shader_loader);
-	
+{	
 	this->shaderProgramID = loadShader(vertexFile, fragmentFile);
 
 	GLint status;
@@ -38,12 +35,69 @@ void ShaderProgram::init_shader(const char* vertexFile, const char* fragmentFile
 }
 
 
-
 void ShaderProgram::use_shader()
 {
 	glUseProgram(shaderProgramID);
 }
 
+
+void ShaderProgram::addLight(Light* light)
+{
+	lights.push_back(light);
+}
+
+void ShaderProgram::setLights()
+{
+
+	int counter = 0;
+	for (Light* light : lights)
+	{
+		// Set number of lights if the uniform exists in the shader
+		GLint numberOfLightsLoc = getLocation("numberOfLights");
+
+		if (numberOfLightsLoc != -1) {
+
+			setUniformLocation("cameraPosition", camera->getCameraPosition());
+			glUniform1i(numberOfLightsLoc, lights.size());
+
+			std::string positionName = "lights[" + std::to_string(counter) + "].position";
+			std::string l_colorName = "lights[" + std::to_string(counter) + "].lightC";
+			std::string ambientName = "lights[" + std::to_string(counter) + "].ambient";
+			std::string shininessName = "lights[" + std::to_string(counter) + "].shininess";
+
+			setUniformLocation(positionName.c_str(), light->getPosition());
+			setUniformLocation(l_colorName.c_str(), light->getColor());
+			setUniformLocation(ambientName.c_str(), light->getAmbient());
+			setUniformLocation(shininessName.c_str(), light->getShinines());
+		}
+		else
+		{
+			GLint lightPositionLocation = getLocation("lightPosition");
+			if (lightPositionLocation != -1)
+			{
+				setLightPosition(light);
+			}
+
+			GLint lightColorLocation = getLocation("lightColor");
+			if (lightColorLocation != -1)
+			{
+				setLightColor(light);
+			}
+
+			GLint ambientLightLocation = getLocation("ambientLight");
+			if (ambientLightLocation != -1)
+			{
+				setAmbient(light);
+			}
+
+			GLint shininessLocation = getLocation("shininess");
+			if (shininessLocation != -1) {
+				setShinines(light);
+			}
+		}
+		counter++;
+	}
+}
 
 
 GLuint ShaderProgram::getLocation(const char* name)
@@ -114,56 +168,28 @@ void ShaderProgram::setObjectColor(const glm::vec4& color)
 	setUniformLocation("objectColor", color);
 }
 
-void ShaderProgram::setLightPosition()
+void ShaderProgram::setLightPosition(Light* light)
 {
 	setUniformLocation("lightPosition", light->getPosition());
 }
 
-void ShaderProgram::setLightColor()
+void ShaderProgram::setLightColor(Light* light)
 {
 	setUniformLocation("lightColor", light->getColor());
 }
 
-void ShaderProgram::setAmbient()
+void ShaderProgram::setAmbient(Light* light)
 {
 	setUniformLocation("ambientLight", light->getAmbient());
 }
 
-void ShaderProgram::setShinines()
+void ShaderProgram::setShinines(Light* light)
 {
 	setUniformLocation("shininess", light->getShinines());
 }
 
 void ShaderProgram::updateFromSubject() {
-	//printf("we were notified from camera\n");
-
-
 	setViewMatrix();
-
-	/*
-	GLint lightPositionLocation = getLocation("lightPosition");
-	if (lightPositionLocation != -1)
-	{
-		setLightPosition();
-	}
-	
-	GLint lightColorLocation = getLocation("lightColor");
-	if (lightColorLocation != -1)
-	{
-		setLightColor();
-	}
-	
-	GLint ambientLightLocation = getLocation("ambientLight");
-	if (ambientLightLocation != -1)
-	{
-		setAmbient();
-	}
-	
-	GLint shininessLocation = getLocation("shininess");
-	if (shininessLocation != -1) {
-		setShinines();
-	}
-	*/
 }
 
 

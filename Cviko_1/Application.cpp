@@ -26,11 +26,11 @@ void Application::initialization()
 
 void Application::createModels()
 {
-	//scene->CrateScene();
 	//scene->CreateForestScene(50, 50);
 	//scene->CreateCameraBaseScene();
 	//scene->CreateConstantTestScene();
-	scene->CreateFourShaderLightsScene();
+	//scene->CreateFourShaderLightsScene();
+	scene->CreateMultipleLightsScene();
 }
 
 void Application::run()
