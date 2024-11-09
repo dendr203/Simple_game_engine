@@ -44,18 +44,19 @@ void main(void) {
         //vec3 halfwayVec = normalize(lightDir + normal);
         vec3 reflectDir = reflect(-lightDir, normal);
 
-
+        
         float spec;
-        if (diff == 0.0)
+        if (diff > 0.0)
         {
-			spec = 0.0;
+			spec = pow(max(dot(viewDirection, reflectDir), 0.0), lights[i].shininess);
 		}
-		else
-        { 
-            spec = pow(max(dot(viewDirection, reflectDir), 0.0), lights[i].shininess);
-        }
+
         vec4 specular = vec4(lights[i].lightC, 1.0) * spec;
-   
+
+        //float spec = pow(max(dot(viewDirection, reflectDir), 0.0), lights[i].shininess);
+        //float specSmooth = smoothstep(0.0, 0.1, spec); // Adjust smoothness threshold
+        //vec4 specular = vec4(lights[i].lightC, 1.0);
+
         finalColor += (lights[i].ambient + (diffuse + specular) * attenuation) * objectColor;
         //finalColor += lights[i].ambient + diffuse + specular;
     }

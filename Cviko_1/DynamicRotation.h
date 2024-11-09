@@ -5,18 +5,18 @@
 
 #include "TransformationComponent.h"
 
-class DynamicRotation : public TransformationComponent {
+class DynamicRotation : public  TransformationComponent{
 public:
     DynamicRotation(float speed, glm::vec3 axis);
 
-    void update(float deltaTime);
+    float update(float deltaTime);
 
-    void transform(glm::mat4& modelMatrix) override;
+    void transform(glm::mat4& modelMatrix, float deltaTime) override;
+
 
 private:
-    float speed;            // Rychlost rotace v stupních za sekundu
-    glm::vec3 axis;         // In which axis we are rotating
-    float currentAngle;     
-
+    float speed;
+    float currentAngle;
+    glm::vec3 axis;
 };
 

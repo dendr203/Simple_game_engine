@@ -35,8 +35,7 @@ public:
 
 
 	void init_shader(ShaderProgram* shaderprogram);
-	void updateTime(float deltaTime);
-	void Draw();
+	void Draw(float deltaTime);
 
 	
 	//this will be done differently in future
@@ -47,7 +46,7 @@ public:
 	void clearTransformations();
 
 
-	glm::mat4 getModelMatrix();
+	glm::mat4 getModelMatrix(float deltaTime);
 
 
 	void setColor(glm::vec4 _color);
@@ -59,7 +58,5 @@ private:
 	TransformationComposite* transformationComposite;
 
 	glm::vec4 color;
-
-	DynamicRotation* dynamicRotation;
 };
 

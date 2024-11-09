@@ -6,9 +6,9 @@ class Rotation : public TransformationComponent {
 public:
     Rotation(float angle, glm::vec3 value);
 
-    void transform(glm::mat4& modelMatrix) override;
+    void transform(glm::mat4& modelMatrix, float deltaTime) override;
 
-private:
+protected:
     float rotationAngle;
     glm::vec3 rotationAxis;
 };

@@ -29,5 +29,7 @@ private:
 	std::vector<Light*> lights;
 	std::vector<ShaderProgram*> shaderPrograms;
 	std::vector<Model*> models;
+
+
 };
 

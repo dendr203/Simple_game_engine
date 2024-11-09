@@ -6,7 +6,7 @@ class Translation : public TransformationComponent {
 public:
     Translation(glm::vec3 _translationVector);
 
-    void transform(glm::mat4& modelMatrix) override;
+    void transform(glm::mat4& modelMatrix, float deltaTime) override;
 
 private:
     glm::vec3 translationVector;

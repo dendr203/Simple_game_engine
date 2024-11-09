@@ -1,11 +1,14 @@
 #include "DrawableObject.h"
 
-DrawableObject::DrawableObject(Camera* _camera) : shaderProgram(nullptr), model(nullptr), color(0), dynamicRotation(nullptr)
+DrawableObject::DrawableObject(Camera* _camera) : shaderProgram(nullptr), model(nullptr), color(0)
 {
 	transformationComposite = new TransformationComposite();
 }
 
-DrawableObject::~DrawableObject() {}
+DrawableObject::~DrawableObject()
+{
+	delete transformationComposite;
+}
 
 
 void DrawableObject::init_model(Model* model)
@@ -22,18 +25,11 @@ void DrawableObject::init_shader(ShaderProgram* shaderprogram)
 	shaderProgram->setLights();
 }
 
-void DrawableObject::updateTime(float deltaTime)
-{
-	if (dynamicRotation)
-	{
-		dynamicRotation->update(deltaTime);
-	}
-}
 
-void DrawableObject::Draw()
+void DrawableObject::Draw(float deltaTime)
 {
 	//zde posílat pozdìji celou transformaci nejlépe
-	shaderProgram->setModelMatrix(getModelMatrix());
+	shaderProgram->setModelMatrix(getModelMatrix(deltaTime));
 	shaderProgram->setObjectColor(color);
 	
 	shaderProgram->use_shader();
@@ -59,8 +55,7 @@ void DrawableObject::addRotation(float angle, glm::vec3 axis)
 
 void DrawableObject::addDynamicRotation(float speed, glm::vec3 axis)
 {
-	dynamicRotation = new DynamicRotation(speed, axis);
-	transformationComposite->AddTransformation(dynamicRotation);
+	transformationComposite->AddTransformation(new DynamicRotation(speed, axis));
 }
 
 void DrawableObject::clearTransformations()
@@ -68,10 +63,10 @@ void DrawableObject::clearTransformations()
 	transformationComposite->clearTransformations();
 }
 
-glm::mat4 DrawableObject::getModelMatrix() 
+glm::mat4 DrawableObject::getModelMatrix(float deltaTime) 
 {
 	glm::mat4 modelMatrix = glm::mat4(1.0f); // Základní jednotková matice
-	transformationComposite->transform(modelMatrix); // Aplikuj transformace na jednotkovou matici
+	transformationComposite->transform(modelMatrix, deltaTime); // Aplikuj transformace na jednotkovou matici
 	return modelMatrix;
 }
 

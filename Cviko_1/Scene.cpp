@@ -94,6 +94,10 @@ void Scene::CreateForestScene(int numTrees, int numBushes) {
 		RandomTransform(tree, 100.f);
 		tree->setColor(glm::vec4(1.0f, 0.f, 0.f, 1.0f));
 		objects.push_back(tree);
+		if (i % 3 == 0)
+		{
+			tree->addDynamicRotation(45.f, glm::vec3(0.f, 1.f, 0.f));
+		}
 	}
 
 	for (int i = 0; i < numBushes; ++i) {
@@ -123,6 +127,8 @@ void Scene::RandomTransform(DrawableObject* object, float scale_base) {
 	// Random scale
 	float scale = static_cast<float>(rand() % 30 + 1) / scale_base;
 	object->addScale(glm::vec3(scale, scale, scale));
+
+
 }
 
 
@@ -167,7 +173,7 @@ void Scene::CreateLightTestScene()
 	light_sphere_2->addTranslation(glm::vec3(light_2->getPosition().x, light_2->getPosition().y, light_2->getPosition().z));
 	light_sphere_2->addScale(glm::vec3(0.01f, 0.01f, 0.01f));
 	light_sphere_2->setColor(glm::vec4(light_2->getColor().x, light_2->getColor().y, light_2->getColor().z, 1.0f));
-	//objects.push_back(light_sphere_2);
+	objects.push_back(light_sphere_2);
 
 
 
@@ -405,8 +411,7 @@ void Scene::DrawScene(float deltaTime) {
 
 	for (DrawableObject* object : objects)
 	{
-		object->updateTime(deltaTime);
-		object->Draw();
+		object->Draw(deltaTime);
 	}
 }
 
