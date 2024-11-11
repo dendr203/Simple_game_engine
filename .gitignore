@@ -8,6 +8,8 @@ Cviko_1/packages/
 #*.vcxproj.filters
 #*.proj
 #*.config
+.exe
+.pdb
 
 
 
