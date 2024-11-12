@@ -18,14 +18,14 @@ Scene::~Scene()
 void Scene::CreateForestScene(int numTrees, int numBushes) {
 	camera->setCamera(glm::vec3(6.f, 5.f, 7.f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.05f,
 		60.0f, -130.f, -30.f, 0.08f);
-	Light* light = new Light(glm::vec3(10.0f, 5.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec4(0.1f, 0.1f, 0.1f, 0.1f), 32);
+	Light* light = new Light(2, glm::vec3(0.0f, 10.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec4(0.1f, 0.1f, 0.1f, 0.1f), 32);
 	lights.push_back(light);
 
 
 	//light
 	ShaderProgram* shaderProgram_light = new ShaderProgram(camera);
 	shaderProgram_light->addLight(light);
-	shaderProgram_light->init_shader("Shaders/constant_vertex.glsl", "Shaders/constant_fragment.glsl");
+	shaderProgram_light->init_shader("Shaders/vertex.glsl", "Shaders/constant_fragment.glsl");
 	camera->addObserver(shaderProgram_light);
 	light->addObserver(shaderProgram_light);
 	shaderPrograms.push_back(shaderProgram_light);
@@ -46,7 +46,7 @@ void Scene::CreateForestScene(int numTrees, int numBushes) {
 
 	ShaderProgram* shaderProgram = new ShaderProgram(camera);
 	shaderProgram->addLight(light);
-	shaderProgram->init_shader("Shaders/blin_phong_vertex.glsl", "Shaders/blin_phong_fragment.glsl");
+	shaderProgram->init_shader("Shaders/vertex.glsl", "Shaders/blin_phong_fragment.glsl");
 	camera->addObserver(shaderProgram);
 	light->addObserver(shaderProgram);
 	shaderPrograms.push_back(shaderProgram);
@@ -135,12 +135,12 @@ void Scene::RandomTransform(DrawableObject* object, float scale_base) {
 void Scene::CreateLightTestScene()
 {
 	camera->setCamera(glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f),
-		0.01f, 60.0, -89.9f, -89.9f, 0.05f);
+		0.05f, 60.0, -89.9f, -89.9f, 0.09f);
 
-	Light* light = new Light(glm::vec3(0.0f, 0.1f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec4(0.1f, 0.1f, 0.1f, 0.1f), 1);
+	Light* light = new Light(0, glm::vec3(0.0f, 0.2f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec4(0.1f, 0.1f, 0.1f, 0.1f), 32);
 	lights.push_back(light);
 
-	Light* light_2 = new Light(glm::vec3(-2.f, 0.f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec4(0.1f, 0.1f, 0.1f, 0.1f), 32);
+	Light* light_2 = new Light(0, glm::vec3(-2.f, 0.f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec4(0.1f, 0.1f, 0.1f, 0.1f), 32);
 	lights.push_back(light_2);
 
 
@@ -151,7 +151,7 @@ void Scene::CreateLightTestScene()
 	ShaderProgram* shaderProgram_light = new ShaderProgram(camera);
 	//shaderProgram_light->addLight(light);
 	//shaderProgram_light->addLight(light_2);
-	shaderProgram_light->init_shader("Shaders/constant_vertex.glsl", "Shaders/constant_fragment.glsl");
+	shaderProgram_light->init_shader("Shaders/vertex.glsl", "Shaders/constant_fragment.glsl");
 	camera->addObserver(shaderProgram_light);
 	//light->addObserver(shaderProgram_light);
 	//light_2->addObserver(shaderProgram_light);
@@ -182,7 +182,7 @@ void Scene::CreateLightTestScene()
 	ShaderProgram* shaderProgram = new ShaderProgram(camera);
 	shaderProgram->addLight(light);
 	//shaderProgram->addLight(light_2);
-	shaderProgram->init_shader("Shaders/blin_phong_vertex.glsl", "Shaders/blin_phong_fragment.glsl");
+	shaderProgram->init_shader("Shaders/vertex.glsl", "Shaders/blin_phong_fragment.glsl");
 	camera->addObserver(shaderProgram);
 	light->addObserver(shaderProgram);
 	shaderPrograms.push_back(shaderProgram);
@@ -227,8 +227,8 @@ void Scene::CreateLightTestScene()
 void Scene::CreateFourShaderLightsScene()
 {
 	camera->setCamera(glm::vec3(-0.4f, 0.1f, 0.6f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f),
-		0.01f, 60.0, -65.0f, -5.f, 0.1f);
-	Light* light = new Light(glm::vec3(-0.4f, 0.1f, 0.6f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec4(0.1f, 0.1f, 0.1f, 0.1f), 40);
+		0.005f, 60.0, -65.0f, -5.f, 0.1f);
+	Light* light = new Light(0, glm::vec3(-0.4f, 0.1f, 0.6f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec4(0.1f, 0.1f, 0.1f, 0.1f), 40);
 	lights.push_back(light);
 	
 	Model* sphere_model = new Model(std::vector<float>(sphere, sphere + sizeof(sphere) / sizeof(sphere[0])));
@@ -240,7 +240,7 @@ void Scene::CreateFourShaderLightsScene()
 	//light
 	ShaderProgram* shaderProgram_light = new ShaderProgram(camera);
 	shaderProgram_light->addLight(light);
-	shaderProgram_light->init_shader("Shaders/constant_vertex.glsl", "Shaders/constant_fragment.glsl");
+	shaderProgram_light->init_shader("Shaders/vertex.glsl", "Shaders/constant_fragment.glsl");
 	camera->addObserver(shaderProgram_light);
 	light->addObserver(shaderProgram_light);
 	shaderPrograms.push_back(shaderProgram_light);
@@ -260,7 +260,7 @@ void Scene::CreateFourShaderLightsScene()
 	//bush
 	ShaderProgram* shaderProgram_bush = new ShaderProgram(camera);
 	shaderProgram_bush->addLight(light);
-	shaderProgram_bush->init_shader("Shaders/lambert_vertex.glsl", "Shaders/lambert_fragment.glsl");
+	shaderProgram_bush->init_shader("Shaders/vertex.glsl", "Shaders/constant_fragment.glsl");
 	camera->addObserver(shaderProgram_bush);
 	light->addObserver(shaderProgram_bush);
 	shaderPrograms.push_back(shaderProgram_bush);
@@ -282,7 +282,7 @@ void Scene::CreateFourShaderLightsScene()
 	//suzi
 	ShaderProgram* shaderProgram_suzi = new ShaderProgram(camera);
 	shaderProgram_suzi->addLight(light);
-	shaderProgram_suzi->init_shader("Shaders/lambert_vertex.glsl", "Shaders/lambert_fragment.glsl");
+	shaderProgram_suzi->init_shader("Shaders/vertex.glsl", "Shaders/lambert_fragment.glsl");
 	camera->addObserver(shaderProgram_suzi);
 	light->addObserver(shaderProgram_suzi);
 	shaderPrograms.push_back(shaderProgram_suzi);
@@ -304,7 +304,7 @@ void Scene::CreateFourShaderLightsScene()
 	//gift
 	ShaderProgram* shaderProgram_gift = new ShaderProgram(camera);
 	shaderProgram_gift->addLight(light);
-	shaderProgram_gift->init_shader("Shaders/phong_vertex.glsl", "Shaders/phong_fragment.glsl");
+	shaderProgram_gift->init_shader("Shaders/vertex.glsl", "Shaders/phong_fragment.glsl");
 	camera->addObserver(shaderProgram_gift);
 	light->addObserver(shaderProgram_gift);
 	shaderPrograms.push_back(shaderProgram_gift);
@@ -327,7 +327,7 @@ void Scene::CreateFourShaderLightsScene()
 	//sphere
 	ShaderProgram* shaderProgram_sphere = new ShaderProgram(camera);
 	shaderProgram_sphere->addLight(light);
-	shaderProgram_sphere->init_shader("Shaders/blin_phong_vertex.glsl", "Shaders/blin_phong_fragment.glsl");
+	shaderProgram_sphere->init_shader("Shaders/vertex.glsl", "Shaders/blin_phong_fragment.glsl");
 	camera->addObserver(shaderProgram_sphere);
 	light->addObserver(shaderProgram_sphere);
 	shaderPrograms.push_back(shaderProgram_sphere);
@@ -346,8 +346,8 @@ void Scene::CreateMultipleLightsScene()
 {
 	camera->setCamera(glm::vec3(0.f, 0.f, 0.9f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f),
 		0.01f, 45.0, -90.f, 0.f, 0.1f);
-	Light* light_white = new Light(glm::vec3(-0.8f, 0.f, 0.f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec4(0.1f, 0.1f, 0.1f, 0.1f), 32);
-	Light* light_red = new Light(glm::vec3(0.8f, 0.f, 0.f), glm::vec3(1.0f, 0.f, 0.f), glm::vec4(0.1f, 0.1f, 0.1f, 0.1f), 32);
+	Light* light_white = new Light(0, glm::vec3(-0.8f, 0.f, 0.f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec4(0.1f, 0.1f, 0.1f, 0.1f), 32);
+	Light* light_red = new Light(0, glm::vec3(0.8f, 0.f, 0.f), glm::vec3(1.0f, 0.f, 0.f), glm::vec4(0.1f, 0.1f, 0.1f, 0.1f), 32);
 	lights.push_back(light_white);
 	lights.push_back(light_red);
 
@@ -357,12 +357,12 @@ void Scene::CreateMultipleLightsScene()
 
 	//lights
 	ShaderProgram* shaderProgram_light = new ShaderProgram(camera);
-	//shaderProgram_light->addLight(light_white);
-	//shaderProgram_light->addLight(light_red);
-	shaderProgram_light->init_shader("Shaders/constant_vertex.glsl", "Shaders/constant_fragment.glsl");
+	shaderProgram_light->addLight(light_white);
+	shaderProgram_light->addLight(light_red);
+	shaderProgram_light->init_shader("Shaders/vertex.glsl", "Shaders/constant_fragment.glsl");
 	camera->addObserver(shaderProgram_light);
-	//light_white->addObserver(shaderProgram_light);
-	//light_red->addObserver(shaderProgram_light);
+	light_white->addObserver(shaderProgram_light);
+	light_red->addObserver(shaderProgram_light);
 	shaderPrograms.push_back(shaderProgram_light);
 
 	DrawableObject* light_sphere_red = new DrawableObject(camera);
@@ -372,6 +372,7 @@ void Scene::CreateMultipleLightsScene()
 	light_sphere_red->addScale(glm::vec3(0.1f, 0.1f, 0.1f));
 	light_sphere_red->setColor(glm::vec4(light_red->getColor().x, light_red->getColor().y, light_red->getColor().z, 1.0f));
 	objects.push_back(light_sphere_red);
+	
 
 	DrawableObject* light_sphere_white = new DrawableObject(camera);
 	light_sphere_white->init_model(sphere_model);
@@ -387,19 +388,18 @@ void Scene::CreateMultipleLightsScene()
 	ShaderProgram* shaderProgram_sphere = new ShaderProgram(camera);
 	shaderProgram_sphere->addLight(light_red);
 	shaderProgram_sphere->addLight(light_white);
-	shaderProgram_sphere->init_shader("Shaders/blin_phong_vertex.glsl", "Shaders/blin_phong_fragment.glsl");
+	shaderProgram_sphere->init_shader("Shaders/vertex.glsl", "Shaders/blin_phong_fragment.glsl");
 	camera->addObserver(shaderProgram_sphere);
 	light_red->addObserver(shaderProgram_sphere);
 	shaderPrograms.push_back(shaderProgram_sphere);
 
-	DrawableObject* light_red_sphere = new DrawableObject(camera);
-	light_red_sphere->init_model(sphere_model);
-	light_red_sphere->init_shader(shaderProgram_sphere);
-	light_red_sphere->addTranslation(glm::vec3(0.f, 0.f, 0.f));
-	light_red_sphere->addScale(glm::vec3(0.3f, 0.3f, 0.3f));
-	light_red_sphere->setColor(glm::vec4(0.385, 0.647, 0.812, 1.0));
-	objects.push_back(light_red_sphere);
-
+	DrawableObject* sphere = new DrawableObject(camera);
+	sphere->init_model(sphere_model);
+	sphere->init_shader(shaderProgram_sphere);
+	sphere->addTranslation(glm::vec3(0.f, 0.f, 0.f));
+	sphere->addScale(glm::vec3(0.3f, 0.3f, 0.3f));
+	sphere->setColor(glm::vec4(0.385, 0.647, 0.812, 1.0));
+	objects.push_back(sphere);
 
 }
 

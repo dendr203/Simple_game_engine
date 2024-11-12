@@ -40,6 +40,11 @@ void ShaderProgram::use_shader()
 	glUseProgram(shaderProgramID);
 }
 
+void ShaderProgram::unuse_Shader()
+{
+	glUseProgram(0);
+}
+
 
 void ShaderProgram::addLight(Light* light)
 {
@@ -48,100 +53,58 @@ void ShaderProgram::addLight(Light* light)
 
 void ShaderProgram::setLights()
 {
-
 	int counter = 0;
 	for (Light* light : lights)
 	{
-		// Set number of lights if the uniform exists in the shader
-		GLint numberOfLightsLoc = getLocation("numberOfLights");
 
-		if (numberOfLightsLoc != -1) {
+			setUniformLocation("numberOfLights", (int)lights.size());
 
-			setUniformLocation("cameraPosition", camera->getCameraPosition());
-			glProgramUniform1i(shaderProgramID, numberOfLightsLoc, lights.size());
-
-
+			std::string lightType = "lights[" + std::to_string(counter) + "].type";
+			setUniformLocation(lightType.c_str(), light->getLightType());
+			
 			std::string positionName = "lights[" + std::to_string(counter) + "].position";
-			GLint lightPositionLocation = getLocation(positionName.c_str());
-			if (lightPositionLocation != -1)
-			{
-				setUniformLocation(positionName.c_str(), light->getPosition());
-			}
-
+			setUniformLocation(positionName.c_str(), light->getPosition());	
 
 			std::string l_colorName = "lights[" + std::to_string(counter) + "].lightC";
-			GLint lightColorLocation = getLocation(l_colorName.c_str());
-			if (lightColorLocation != -1)
-			{
-				setUniformLocation(l_colorName.c_str(), light->getColor());
-			}
-
+			setUniformLocation(l_colorName.c_str(), light->getColor());
 
 			std::string ambientName = "lights[" + std::to_string(counter) + "].ambient";
-			GLint lightAmbientLocation = getLocation(ambientName.c_str());
-			if (lightAmbientLocation != -1)
-			{
-				setUniformLocation(ambientName.c_str(), light->getAmbient());
-			}
+			setUniformLocation(ambientName.c_str(), light->getAmbient());
 
 
 			std::string shininessName = "lights[" + std::to_string(counter) + "].shininess";
-			GLint lightShininessLocation = getLocation(shininessName.c_str());
-			if (lightShininessLocation != -1)
-			{
-				setUniformLocation(shininessName.c_str(), light->getShinines());
-			}
+			setUniformLocation(shininessName.c_str(), light->getShinines());
 
 
-			std::string constantName = "lights[" + std::to_string(counter) + "].constant";
-			GLint lightConstantLocation = getLocation(constantName.c_str());
-			if (lightConstantLocation != -1)
+			if (light->getLightType() == 0)
 			{
+				std::string constantName = "lights[" + std::to_string(counter) + "].constant";
 				setUniformLocation(constantName.c_str(), 1.0f);
-			}
 
 
-			std::string linearName = "lights[" + std::to_string(counter) + "].linear";
-			GLint lightLinearLocation = getLocation(linearName.c_str());
-			if (lightLinearLocation != -1)
-			{
+				std::string linearName = "lights[" + std::to_string(counter) + "].linear";
 				setUniformLocation(linearName.c_str(), 0.09f);
+
+
+				std::string quadraticName = "lights[" + std::to_string(counter) + "].quadratic";
+				setUniformLocation(quadraticName.c_str(), 0.032f);
 			}
-
-
-			std::string quadraticName = "lights[" + std::to_string(counter) + "].quadratic";
-			GLint lightquadraticLocation = getLocation(quadraticName.c_str());
-			if (lightquadraticLocation != -1)
+			else if (light->getLightType() == 1)
 			{
-				setUniformLocation(quadraticName.c_str(), 0.07f);
+				std::string directionName = "lights[" + std::to_string(counter) + "].direction";
+				setUniformLocation(directionName.c_str(), light->getDirection());
 			}
-			
-		}
-		else
-		{
-			GLint lightPositionLocation = getLocation("lightPosition");
-			if (lightPositionLocation != -1)
+			else if (light->getLightType() == 2)
 			{
-				setLightPosition(light);
-			}
+				std::string directionName = "lights[" + std::to_string(counter) + "].direction";
+				setUniformLocation(directionName.c_str(), light->getDirection());
 
-			GLint lightColorLocation = getLocation("lightColor");
-			if (lightColorLocation != -1)
-			{
-				setLightColor(light); //maybe not now every time
-			}
+				std::string cutoffName = "lights[" + std::to_string(counter) + "].cutoff";
+				setUniformLocation(cutoffName.c_str(), light->getCutoff());
 
-			GLint ambientLightLocation = getLocation("ambientLight");
-			if (ambientLightLocation != -1)
-			{
-				setAmbient(light);
+				std::string outerCutoffName = "lights[" + std::to_string(counter) + "].outerCutoff";
+				setUniformLocation(outerCutoffName.c_str(), light->getOuterCutoff());
 			}
-
-			GLint shininessLocation = getLocation("shininess");
-			if (shininessLocation != -1) {
-				setShinines(light);
-			}
-		}
 		counter++;
 	}
 }
@@ -155,41 +118,41 @@ GLuint ShaderProgram::getLocation(const char* name)
 
 void ShaderProgram::setUniformLocation(const char* name, const glm::mat4& matrix) {
 	GLuint location = getLocation(name);
-	if (location != -1) {
+	if (location >= 0)
+	{
 		glProgramUniformMatrix4fv(shaderProgramID, location, 1, GL_FALSE, glm::value_ptr(matrix));
-	}
-	else {
-		printf("Uniform %s not found!\n", name);
 	}
 }
 
 void ShaderProgram::setUniformLocation(const char* name, const glm::vec3& vector) {
 	GLuint location = getLocation(name);
-	if (location != -1) {
+	if (location >= 0)
+	{
 		glProgramUniform3f(shaderProgramID, location, vector.x, vector.y, vector.z);
-	}
-	else {
-		printf("Uniform %s not found!\n", name);
 	}
 }
 
 void ShaderProgram::setUniformLocation(const char* name, const glm::vec4& vector) {
 	GLuint location = getLocation(name);
-	if (location != -1) {
+	if (location >= 0)
+	{
 		glProgramUniform4f(shaderProgramID, location, vector.x, vector.y, vector.z, vector.w);
-	}
-	else {
-		printf("Uniform %s not found!\n", name);
 	}
 }
 
 void ShaderProgram::setUniformLocation(const char* name, float _float) {
 	GLuint location = getLocation(name);
-	if (location != -1) {
+	if (location >= 0)
+	{
 		glProgramUniform1f(shaderProgramID, location, _float);
 	}
-	else {
-		printf("Uniform %s not found!\n", name);
+}
+
+void ShaderProgram::setUniformLocation(const char* name, int _int) {
+	GLuint location = getLocation(name);
+	if (location >= 0)
+	{
+		glProgramUniform1i(shaderProgramID, location, _int);
 	}
 }
 

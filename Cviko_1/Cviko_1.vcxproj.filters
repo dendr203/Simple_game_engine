@@ -146,7 +146,7 @@
     <None Include="Shaders\blin_phong_fragment.glsl">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="Shaders\blin_phong_vertex.glsl">
+    <None Include="Shaders\vertex.glsl">
       <Filter>Shaders</Filter>
     </None>
     <None Include="Shaders\constant_fragment.glsl">

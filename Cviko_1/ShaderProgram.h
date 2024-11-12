@@ -22,6 +22,7 @@ public:
 
 	void init_shader(const char* vertex_shader_str, const char* fragment_shader_str);
 	void use_shader();
+	void unuse_Shader();
 	void addLight(Light* light);
 	void setLights();
 
@@ -30,6 +31,7 @@ public:
 	void setUniformLocation(const char* name, const glm::vec3& vector);
 	void setUniformLocation(const char* name, const glm::vec4& vector);
 	void setUniformLocation(const char* name, float _float);
+	void setUniformLocation(const char* name, int _int);
 
 	void setModelMatrix(const glm::mat4& model_matrix);
 	void setViewMatrix();

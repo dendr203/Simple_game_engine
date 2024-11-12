@@ -178,7 +178,7 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="Shaders\blin_phong_fragment.glsl" />
-    <None Include="Shaders\blin_phong_vertex.glsl" />
+    <None Include="Shaders\vertex.glsl" />
     <None Include="Shaders\constant_fragment.glsl" />
     <None Include="Shaders\constant_vertex.glsl" />
     <None Include="Shaders\lambert_fragment.glsl" />

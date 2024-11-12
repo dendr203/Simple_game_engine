@@ -1,20 +1,46 @@
 #version 400
 
-in vec4 ex_worldPosition;
-in vec3 ex_worldNormal;
+struct Light {
+    int type;
 
-uniform vec3 lightColor;
-uniform vec3 lightPosition;
-uniform vec4 ambientLight;
+    vec3 position;
+    vec3 lightC; // Light color
+    vec4 ambient; // Ambient light
+    float shininess;
+
+    float constant;
+    float linear;
+    float quadratic;
+
+    vec3 direction; // Only used for directional and spotlight
+    float cutoff;   // Only used for spotlight (cosine of angle)
+    float outerCutoff; // For smooth spotlight edges
+};
+
+uniform Light lights[10];
+uniform int numberOfLights;
+
+in vec3 worldNormal;
+in vec4 fragPosition;
+in vec3 viewDirection;
+
 uniform vec4 objectColor;
 
 out vec4 out_Color;
 
 void main(void) {
-    vec3 lightDirection = lightPosition - vec3(ex_worldPosition);
 
-    float dot_product = max(dot(normalize(lightDirection), normalize(ex_worldNormal)), 0.0);
-    vec4 diffuse = dot_product * vec4(lightColor, 1.0); // Difuzní osvìtlení
+    vec4 ambientLight = vec4(0.0);
+    vec4 diffuseLight = vec4(0.0);
 
-    out_Color = (ambientLight + diffuse) * objectColor;
+    for (int i = 0; i < numberOfLights; ++i)
+    {
+        ambientLight += lights[i].ambient;
+
+		vec3 lightDir = normalize(lights[i].position - vec3(fragPosition));
+		float dot_product = max(dot(lightDir, worldNormal), 0.0);
+		diffuseLight += dot_product * vec4(lights[i].lightC, 1.0);
+	}
+
+    out_Color = (ambientLight + diffuseLight) * objectColor;
 }

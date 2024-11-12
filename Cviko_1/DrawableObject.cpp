@@ -22,7 +22,7 @@ void DrawableObject::init_model(Model* model)
 void DrawableObject::init_shader(ShaderProgram* shaderprogram)
 {
 	shaderProgram = shaderprogram;
-	shaderProgram->setLights();
+	//shaderProgram->setLights();
 }
 
 
@@ -33,8 +33,8 @@ void DrawableObject::Draw(float deltaTime)
 	shaderProgram->setObjectColor(color);
 	
 	shaderProgram->use_shader();
-	
 	model->draw_model();
+	shaderProgram->unuse_Shader();
 }
 
 

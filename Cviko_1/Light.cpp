@@ -1,7 +1,7 @@
 #include "Light.h"
 
-Light::Light(glm::vec3 position, glm::vec3 color, glm::vec4 ambient, float _shinines)
-    : position(position), color(color), ambient(ambient), shinines(_shinines) {}
+Light::Light(int light_type, glm::vec3 position, glm::vec3 color, glm::vec4 ambient, float _shinines)
+    : light_type(light_type), position(position), color(color), ambient(ambient), shinines(_shinines) {}
 
 void Light::setPosition(const glm::vec3& newPosition) {
     position = newPosition;
@@ -18,6 +18,10 @@ void Light::setAmbient(const glm::vec4& newAmbient) {
     notifyObservers();
 }
 
+int Light::getLightType() {
+	return light_type;
+}
+
 glm::vec3 Light::getPosition() {
 	return position;
 }
@@ -32,6 +36,18 @@ glm::vec4 Light::getAmbient() {
 
 float Light::getShinines() {
     return shinines;
+}
+
+glm::vec3 Light::getDirection() {
+	return glm::vec3(0.0f, -1.0f, 0.0f);
+}   
+
+float Light::getCutoff() {
+	return 30.f;
+}
+
+float Light::getOuterCutoff() {
+	return 35.f;
 }
 
 void Light::addObserver(Observer* observer) {
