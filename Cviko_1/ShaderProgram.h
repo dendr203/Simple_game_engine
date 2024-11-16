@@ -9,6 +9,11 @@
 #include "Observer.h"
 #include "Camera.h"
 #include "Light.h"
+#include "PointLight.h"
+#include "DirectionalLight.h"
+#include "SpotLight.h"
+#include "Material.h"
+
 
 #include "ShaderLoader.h"
 
@@ -24,24 +29,14 @@ public:
 	void use_shader();
 	void unuse_Shader();
 	void addLight(Light* light);
-	void setLights();
-
-
-	void setUniformLocation(const char* name, const glm::mat4& matrix);
-	void setUniformLocation(const char* name, const glm::vec3& vector);
-	void setUniformLocation(const char* name, const glm::vec4& vector);
-	void setUniformLocation(const char* name, float _float);
-	void setUniformLocation(const char* name, int _int);
+	
 
 	void setModelMatrix(const glm::mat4& model_matrix);
 	void setViewMatrix();
 	void setProjectionMatrix();
 
 	void setObjectColor(const glm::vec4& obj_color);
-	void setLightPosition(Light* light);
-	void setLightColor(Light* light);
-	void setAmbient(Light* light);
-	void setShinines(Light* light);
+	void setMaterial(Material material);
 
 	void updateFromSubject() override;
 	
@@ -51,6 +46,15 @@ private:
 	std::vector<Light*> lights;
 
 	GLuint getLocation(const char* name);
+
+	void setLights();
+
+
+	void setUniformLocation(const char* name, const glm::mat4& matrix);
+	void setUniformLocation(const char* name, const glm::vec3& vector);
+	void setUniformLocation(const char* name, const glm::vec4& vector);
+	void setUniformLocation(const char* name, float _float);
+	void setUniformLocation(const char* name, int _int);
 	
 };
 

@@ -1,21 +1,29 @@
 #version 400
 
 struct Light {
-    int type;            // Typ svìtla (bodové, smìrové, atd.)
-    vec3 position;       // Pozice svìtla (pouze pro bodová svìtla)
-    vec3 lightC;         // Barva svìtla
-    vec4 ambient;        // Ambientní svìtlo
-    float shininess;     // Shininess pro spekulární složku
-    float constant;      // Konstantní komponenta pro svìtelný pokles (pro bodová svìtla)
-    float linear;        // Lineární komponenta pro pokles (pro bodová svìtla)
-    float quadratic;     // Kvadratická komponenta pro pokles (pro bodová svìtla)
-    vec3 direction;      // Smìr svìtla (pouze pro smìrová a spotlight svìtla)
-    float cutoff;        // Úhel pro spotlight (kosinus úhlu)
-    float outerCutoff;   // Pro plynulé hrany pro spotlight
-};
+    int type;
+    
+    vec3 position;
+    vec3 lightC;
 
+    float constant;      
+    float linear;        
+    float quadratic;     
+    
+    vec3 direction;      
+    float cutoff;        
+    float outerCutoff;   
+};
 uniform Light lights[10];
 uniform int numberOfLights;
+
+struct Material{
+	vec3 ambient;
+	vec3 diffuse;
+	vec3 specular;
+	float shininess;
+};
+uniform Material material;
 
 in vec3 worldNormal;
 in vec4 fragPosition;
@@ -26,60 +34,71 @@ uniform vec4 objectColor;
 out vec4 out_Color;
 
 void main(void) {
-    vec4 finalColor = vec4(0.0, 0.0, 0.0, 1.0); // Inicializace barvy na èernou (bez osvìtlení)
 
-    // Iterace pøes všechna svìtla
-    for (int i = 0; i < numberOfLights; ++i) {
-        vec3 lightDir;  // Smìr svìtla pro dané svìtlo
+    vec4 ambientLight = vec4(material.ambient * lights[0].lightC, 1.0);
+    vec4 finalColor = vec4(0.0);
 
-        // Výpoèet smìru svìtla podle typu svìtla
-        if (lights[i].type == 0) { // Bodové svìtlo
-            lightDir = normalize(lights[i].position - fragPosition.xyz);
-        } else if (lights[i].type == 1) { // Smìrové svìtlo
-            lightDir = normalize(-lights[i].direction); // Negace pro smìr
-        } else if (lights[i].type == 2) { // Spotlight
-            lightDir = normalize(lights[i].position - fragPosition.xyz);
+    for (int i = 0; i < numberOfLights; ++i)
+    {     
+
+        vec3 lightDir = vec3(0.0);
+        float attenuation = 1.0;
+
+        if(lights[i].type == 0) //point light
+        {
+            lightDir = normalize(lights[i].position - vec3(fragPosition));
+            float distance = length(lights[i].position - vec3(fragPosition));
+            attenuation = 1.0 / (lights[i].constant + lights[i].linear * distance + lights[i].quadratic * (distance * distance));
+        } 
+        else if (lights[i].type == 1) //directional light
+        {
+            lightDir = normalize(-lights[i].direction);
         }
+        else if (lights[i].type == 2) //spotlight
+        {   
+            lightDir = normalize(lights[i].position - vec3(fragPosition));
+            float theta = dot(-lightDir, normalize(lights[i].direction));
 
-        // Difuzní složka (Lambertovo osvìtlení)
-        float dot_product = max(dot(normalize(worldNormal), lightDir), 0.0);
-        vec4 diffuse = dot_product * vec4(lights[i].lightC, 1.0);
+            float innerCutoff = cos(radians(lights[i].cutoff));
+            float outerCutoff = cos(radians(lights[i].outerCutoff));
 
-        // Spekulární složka (Phongùv model)
-        vec3 reflectDir = normalize(reflect(-lightDir, normalize(worldNormal)));
-        float spec = pow(max(dot(viewDirection, reflectDir), 0.0), lights[i].shininess);
-        vec4 specular = vec4(lights[i].lightC, 1.0) * spec;
+            float intensity = clamp((theta - outerCutoff) / (innerCutoff - outerCutoff), 0.0, 1.0);
+            //intensity = max(intensity, 0.1);
 
-        // Pro bodová svìtla aplikujeme pokles intenzity podle vzdálenosti
-        if (lights[i].type == 0) { // Pøedpokládám, že 0 znamená bodové svìtlo
-            float distance = length(fragPosition.xyz - lights[i].position);
-            float attenuation = 1.0 / (lights[i].constant + lights[i].linear * distance + lights[i].quadratic * (distance * distance));
-            diffuse *= attenuation;
-            specular *= attenuation;
-        }
-
-        // Aplikace pro smìrové a spotlight svìtla (pro spotlight pøidáváme úpravy)
-        if (lights[i].type == 1 || lights[i].type == 2) { // Smìrové nebo spotlight svìtlo
-            // Pro spotlight: kontrolujeme, zda je úhel mezi smìrem svìtla a smìrem k fragmentu v platném rozsahu
-            if (lights[i].type == 2)
+            if (theta >= innerCutoff)
             {
-                float theta = dot(lightDir, normalize(lights[i].direction)); // Vypoèítáme úhel
-                if (theta > lights[i].cutoff)
-                {
-                    float epsilon = lights[i].cutoff - lights[i].outerCutoff;
-                    float intensity = clamp((theta - lights[i].outerCutoff) / epsilon, 0.0, 1.0);
-                    diffuse *= intensity;
-                    specular *= intensity;
-                } else
-                {
-                    continue;  // Pokud je svìtlo mimo úhel, ignorujeme ho
-                }
+                attenuation *= intensity;
+            } 
+            else if (theta >= outerCutoff)
+            {
+                attenuation *= intensity;
+            }
+            else
+            {
+                attenuation = 0.;
             }
         }
 
-        // Pøidání výsledných složek (difuzní, spekulární) k celkové barvì
-        finalColor += (diffuse * objectColor) + specular;
+
+        // Diffuse light (Lambert model)
+        float diff = max(dot(lightDir, worldNormal), 0.0);
+        vec4 diffuse = diff * vec4(material.diffuse * lights[i].lightC, 1.0); //* objectColor;
+
+
+        //Specular light
+        vec3 reflectDir = reflect(-lightDir, worldNormal);
+
+        float spec;
+        if (diff >= 0.0)
+        {
+			spec = pow(max(dot(viewDirection, reflectDir), 0.0), material.shininess);
+		}
+        vec4 specular = vec4(material.specular * lights[i].lightC, 1.0) * spec;
+
+        finalColor += (diffuse + specular) * attenuation;
+        
     }
 
-    out_Color = finalColor;  // Výstupní barva
-}
+    out_Color = (ambientLight + finalColor) * objectColor;
+    
+};

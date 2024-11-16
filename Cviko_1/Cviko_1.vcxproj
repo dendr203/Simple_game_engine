@@ -135,16 +135,20 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="DirectionalLight.cpp" />
     <ClCompile Include="DrawableObject.cpp" />
     <ClCompile Include="DynamicRotation.cpp" />
     <ClCompile Include="Light.cpp" />
+    <ClCompile Include="Material.cpp" />
     <ClCompile Include="Model.cpp" />
+    <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="Rotation.cpp" />
     <ClCompile Include="Scaling.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="ShaderLoader.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="SpotLight.cpp" />
     <ClCompile Include="TransformationComposite.cpp" />
     <ClCompile Include="Translation.cpp" />
     <ClCompile Include="Window.cpp" />
@@ -152,9 +156,11 @@
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="DirectionalLight.h" />
     <ClInclude Include="DrawableObject.h" />
     <ClInclude Include="DynamicRotation.h" />
     <ClInclude Include="Light.h" />
+    <ClInclude Include="Material.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="Models\bushes.h" />
     <ClInclude Include="Models\gift.h" />
@@ -164,11 +170,13 @@
     <ClInclude Include="Models\suzi_smooth.h" />
     <ClInclude Include="Models\tree.h" />
     <ClInclude Include="Observer.h" />
+    <ClInclude Include="PointLight.h" />
     <ClInclude Include="Rotation.h" />
     <ClInclude Include="Scaling.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="ShaderLoader.h" />
     <ClInclude Include="ShaderProgram.h" />
+    <ClInclude Include="SpotLight.h" />
     <ClInclude Include="Subject.h" />
     <ClInclude Include="TransformationComponent.h" />
     <ClInclude Include="TransformationComposite.h" />
@@ -180,11 +188,8 @@
     <None Include="Shaders\blin_phong_fragment.glsl" />
     <None Include="Shaders\vertex.glsl" />
     <None Include="Shaders\constant_fragment.glsl" />
-    <None Include="Shaders\constant_vertex.glsl" />
     <None Include="Shaders\lambert_fragment.glsl" />
-    <None Include="Shaders\lambert_vertex.glsl" />
     <None Include="Shaders\phong_fragment.glsl" />
-    <None Include="Shaders\phong_vertex.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

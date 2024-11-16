@@ -67,6 +67,14 @@ Window::Window(int width, int height) : ratio(0), width(0), height(0), lastX(0),
 		});
 
 
+	glfwSetWindowIconifyCallback(window, [](GLFWwindow* win, int iconified) {
+		Window* instance = static_cast<Window*>(glfwGetWindowUserPointer(win));
+		if (instance) {
+			instance->window_iconify_callback(win, iconified);
+		}
+		});
+
+
 
 	
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
@@ -143,6 +151,10 @@ void Window::window_size_callback(GLFWwindow* window, int _width, int _height)
 	
 	if (instance)
 	{
+		if (_height == 0) {
+			_height = 1;  // Aby se pøedešlo dìlení nulou
+		}
+
 		instance->width = _width;
 		instance->height = _height;
 

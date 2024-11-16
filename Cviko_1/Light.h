@@ -4,28 +4,22 @@
 #include <algorithm>
 #include "Observer.h"
 #include "Subject.h"
-#include "ShaderProgram.h"
+
+enum LightType { POINT, DIRECTIONAL, SPOTLIGHT };
+
 
 class ShaderProgram;
 class Light : public Subject
 {
 public:
-    Light(int light_type, glm::vec3 position, glm::vec3 color, glm::vec4 ambient, float shinines);
+    Light(glm::vec3 color);
 
-    // Settery not in work now
-    void setColor(const glm::vec3& color);
-    void setPosition(const glm::vec3& position);
-	void setAmbient(const glm::vec4& ambient);
+    virtual ~Light() = default;
 
-	int getLightType();
-    glm::vec3 getPosition();
+
+
+	LightType getLightType();
     glm::vec3 getColor();
-    glm::vec4 getAmbient();
-    float getShinines();
-
-	glm::vec3 getDirection();
-    float getCutoff();
-	float getOuterCutoff();
 
     
     void addObserver(Observer* observer) override;
@@ -34,11 +28,9 @@ public:
     void clearLinkShaders() override;
 
 private:
-    int light_type;
-    glm::vec3 position;
-    glm::vec3 color;      
-    glm::vec4 ambient;
-    float shinines;
-
     std::vector<Observer*> observers;
+
+protected:
+    LightType lightType;
+    glm::vec3 color;
 };

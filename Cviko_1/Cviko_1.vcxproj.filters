@@ -66,6 +66,18 @@
     <ClCompile Include="DynamicRotation.cpp">
       <Filter>Zdrojové soubory</Filter>
     </ClCompile>
+    <ClCompile Include="PointLight.cpp">
+      <Filter>Zdrojové soubory</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectionalLight.cpp">
+      <Filter>Zdrojové soubory</Filter>
+    </ClCompile>
+    <ClCompile Include="SpotLight.cpp">
+      <Filter>Zdrojové soubory</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>Zdrojové soubory</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -140,6 +152,18 @@
     <ClInclude Include="DynamicRotation.h">
       <Filter>Hlavičkové soubory</Filter>
     </ClInclude>
+    <ClInclude Include="PointLight.h">
+      <Filter>Hlavičkové soubory</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectionalLight.h">
+      <Filter>Hlavičkové soubory</Filter>
+    </ClInclude>
+    <ClInclude Include="SpotLight.h">
+      <Filter>Hlavičkové soubory</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>Hlavičkové soubory</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -152,19 +176,10 @@
     <None Include="Shaders\constant_fragment.glsl">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="Shaders\constant_vertex.glsl">
-      <Filter>Shaders</Filter>
-    </None>
     <None Include="Shaders\lambert_fragment.glsl">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="Shaders\lambert_vertex.glsl">
-      <Filter>Shaders</Filter>
-    </None>
     <None Include="Shaders\phong_fragment.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\phong_vertex.glsl">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

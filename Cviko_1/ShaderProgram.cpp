@@ -56,54 +56,68 @@ void ShaderProgram::setLights()
 	int counter = 0;
 	for (Light* light : lights)
 	{
-
+			
 			setUniformLocation("numberOfLights", (int)lights.size());
 
-			std::string lightType = "lights[" + std::to_string(counter) + "].type";
-			setUniformLocation(lightType.c_str(), light->getLightType());
-			
-			std::string positionName = "lights[" + std::to_string(counter) + "].position";
-			setUniformLocation(positionName.c_str(), light->getPosition());	
 
+			//set for every light
 			std::string l_colorName = "lights[" + std::to_string(counter) + "].lightC";
 			setUniformLocation(l_colorName.c_str(), light->getColor());
 
-			std::string ambientName = "lights[" + std::to_string(counter) + "].ambient";
-			setUniformLocation(ambientName.c_str(), light->getAmbient());
+			int type = static_cast<int>(light->getLightType());
+			std::string lightType = "lights[" + std::to_string(counter) + "].type";
+			setUniformLocation(lightType.c_str(), type);
 
-
-			std::string shininessName = "lights[" + std::to_string(counter) + "].shininess";
-			setUniformLocation(shininessName.c_str(), light->getShinines());
-
-
-			if (light->getLightType() == 0)
+			if (light->getLightType() == POINT)
 			{
-				std::string constantName = "lights[" + std::to_string(counter) + "].constant";
-				setUniformLocation(constantName.c_str(), 1.0f);
+				PointLight* pointlight = dynamic_cast<PointLight*>(light);
 
+				std::string positionName = "lights[" + std::to_string(counter) + "].position";
+				setUniformLocation(positionName.c_str(), pointlight->getPosition());
+
+				std::string constantName = "lights[" + std::to_string(counter) + "].constant";
+				setUniformLocation(constantName.c_str(), pointlight->getConstant());
 
 				std::string linearName = "lights[" + std::to_string(counter) + "].linear";
-				setUniformLocation(linearName.c_str(), 0.09f);
-
+				setUniformLocation(linearName.c_str(), pointlight->getLinear());
 
 				std::string quadraticName = "lights[" + std::to_string(counter) + "].quadratic";
-				setUniformLocation(quadraticName.c_str(), 0.032f);
+				setUniformLocation(quadraticName.c_str(), pointlight->getQuadratic());
+				//0.1 0.3 0.032
 			}
-			else if (light->getLightType() == 1)
+			else if (light->getLightType() == DIRECTIONAL)
 			{
+				DirectionalLight* directionallight = dynamic_cast<DirectionalLight*>(light);
+
 				std::string directionName = "lights[" + std::to_string(counter) + "].direction";
-				setUniformLocation(directionName.c_str(), light->getDirection());
+				setUniformLocation(directionName.c_str(), directionallight->getDirection());
 			}
-			else if (light->getLightType() == 2)
+			else if (light->getLightType() == SPOTLIGHT)
 			{
-				std::string directionName = "lights[" + std::to_string(counter) + "].direction";
-				setUniformLocation(directionName.c_str(), light->getDirection());
+				SpotLight* spotlight = dynamic_cast<SpotLight*>(light);
+
+				if (spotlight->is_attached() == 1)
+				{
+					std::string positionName = "lights[" + std::to_string(counter) + "].position";
+					setUniformLocation(positionName.c_str(), camera->getCameraPosition());
+
+					std::string directionName = "lights[" + std::to_string(counter) + "].direction";
+					setUniformLocation(directionName.c_str(), camera->getFront());
+				}
+				else
+				{
+					std::string positionName = "lights[" + std::to_string(counter) + "].position";
+					setUniformLocation(positionName.c_str(), spotlight->getPosition());
+
+					std::string directionName = "lights[" + std::to_string(counter) + "].direction";
+					setUniformLocation(directionName.c_str(), spotlight->getDirection());
+				}
 
 				std::string cutoffName = "lights[" + std::to_string(counter) + "].cutoff";
-				setUniformLocation(cutoffName.c_str(), light->getCutoff());
+				setUniformLocation(cutoffName.c_str(), spotlight->getCutoff());
 
 				std::string outerCutoffName = "lights[" + std::to_string(counter) + "].outerCutoff";
-				setUniformLocation(outerCutoffName.c_str(), light->getOuterCutoff());
+				setUniformLocation(outerCutoffName.c_str(), spotlight->getOuterCutoff());
 			}
 		counter++;
 	}
@@ -120,7 +134,9 @@ void ShaderProgram::setUniformLocation(const char* name, const glm::mat4& matrix
 	GLuint location = getLocation(name);
 	if (location >= 0)
 	{
+		glUseProgram(shaderProgramID);
 		glProgramUniformMatrix4fv(shaderProgramID, location, 1, GL_FALSE, glm::value_ptr(matrix));
+		glUseProgram(0);
 	}
 }
 
@@ -128,7 +144,9 @@ void ShaderProgram::setUniformLocation(const char* name, const glm::vec3& vector
 	GLuint location = getLocation(name);
 	if (location >= 0)
 	{
+		glUseProgram(shaderProgramID);
 		glProgramUniform3f(shaderProgramID, location, vector.x, vector.y, vector.z);
+		glUseProgram(0);
 	}
 }
 
@@ -136,7 +154,9 @@ void ShaderProgram::setUniformLocation(const char* name, const glm::vec4& vector
 	GLuint location = getLocation(name);
 	if (location >= 0)
 	{
+		glUseProgram(shaderProgramID);
 		glProgramUniform4f(shaderProgramID, location, vector.x, vector.y, vector.z, vector.w);
+		glUseProgram(0);
 	}
 }
 
@@ -144,7 +164,9 @@ void ShaderProgram::setUniformLocation(const char* name, float _float) {
 	GLuint location = getLocation(name);
 	if (location >= 0)
 	{
+		glUseProgram(shaderProgramID);
 		glProgramUniform1f(shaderProgramID, location, _float);
+		glUseProgram(0);
 	}
 }
 
@@ -152,7 +174,9 @@ void ShaderProgram::setUniformLocation(const char* name, int _int) {
 	GLuint location = getLocation(name);
 	if (location >= 0)
 	{
+		glUseProgram(shaderProgramID);
 		glProgramUniform1i(shaderProgramID, location, _int);
+		glUseProgram(0);
 	}
 }
 
@@ -178,25 +202,14 @@ void ShaderProgram::setObjectColor(const glm::vec4& color)
 	setUniformLocation("objectColor", color);
 }
 
-void ShaderProgram::setLightPosition(Light* light)
+void ShaderProgram::setMaterial(Material material)
 {
-	setUniformLocation("lightPosition", light->getPosition());
+	setUniformLocation("material.ambient", material.getAmbient());
+	setUniformLocation("material.diffuse", material.getDiffuse());
+	setUniformLocation("material.specular", material.getSpecular());
+	setUniformLocation("material.shininess", material.getShininess());
 }
 
-void ShaderProgram::setLightColor(Light* light)
-{
-	setUniformLocation("lightColor", light->getColor());
-}
-
-void ShaderProgram::setAmbient(Light* light)
-{
-	setUniformLocation("ambientLight", light->getAmbient());
-}
-
-void ShaderProgram::setShinines(Light* light)
-{
-	setUniformLocation("shininess", light->getShinines());
-}
 
 void ShaderProgram::updateFromSubject() {
 	setViewMatrix();

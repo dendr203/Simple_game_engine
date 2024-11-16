@@ -4,21 +4,28 @@ struct Light {
     int type;
 
     vec3 position;
-    vec3 lightC; // Light color
-    vec4 ambient; // Ambient light
-    float shininess;
+    vec3 lightC; 
 
     float constant;
     float linear;
     float quadratic;
 
-    vec3 direction; // Only used for directional and spotlight
-    float cutoff;   // Only used for spotlight (cosine of angle)
-    float outerCutoff; // For smooth spotlight edges
+    vec3 direction; 
+    float cutoff;   
+    float outerCutoff; 
 };
-
 uniform Light lights[10];
 uniform int numberOfLights;
+
+
+struct Material{
+	vec3 ambient;
+	vec3 diffuse;
+	vec3 specular;
+	float shininess;
+};
+uniform Material material;
+
 
 in vec3 worldNormal;
 in vec4 fragPosition;
@@ -29,74 +36,69 @@ uniform vec4 objectColor;
 out vec4 out_Color;
 
 void main(void) {
-    vec3 normal = normalize(worldNormal);
+    
+    // Ambient lighting (outside of the loop, as it does not depend on specific lights)
+    vec4 ambientLight = vec4(material.ambient * lights[0].lightC, 1.0);
     vec4 finalColor = vec4(0.0);
-    vec3 fragPosition = vec3(fragPosition);
 
-    for (int i = 0; i < numberOfLights; ++i) {
-
-        vec3 lightDir = normalize(lights[i].position - fragPosition);
+    for (int i = 0; i < numberOfLights; ++i)
+    {      
+        vec3 lightDir = vec3(0.0);
         float attenuation = 1.0;
-        float theta = 0.0;
 
         if(lights[i].type == 0) //point light
         {
-            float distance = length(lights[i].position - fragPosition);
+            lightDir = normalize(lights[i].position - vec3(fragPosition));
+            float distance = length(lights[i].position - vec3(fragPosition));
             attenuation = 1.0 / (lights[i].constant + lights[i].linear * distance + lights[i].quadratic * (distance * distance));
         } 
         else if (lights[i].type == 1) //directional light
         {
-            attenuation = 1.0;
-        
+            lightDir = normalize(-lights[i].direction);
         }
         else if (lights[i].type == 2) //spotlight
         {   
-            float distance = length(lights[i].position - fragPosition);
-            attenuation = 1.0 / (lights[i].constant + lights[i].linear * distance + lights[i].quadratic * (distance * distance));
-            
-            
-            theta = dot(-lightDir, normalize(lights[i].direction));
-            if (theta > cos(radians(lights[i].cutoff)))
+            lightDir = normalize(lights[i].position - vec3(fragPosition));
+            float theta = dot(-lightDir, normalize(lights[i].direction));
+
+            float innerCutoff = cos(radians(lights[i].cutoff));
+            float outerCutoff = cos(radians(lights[i].outerCutoff));
+
+            float intensity = clamp((theta - outerCutoff) / (innerCutoff - outerCutoff), 0.0, 1.0);
+            //intensity = max(intensity, 0.1);
+
+            if (theta >= innerCutoff)
             {
-                attenuation = 0.9;
+                attenuation *= intensity;
             } 
-            else if (theta > cos(radians(lights[i].outerCutoff)))
+            else if (theta >= outerCutoff)
             {
-                float intensity = (theta - cos(radians(lights[i].outerCutoff))) / (cos(radians(lights[i].cutoff)) - cos(radians(lights[i].outerCutoff)));
-                attenuation = intensity;
+                attenuation *= intensity;
             }
             else
             {
-                attenuation = 0.1;
+                attenuation = 0.;
             }
         }
 
-        
-	    
 
-
-        // Diffuse light
-        float diff = max(dot(lightDir, normal), 0.0);
-        vec4 diffuse = diff * vec4(lights[i].lightC, 1.0); //* objectColor;
+        // Diffuse light (Lambert model)
+        float diff = max(dot(lightDir, worldNormal), 0.0);
+        vec4 diffuse = diff * vec4(material.diffuse * lights[i].lightC, 1.0); //* objectColor;
 
 
         //Specular light
-        //vec3 halfwayVec = normalize(lightDir + normal);
-        vec3 reflectDir = reflect(-lightDir, normal);
-
-        float spec;
-        if (diff > 0.0)
+        vec3 halfwayVec = normalize(lightDir + viewDirection);
+        float spec = 0.0;
+        if (diff >= 0.0)
         {
-			spec = pow(max(dot(viewDirection, reflectDir), 0.0), lights[i].shininess);
+			spec = pow(max(dot(worldNormal, halfwayVec), 0.0), material.shininess);
 		}
-        vec4 specular = vec4(lights[i].lightC, 1.0) * spec;
+        vec4 specular = vec4(material.specular * lights[i].lightC, 1.0) * spec;
 
-        finalColor += (lights[i].ambient + (diffuse + specular) * attenuation) * objectColor;
+        finalColor += (diffuse + specular) * attenuation;
         
     }
-
-
-
-    out_Color = finalColor;
+    out_Color = (ambientLight + finalColor) * objectColor;
     
 };

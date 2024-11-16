@@ -4,9 +4,9 @@
 
 #include "ShaderProgram.h"
 #include "Model.h"
-#include "TransformationComposite.h"
+#include "Material.h"
 
-//maybe different next time
+#include "TransformationComposite.h"
 #include "Translation.h"
 #include "Rotation.h"
 #include "Scaling.h"
@@ -37,8 +37,7 @@ public:
 	void init_shader(ShaderProgram* shaderprogram);
 	void Draw(float deltaTime);
 
-	
-	//this will be done differently in future
+
 	void addScale(glm::vec3 scaleVector);
 	void addTranslation(glm::vec3 translateVector);
 	void addRotation(float angle, glm::vec3 axis);
@@ -50,10 +49,13 @@ public:
 
 
 	void setColor(glm::vec4 _color);
+	void setMaterial(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, float shininess);
+
 
 private:
 	ShaderProgram* shaderProgram;
 	Model* model;
+	Material* material;
 
 	TransformationComposite* transformationComposite;
 

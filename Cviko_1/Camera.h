@@ -19,6 +19,7 @@ public:
     glm::vec3 getCameraPosition();
     glm::mat4 getViewMatrix();
     glm::mat4 getProjectionMatrix();
+    glm::vec3 getFront();
 
     void processMouseMovement(float xoffset, float yoffset);
     void setCamera(glm::vec3 position, glm::vec3 front, glm::vec3 up,

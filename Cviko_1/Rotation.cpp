@@ -5,5 +5,5 @@ Rotation::Rotation(float angle, glm::vec3 value) : rotationAngle(angle), rotatio
 
 void Rotation::transform(glm::mat4& modelMatrix, float deltaTime)
 {
-    modelMatrix = glm::rotate(modelMatrix, rotationAngle, rotationAxis);
+    modelMatrix = glm::rotate(modelMatrix, glm::radians(rotationAngle), rotationAxis);
 }

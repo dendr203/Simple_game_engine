@@ -58,6 +58,10 @@ glm::mat4 Camera::getProjectionMatrix(){
 	return projectionMatrix;
 }
 
+glm::vec3 Camera::getFront() {
+	return front;
+}
+
 
 
 

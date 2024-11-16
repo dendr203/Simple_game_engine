@@ -1,6 +1,9 @@
 #pragma once
 #include "DrawableObject.h"
 #include "Camera.h"
+#include "PointLight.h"
+#include "DirectionalLight.h"
+#include "SpotLight.h"
 
 #include <vector>
 
@@ -10,8 +13,8 @@ public:
 	Scene(Camera* _camera);
 	~Scene();
 
-	void CreateForestScene(int numTrees, int numBushes);
-	void CreateLightTestScene();
+	void CreateForestScene_blud(int numTrees, int numBushes);
+	void CreateForestScene_bat(int numTrees, int numBushes);
 	void CreateFourShaderLightsScene();
 	void CreateMultipleLightsScene();
 

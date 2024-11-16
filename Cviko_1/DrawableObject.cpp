@@ -7,6 +7,7 @@ DrawableObject::DrawableObject(Camera* _camera) : shaderProgram(nullptr), model(
 
 DrawableObject::~DrawableObject()
 {
+	delete material;
 	delete transformationComposite;
 }
 
@@ -31,11 +32,15 @@ void DrawableObject::Draw(float deltaTime)
 	//zde posílat pozdìji celou transformaci nejlépe
 	shaderProgram->setModelMatrix(getModelMatrix(deltaTime));
 	shaderProgram->setObjectColor(color);
+	shaderProgram->setMaterial(*material);
 	
 	shaderProgram->use_shader();
 	model->draw_model();
 	shaderProgram->unuse_Shader();
 }
+
+
+
 
 
 void DrawableObject::addScale(glm::vec3 scaleVector)
@@ -74,4 +79,9 @@ glm::mat4 DrawableObject::getModelMatrix(float deltaTime)
 void DrawableObject::setColor(glm::vec4 _color)
 {
 	color = _color;
+}
+
+void DrawableObject::setMaterial(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, float shininess)
+{
+	material = new Material(ambient, diffuse, specular, shininess);
 }

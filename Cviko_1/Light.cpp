@@ -1,54 +1,20 @@
 #include "Light.h"
+#include "ShaderProgram.h"
 
-Light::Light(int light_type, glm::vec3 position, glm::vec3 color, glm::vec4 ambient, float _shinines)
-    : light_type(light_type), position(position), color(color), ambient(ambient), shinines(_shinines) {}
+Light::Light(glm::vec3 color) : color(color) {}
 
-void Light::setPosition(const glm::vec3& newPosition) {
-    position = newPosition;
-    notifyObservers();
-}
 
-void Light::setColor(const glm::vec3& newColor) {
-    color = newColor;
-    notifyObservers();
-}
-
-void Light::setAmbient(const glm::vec4& newAmbient) {
-    ambient = newAmbient;
-    notifyObservers();
-}
-
-int Light::getLightType() {
-	return light_type;
-}
-
-glm::vec3 Light::getPosition() {
-	return position;
+LightType Light::getLightType() {
+	return lightType;
 }
 
 glm::vec3 Light::getColor() {
 	return color;
 }
 
-glm::vec4 Light::getAmbient() {
-	return ambient;
-}
+ 
 
-float Light::getShinines() {
-    return shinines;
-}
 
-glm::vec3 Light::getDirection() {
-	return glm::vec3(0.0f, -1.0f, 0.0f);
-}   
-
-float Light::getCutoff() {
-	return 30.f;
-}
-
-float Light::getOuterCutoff() {
-	return 35.f;
-}
 
 void Light::addObserver(Observer* observer) {
     observers.push_back(observer);
@@ -76,3 +42,4 @@ void Light::notifyObservers() {
 void Light::clearLinkShaders() {
     observers.clear();
 }
+
