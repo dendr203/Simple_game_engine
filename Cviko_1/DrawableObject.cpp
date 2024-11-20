@@ -38,20 +38,28 @@ void DrawableObject::Draw(float deltaTime)
 
 	if (TexturedModel* texturedModel = dynamic_cast<TexturedModel*>(model))
 	{ 
-		if (is_skybox)
-		{
-			shaderProgram->setSkyboxTexture();
-		}
-		else
-		{
-			shaderProgram->setTexture(texturedModel->getScale());
-		}
+		shaderProgram->setTexture(texturedModel->getUnitID(), texturedModel->getScale());
 	}
 	
 	shaderProgram->use_shader();
 	model->draw_model();
 	shaderProgram->unuse_Shader();
 
+	if (TexturedModel* texturedModel = dynamic_cast<TexturedModel*>(model))
+	{
+		shaderProgram->unsetTexture();
+	}
+}
+
+void DrawableObject::DrawSkybox(bool followCamera)
+{
+	shaderProgram->setSkyboxTexture(followCamera);
+
+	shaderProgram->use_shader();
+	model->draw_model();
+	shaderProgram->unuse_Shader();
+
+	//idk možná smazat
 	if (TexturedModel* texturedModel = dynamic_cast<TexturedModel*>(model))
 	{
 		shaderProgram->unsetTexture();

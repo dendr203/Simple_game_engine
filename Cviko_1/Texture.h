@@ -6,18 +6,17 @@
 class Texture
 {
 public:
-	Texture(const char* texture_path, GLenum textureType = GL_TEXTURE_2D);
+	Texture(const char* texture_path, GLenum textureUnit);
 	Texture(const char* x1, const char* x2,
 		const char* y1, const char* y2,
 		const char* z1, const char* z2,
-		GLenum textureType = GL_TEXTURE_2D);
-	void Bind();
-	void Unbind();
+		GLenum textureUnit);
+
 	~Texture();
-	int getTextureID();
+	int getUnitID();
 
 private:
-	GLenum type;
+	GLenum unit;
 	GLuint textureID;
 };
 

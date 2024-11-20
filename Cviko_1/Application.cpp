@@ -96,6 +96,10 @@ void Application::HandleInput()
 		scene->SwitchScene(5);
 		Window::keyStates[GLFW_KEY_5] = false;
 	}
+	if (Window::keyStates[GLFW_KEY_Q]) {
+		scene->skyboxFollowCamera = !scene->skyboxFollowCamera;
+		Window::keyStates[GLFW_KEY_Q] = false;
+	}
 
 
 	// Process mouse movement only if there are offsets

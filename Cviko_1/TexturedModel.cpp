@@ -17,7 +17,7 @@ TexturedModel::TexturedModel(const std::vector<float>& vertices, Texture* textur
 	{
 		init_model(vertices);
 	}
-	
+
 }
 
 
@@ -40,31 +40,32 @@ void TexturedModel::init_model(const std::vector<float>& vertices)
 
 void TexturedModel::init_skybox(const std::vector<float>& vertices)
 {
-	// Vytvoøení bufferu pro data
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
 
-	// Nastavení vertex array objektu
 	glBindVertexArray(VAO);
-	glEnableVertexAttribArray(0);  // Aktivace atributu
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (GLvoid*)0);  // Pozice
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (GLvoid*)0);
 
-	glBindVertexArray(0);  // Uvolnìní VAO
+	glBindVertexArray(0);
 }
 
 
 
 void TexturedModel::draw_model()
 {
-	texture->Bind();
 	glBindVertexArray(VAO);
 	glDrawArrays(GL_TRIANGLES, 0, numVertices);
-	texture->Unbind();
 }
 
 float TexturedModel::getScale()
 {
 	return tex_scale;
+}
+
+int TexturedModel::getUnitID()
+{
+	return texture->getUnitID();
 }
 
 

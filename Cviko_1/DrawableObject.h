@@ -38,6 +38,7 @@ public:
 
 	void init_shader(ShaderProgram* shaderprogram);
 	void Draw(float deltaTime);
+	void DrawSkybox(bool followCamera);
 
 
 	void addScale(glm::vec3 scaleVector);

@@ -41,9 +41,9 @@ public:
 	void updateFromSubject() override;
 	
 
-	void setTexture(float tex_scale);
+	void setTexture(int unitID, float tex_scale);
 	void unsetTexture();
-	void setSkyboxTexture();
+	void setSkyboxTexture(bool followCamera);
 
 private:
 	Camera* camera;
@@ -59,6 +59,7 @@ private:
 	void setUniformLocation(const char* name, const glm::vec4& vector);
 	void setUniformLocation(const char* name, float _float);
 	void setUniformLocation(const char* name, int _int);
+	
 	
 };
 

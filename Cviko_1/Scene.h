@@ -26,7 +26,9 @@ public:
 	void DrawScene(float deltaTime);
 	void ClearScene();
 	void SwitchScene(int sceneId);
+	
 
+	bool skyboxFollowCamera = true;
 
 private:
 	std::vector<DrawableObject*> objects;
@@ -38,6 +40,6 @@ private:
 	std::vector<ShaderProgram*> shaderPrograms;
 	std::vector<Model*> models;
 
-
+	std::vector<Texture*> textures;
 };
 
