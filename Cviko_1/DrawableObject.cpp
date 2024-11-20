@@ -12,8 +12,9 @@ DrawableObject::~DrawableObject()
 }
 
 
-void DrawableObject::init_model(Model* model)
+void DrawableObject::init_model(Model* model, int is_skybox)
 {
+	this->is_skybox = is_skybox;
 	this->model = model;
 }
 
@@ -23,20 +24,38 @@ void DrawableObject::init_model(Model* model)
 void DrawableObject::init_shader(ShaderProgram* shaderprogram)
 {
 	shaderProgram = shaderprogram;
-	//shaderProgram->setLights();
 }
 
 
 void DrawableObject::Draw(float deltaTime)
 {
-	//zde posílat pozdìji celou transformaci nejlépe
 	shaderProgram->setModelMatrix(getModelMatrix(deltaTime));
 	shaderProgram->setObjectColor(color);
-	shaderProgram->setMaterial(*material);
+	if (material != nullptr)
+	{
+		shaderProgram->setMaterial(*material);
+	}
+
+	if (TexturedModel* texturedModel = dynamic_cast<TexturedModel*>(model))
+	{ 
+		if (is_skybox)
+		{
+			shaderProgram->setSkyboxTexture();
+		}
+		else
+		{
+			shaderProgram->setTexture(texturedModel->getScale());
+		}
+	}
 	
 	shaderProgram->use_shader();
 	model->draw_model();
 	shaderProgram->unuse_Shader();
+
+	if (TexturedModel* texturedModel = dynamic_cast<TexturedModel*>(model))
+	{
+		shaderProgram->unsetTexture();
+	}
 }
 
 

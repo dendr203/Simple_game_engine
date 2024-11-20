@@ -16,6 +16,10 @@ struct Light {
 };
 uniform Light lights[10];
 uniform int numberOfLights;
+uniform sampler2D textureSampler;
+uniform bool useTexture;
+
+in vec2 texCoord;
 
 
 struct Material{
@@ -40,6 +44,13 @@ void main(void) {
     // Ambient lighting (outside of the loop, as it does not depend on specific lights)
     vec4 ambientLight = vec4(material.ambient * lights[0].lightC, 1.0);
     vec4 finalColor = vec4(0.0);
+
+    vec4 textureColor = vec4(1.0, 1.0, 1.0, 1.0);
+    if(useTexture)
+    {
+        textureColor = texture(textureSampler, texCoord);    
+    }
+
 
     for (int i = 0; i < numberOfLights; ++i)
     {      
@@ -84,7 +95,7 @@ void main(void) {
 
         // Diffuse light (Lambert model)
         float diff = max(dot(lightDir, worldNormal), 0.0);
-        vec4 diffuse = diff * vec4(material.diffuse * lights[i].lightC, 1.0); //* objectColor;
+        vec4 diffuse = diff * vec4(material.diffuse * lights[i].lightC, 1.0) * textureColor; //* objectColor;
 
 
         //Specular light

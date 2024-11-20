@@ -41,6 +41,10 @@ public:
 	void updateFromSubject() override;
 	
 
+	void setTexture(float tex_scale);
+	void unsetTexture();
+	void setSkyboxTexture();
+
 private:
 	Camera* camera;
 	std::vector<Light*> lights;

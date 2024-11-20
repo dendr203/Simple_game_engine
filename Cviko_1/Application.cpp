@@ -30,7 +30,8 @@ void Application::createModels()
 	//scene->CreateCameraBaseScene();
 	//scene->CreateConstantTestScene();
 	//scene->CreateFourShaderLightsScene();
-	scene->CreateMultipleLightsScene();
+	//scene->CreateMultipleLightsScene();
+	scene->CreateTexturedScene();
 }
 
 
@@ -40,7 +41,6 @@ void Application::run()
 
 	glEnable(GL_DEPTH_TEST);//Do depth comparisons and update the depth buffer.
 	while (!window->shouldClose()) {
-
 		auto currentTime = std::chrono::high_resolution_clock::now();
 		float deltaTime = std::chrono::duration<float>(currentTime - previousTime).count();
 		previousTime = currentTime;
@@ -49,10 +49,11 @@ void Application::run()
 		// clear color and depth buffer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		window->poolEvents();
-
 		HandleInput();
+
+		scene->DrawSkybox(deltaTime);
+		glClear(GL_DEPTH_BUFFER_BIT);
 		scene->DrawScene(deltaTime);
-		
 		window->swapBuffers();
 	}
 
@@ -90,6 +91,10 @@ void Application::HandleInput()
 	if (Window::keyStates[GLFW_KEY_4]) {
 		scene->SwitchScene(4);
 		Window::keyStates[GLFW_KEY_4] = false;
+	}
+	if (Window::keyStates[GLFW_KEY_5]) {
+		scene->SwitchScene(5);
+		Window::keyStates[GLFW_KEY_5] = false;
 	}
 
 

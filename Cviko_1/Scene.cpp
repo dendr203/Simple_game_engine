@@ -15,16 +15,21 @@ Scene::~Scene()
 }
 
 
-void Scene::CreateForestScene_blud(int numTrees, int numBushes) {
+void Scene::CreateForestScene_blud(int numTrees, int numBushes)
+{
+	CreateSkybox();
 	camera->setCamera(glm::vec3(6.f, 5.f, 7.f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.05f,
 		60.0f, -130.f, -30.f, 0.08f);
 
 
-	SpotLight* spotlight_1 = new SpotLight(0, glm::vec3(-20.0f, 10.0f, 20.0f), glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(1.0f, .0f, .0f), 5.f, 10.f);
+	SpotLight* spotlight_1 = new SpotLight(0, glm::vec3(-5.0f, 10.0f, 20.0f), glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(1.0f, .0f, .0f), 5.f, 10.f);
 	lights.push_back(spotlight_1);
 
-	SpotLight* spotlight_2 = new SpotLight(0, glm::vec3(-20.0f, 10.0f, -20.0f), glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 0.0f), 10.f, 20.f);
+	SpotLight* spotlight_2 = new SpotLight(0, glm::vec3(5.0f, 10.0f, 20.0f), glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 0.0f), 10.f, 20.f);
 	lights.push_back(spotlight_2);
+
+	DirectionalLight* dir_light = new DirectionalLight(glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f));
+	lights.push_back(dir_light);
 	
 
 	PointLight* blud_1 = new PointLight(glm::vec3(-10.f, 1.f, -5.f), glm::vec3(1.f, 1.f, 1.f), 0.1f, 0.3f, 0.032f);
@@ -58,6 +63,7 @@ void Scene::CreateForestScene_blud(int numTrees, int numBushes) {
 	shaderProgram->addLight(blud_3);
 	shaderProgram->addLight(blud_4);
 	shaderProgram->addLight(blud_5);
+	shaderProgram->addLight(dir_light);
 	shaderProgram->init_shader("Shaders/vertex.glsl", "Shaders/blin_phong_fragment.glsl");
 	camera->addObserver(shaderProgram);
 	spotlight_1->addObserver(shaderProgram);
@@ -67,18 +73,20 @@ void Scene::CreateForestScene_blud(int numTrees, int numBushes) {
 	blud_3->addObserver(shaderProgram);
 	blud_4->addObserver(shaderProgram);
 	blud_5->addObserver(shaderProgram);
+	dir_light->addObserver(shaderProgram);
 	shaderPrograms.push_back(shaderProgram);
 
 
 	//plain
-	Model* plain_model = new Model(std::vector<float>(plain, plain + sizeof(plain) / sizeof(plain[0])));
+	Texture* plain_texture = new Texture("Textures/grass.png");
+	TexturedModel* plain_model = new TexturedModel(std::vector<float>(plain_textured, plain_textured + sizeof(plain_textured) / sizeof(plain_textured[0])), plain_texture, 30);
 	models.push_back(plain_model);
 	
 	DrawableObject* plain = new DrawableObject(camera);
 	plain->init_model(plain_model);
 	plain->init_shader(shaderProgram);
-	plain->addScale(glm::vec3(500, 500, 500));
-	plain->setColor(glm::vec4(0.659f, 0.408f, 0.165f, 1.0f));
+	plain->addScale(glm::vec3(50, 50, 50));
+	plain->setColor(glm::vec4(1.f, 1.f, 1.f, 1.0f));
 	plain->setMaterial(glm::vec3(0.01f, 0.01f, 0.01f), glm::vec3(0.1f, 0.1f, 0.1f), glm::vec3(0.1f, 0.1f, 0.1f), 32.0f);
 	objects.push_back(plain);
 
@@ -200,14 +208,15 @@ void Scene::CreateForestScene_bat(int numTrees, int numBushes)
 
 
 	//plain
-	Model* plain_model = new Model(std::vector<float>(plain, plain + sizeof(plain) / sizeof(plain[0])));
-	models.push_back(plain_model);
+	Texture* plain_texture = new Texture("Textures/grass.png");
+	TexturedModel* plain_model = new TexturedModel(std::vector<float>(plain_textured, plain_textured + sizeof(plain_textured) / sizeof(plain_textured[0])), plain_texture, 30);
+
 
 	DrawableObject* plain = new DrawableObject(camera);
 	plain->init_model(plain_model);
 	plain->init_shader(shaderProgram);
-	plain->addScale(glm::vec3(500, 500, 500));
-	plain->setColor(glm::vec4(0.659f, 0.408f, 0.165f, 1.0f));
+	plain->addScale(glm::vec3(100, 100, 100));
+	plain->setColor(glm::vec4(1.f, 1.f, 1.f, 1.0f));
 	plain->setMaterial(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.8f, 0.8f, 0.8f), glm::vec3(1.0f, 1.0f, 1.0f), 32.0f);
 	objects.push_back(plain);
 
@@ -440,16 +449,178 @@ void Scene::CreateMultipleLightsScene()
 }
 
 
+void Scene::CreateTexturedScene()
+{
+	CreateSkybox();
+
+	camera->setCamera(glm::vec3(0.f, 0.f, 2.f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f),
+		0.01f, 45.0, -90.f, 0.f, 0.1f);
+
+	SpotLight* spotlight_white = new SpotLight(0, glm::vec3(0.f, 0.f, 2.f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(1.0f, 1.0f, 1.0f), 30.f, 35.f);
+	lights.push_back(spotlight_white);
+
+	ShaderProgram* shaderProgram = new ShaderProgram(camera);
+	shaderProgram->addLight(spotlight_white);
+	shaderProgram->init_shader("Shaders/vertex.glsl", "Shaders/blin_phong_fragment.glsl");
+	camera->addObserver(shaderProgram);
+	spotlight_white->addObserver(shaderProgram);
+	shaderPrograms.push_back(shaderProgram);
+
+
+	Texture* texture = new Texture("Textures/wooden_fence.png");
+	TexturedModel* tex_model = new TexturedModel(std::vector<float>(plain_textured, plain_textured + sizeof(plain_textured) / sizeof(plain_textured[0])), texture);
+	models.push_back(tex_model);
+
+	DrawableObject* textured_object = new DrawableObject(camera);
+	textured_object->init_model(tex_model);
+	textured_object->init_shader(shaderProgram);
+	textured_object->addTranslation(glm::vec3(-2.f, 0.f, -1.f));
+	textured_object->addScale(glm::vec3(1.f, 1.f, 1.f));
+	textured_object->addRotation(90, glm::vec3(0.f, -1.f, 0.f));
+	textured_object->addRotation(90, glm::vec3(0.f, 0.f, -1.f));
+	textured_object->addDynamicRotation(10, glm::vec3(0.f, -1.f, 0.f));
+	textured_object->setColor(glm::vec4(1, 1, 1, 1.0));
+	textured_object->setMaterial(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.8f, 0.8f, 0.8f), glm::vec3(0.5f, 0.5f, 0.5f), 32.0f);
+	objects.push_back(textured_object);
+
+
+	Texture* texture_2 = new Texture("Textures/grass.png");
+	TexturedModel* tex_model_2 = new TexturedModel(std::vector<float>(plain_textured, plain_textured + sizeof(plain_textured) / sizeof(plain_textured[0])), texture_2);
+	models.push_back(tex_model_2);
+
+	DrawableObject* textured_object_2 = new DrawableObject(camera);
+	textured_object_2->init_model(tex_model_2);
+	textured_object_2->init_shader(shaderProgram);
+	textured_object_2->addTranslation(glm::vec3(2.f, 0.f, -1.f));
+	textured_object_2->addScale(glm::vec3(1.f, 1.f, 1.f));
+	textured_object_2->addRotation(90, glm::vec3(0.f, -1.f, 0.f));
+	textured_object_2->addRotation(90, glm::vec3(0.f, 0.f, -1.f));
+	textured_object_2->addDynamicRotation(10, glm::vec3(0.f, 1.f, 0.f));
+	textured_object_2->setColor(glm::vec4(1, 1, 1, 1.0));
+	textured_object_2->setMaterial(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.8f, 0.8f, 0.8f), glm::vec3(0.5f, 0.5f, 0.5f), 32.0f);
+	objects.push_back(textured_object_2);
 
 
 
-void Scene::DrawScene(float deltaTime) {
+	Model* background_model = new Model(std::vector<float>(plain, plain + sizeof(plain) / sizeof(plain[0])));
+	models.push_back(background_model);
 
+	DrawableObject* background = new DrawableObject(camera);
+	background->init_model(background_model);
+	background->init_shader(shaderProgram);
+	background->addTranslation(glm::vec3(0.f, 0.f, -3.f));
+	background->addScale(glm::vec3(10.f, 10.f, 10.f));
+	background->addRotation(90, glm::vec3(1.f, 0.f, 0.f));
+	background->setColor(glm::vec4(0.385, 0.647, 0.812, 1.0));
+	background->setMaterial(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.8f, 0.8f, 0.8f), glm::vec3(0.2f, 0.2f, 0.2f), 32.0f);
+	objects.push_back(background);
+
+
+	
+}
+
+void Scene::CreateSkybox()
+{
+	const float skycube[108] = {
+		// Pøední stìna
+		-1.0f, -1.0f,  1.0f,
+		 1.0f, -1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		-1.0f, -1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		-1.0f,  1.0f,  1.0f,
+
+		// Zadní stìna
+		-1.0f, -1.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,
+		 1.0f,  1.0f, -1.0f,
+		-1.0f, -1.0f, -1.0f,
+		 1.0f,  1.0f, -1.0f,
+		 1.0f, -1.0f, -1.0f,
+
+		 // Levá stìna
+		 -1.0f, -1.0f, -1.0f,
+		 -1.0f, -1.0f,  1.0f,
+		 -1.0f,  1.0f,  1.0f,
+		 -1.0f, -1.0f, -1.0f,
+		 -1.0f,  1.0f,  1.0f,
+		 -1.0f,  1.0f, -1.0f,
+
+		 // Pravá stìna
+		  1.0f, -1.0f, -1.0f,
+		  1.0f,  1.0f, -1.0f,
+		  1.0f,  1.0f,  1.0f,
+		  1.0f, -1.0f, -1.0f,
+		  1.0f,  1.0f,  1.0f,
+		  1.0f, -1.0f,  1.0f,
+
+		  // Horní stìna
+		  -1.0f,  1.0f, -1.0f,
+		  -1.0f,  1.0f,  1.0f,
+		   1.0f,  1.0f,  1.0f,
+		  -1.0f,  1.0f, -1.0f,
+		   1.0f,  1.0f,  1.0f,
+		   1.0f,  1.0f, -1.0f,
+
+		   // Spodní stìna
+		   -1.0f, -1.0f, -1.0f,
+			1.0f, -1.0f, -1.0f,
+			1.0f, -1.0f,  1.0f,
+		   -1.0f, -1.0f, -1.0f,
+			1.0f, -1.0f,  1.0f,
+		   -1.0f, -1.0f,  1.0f
+	};
+
+
+
+	ShaderProgram* shaderProgram_skybox = new ShaderProgram(camera);
+	shaderProgram_skybox->init_shader("Shaders/skybox_vertex.glsl", "Shaders/skybox_fragment.glsl");
+	camera->addObserver(shaderProgram_skybox);
+	shaderPrograms.push_back(shaderProgram_skybox);
+
+
+	Texture* skybox_texture = new Texture(
+		"Textures/posx.jpg", "Textures/negx.jpg",
+		"Textures/posy.jpg", "Textures/negy.jpg",
+		"Textures/posz.jpg", "Textures/negz.jpg",
+		 GL_TEXTURE_CUBE_MAP);
+
+	printf("Delame skyboxmodel\n");
+	TexturedModel* skybox_model = new TexturedModel(std::vector<float>(skycube, skycube + sizeof(skycube) / sizeof(skycube[0])), skybox_texture, 10, 1);
+	models.push_back(skybox_model);
+
+
+	DrawableObject* skybox = new DrawableObject(camera);
+	skybox->init_model(skybox_model, 1);
+	skybox->init_shader(shaderProgram_skybox);
+	objects.push_back(skybox);
+
+}
+
+void Scene::DrawSkybox(float deltaTime)
+{
 	for (DrawableObject* object : objects)
 	{
-		object->Draw(deltaTime);
+		if (object->is_Skybox() == 1)
+		{
+			glDepthFunc(GL_LEQUAL);
+			object->Draw(deltaTime);
+			glDepthFunc(GL_LESS);
+		}
 	}
 }
+
+void Scene::DrawScene(float deltaTime)
+{
+	for (DrawableObject* object : objects)
+	{
+		if (object->is_Skybox() != 1)
+		{
+			object->Draw(deltaTime);
+		}
+	}
+}
+
 
 void Scene::ClearScene() {
 	camera->clearLinkShaders();
@@ -491,5 +662,9 @@ void Scene::SwitchScene(int sceneId) {
 	}
 	else if (sceneId == 4) {
 		CreateMultipleLightsScene();
+	}
+	else if (sceneId == 5)
+	{
+		CreateTexturedScene();
 	}
 }

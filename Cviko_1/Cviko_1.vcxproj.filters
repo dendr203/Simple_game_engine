@@ -19,6 +19,9 @@
     <Filter Include="Shaders">
       <UniqueIdentifier>{42e5ee1a-e877-4a22-bb76-fcf411cdd351}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Textures">
+      <UniqueIdentifier>{8713fff3-2448-4ca8-9570-69a456bee37f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">
@@ -76,6 +79,12 @@
       <Filter>Zdrojové soubory</Filter>
     </ClCompile>
     <ClCompile Include="Material.cpp">
+      <Filter>Zdrojové soubory</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Zdrojové soubory</Filter>
+    </ClCompile>
+    <ClCompile Include="TexturedModel.cpp">
       <Filter>Zdrojové soubory</Filter>
     </ClCompile>
   </ItemGroup>
@@ -164,6 +173,15 @@
     <ClInclude Include="Material.h">
       <Filter>Hlavičkové soubory</Filter>
     </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Hlavičkové soubory</Filter>
+    </ClInclude>
+    <ClInclude Include="TexturedModel.h">
+      <Filter>Hlavičkové soubory</Filter>
+    </ClInclude>
+    <ClInclude Include="Models\plain_texture.h">
+      <Filter>Models</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -182,5 +200,37 @@
     <None Include="Shaders\phong_fragment.glsl">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="Shaders\skybox_fragment.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\skybox_vertex.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Textures\grass.png">
+      <Filter>Textures</Filter>
+    </Image>
+    <Image Include="Textures\wooden_fence.png">
+      <Filter>Textures</Filter>
+    </Image>
+    <Image Include="Textures\negx.jpg">
+      <Filter>Textures</Filter>
+    </Image>
+    <Image Include="Textures\negy.jpg">
+      <Filter>Textures</Filter>
+    </Image>
+    <Image Include="Textures\negz.jpg">
+      <Filter>Textures</Filter>
+    </Image>
+    <Image Include="Textures\posx.jpg">
+      <Filter>Textures</Filter>
+    </Image>
+    <Image Include="Textures\posy.jpg">
+      <Filter>Textures</Filter>
+    </Image>
+    <Image Include="Textures\posz.jpg">
+      <Filter>Textures</Filter>
+    </Image>
   </ItemGroup>
 </Project>

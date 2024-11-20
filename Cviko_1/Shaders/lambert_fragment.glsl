@@ -32,6 +32,10 @@ in vec4 fragPosition;
 in vec3 viewDirection;
 
 uniform vec4 objectColor;
+uniform sampler2D textureSampler;
+uniform bool useTexture;
+
+in vec2 texCoord;
 
 out vec4 out_Color;
 
@@ -40,6 +44,11 @@ void main(void) {
     vec4 ambientLight = vec4(material.ambient * lights[0].lightC, 1.0);
     vec4 finalColor = vec4(0.0);
 
+    vec4 textureColor = vec4(1.0, 1.0, 1.0, 1.0);
+    if(useTexture)
+    {
+        textureColor = texture(textureSampler, texCoord);    
+    }
 
     for (int i = 0; i < numberOfLights; ++i)
     {
@@ -84,7 +93,7 @@ void main(void) {
 
         // Diffuse light (Lambertùv model)
         float dot_product = max(dot(lightDir, worldNormal), 0.0);
-        vec4 diffuse = dot_product * vec4(material.diffuse * lights[i].lightC, 1.0);
+        vec4 diffuse = dot_product * vec4(material.diffuse * lights[i].lightC, 1.0) * textureColor;
 
 
         finalColor += diffuse * attenuation;

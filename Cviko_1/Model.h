@@ -10,13 +10,13 @@ class Model
 public:
 	Model(const std::vector<float>& vertices);
 	~Model();
-	void draw_model();
+	virtual void draw_model();
 
-private:
-	 GLuint VBO, VAO;
-	 GLsizei numVertices;
+protected:
+	GLuint VBO, VAO;
+	GLsizei numVertices;
 
-	 void init_model(const std::vector<float>& verticies);
+	virtual void init_model(const std::vector<float>& verticies);
 };
 
 

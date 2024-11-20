@@ -17,6 +17,11 @@ public:
 	void CreateForestScene_bat(int numTrees, int numBushes);
 	void CreateFourShaderLightsScene();
 	void CreateMultipleLightsScene();
+	void CreateTexturedScene();
+
+
+	void CreateSkybox();
+	void DrawSkybox(float deltaTime);
 
 	void DrawScene(float deltaTime);
 	void ClearScene();

@@ -105,15 +105,15 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Libraries\glm-master;..\Libraries\glfw-3.4.bin.WIN64\include;..\Libraries\glew-2.2.0\include;..\Cviko_1</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Libraries\glm-master;..\Libraries\glfw-3.4.bin.WIN64\include;..\Libraries\glew-2.2.0\include;..\Cviko_1;..\Libraries\soil\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AddModuleNamesToAssembly>
       </AddModuleNamesToAssembly>
-      <AdditionalLibraryDirectories>..\Libraries\glfw-3.4.bin.WIN64\lib-vc2022;..\Libraries\glew-2.2.0\lib\Release\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32.lib;opengl32.lib;glu32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\Libraries\glfw-3.4.bin.WIN64\lib-vc2022;..\Libraries\glew-2.2.0\lib\Release\x64;..\Libraries\soil\lib-vc2012\Platform_x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glew32.lib;opengl32.lib;glu32.lib;glfw3.lib;SOIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -149,6 +149,8 @@
     <ClCompile Include="ShaderProgram.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="SpotLight.cpp" />
+    <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="TexturedModel.cpp" />
     <ClCompile Include="TransformationComposite.cpp" />
     <ClCompile Include="Translation.cpp" />
     <ClCompile Include="Window.cpp" />
@@ -165,6 +167,7 @@
     <ClInclude Include="Models\bushes.h" />
     <ClInclude Include="Models\gift.h" />
     <ClInclude Include="Models\plain.h" />
+    <ClInclude Include="Models\plain_texture.h" />
     <ClInclude Include="Models\sphere.h" />
     <ClInclude Include="Models\suzi_flat.h" />
     <ClInclude Include="Models\suzi_smooth.h" />
@@ -178,6 +181,8 @@
     <ClInclude Include="ShaderProgram.h" />
     <ClInclude Include="SpotLight.h" />
     <ClInclude Include="Subject.h" />
+    <ClInclude Include="Texture.h" />
+    <ClInclude Include="TexturedModel.h" />
     <ClInclude Include="TransformationComponent.h" />
     <ClInclude Include="TransformationComposite.h" />
     <ClInclude Include="Translation.h" />
@@ -186,10 +191,22 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="Shaders\blin_phong_fragment.glsl" />
+    <None Include="Shaders\skybox_fragment.glsl" />
+    <None Include="Shaders\skybox_vertex.glsl" />
     <None Include="Shaders\vertex.glsl" />
     <None Include="Shaders\constant_fragment.glsl" />
     <None Include="Shaders\lambert_fragment.glsl" />
     <None Include="Shaders\phong_fragment.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Textures\grass.png" />
+    <Image Include="Textures\negx.jpg" />
+    <Image Include="Textures\negy.jpg" />
+    <Image Include="Textures\negz.jpg" />
+    <Image Include="Textures\posx.jpg" />
+    <Image Include="Textures\posy.jpg" />
+    <Image Include="Textures\posz.jpg" />
+    <Image Include="Textures\wooden_fence.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

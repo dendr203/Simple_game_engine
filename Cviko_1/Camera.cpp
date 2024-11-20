@@ -106,7 +106,7 @@ void Camera::updateAspectRatio(float _aspectRatio)
 
 void Camera::updateProjectionMatrix()
 {
-	projectionMatrix = glm::perspective(glm::radians(fov), aspectRatio, 0.1f, 100.0f);
+	projectionMatrix = glm::perspective(glm::radians(fov), aspectRatio, 0.1f, 1000.0f);
 	updateObserversProjection();
 }
 

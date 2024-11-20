@@ -26,11 +26,20 @@ struct Material{
 uniform Material material;
 
 uniform vec4 objectColor;
+uniform sampler2D textureSampler;
+uniform bool useTexture;
+
+in vec2 texCoord;
 
 out vec4 out_Color;
 
-void main(void) {
-    for (int i = 0; i < numberOfLights; ++i) {
-        out_Color = objectColor;
+void main(void)
+{
+    vec4 textureColor = vec4(1.0, 1.0, 1.0, 1.0);
+    if(useTexture)
+    {
+        textureColor = texture(textureSampler, texCoord);    
     }
+
+    out_Color = textureColor * objectColor;
 }

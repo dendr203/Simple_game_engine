@@ -15,19 +15,20 @@ Model::~Model() {
 }
 
 void Model::init_model(const std::vector<float>& verticies)
-{
-	
+{	
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, verticies.size() * sizeof(float), verticies.data(), GL_STATIC_DRAW);
 	
 	glBindVertexArray(VAO);
 	glEnableVertexAttribArray(0);
-	glEnableVertexAttribArray(1); // colors from fragment shader
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (GLvoid*)0); // position
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (GLvoid*)(sizeof(float) * 3)); // color
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (GLvoid*)0);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (GLvoid*)(sizeof(float) * 3));
+	
+
 }
 
 void Model::draw_model(){
 	glBindVertexArray(VAO);
-	glDrawArrays(GL_TRIANGLES, 0, numVertices); // Or any number based on vertices count
+	glDrawArrays(GL_TRIANGLES, 0, numVertices);
 }	

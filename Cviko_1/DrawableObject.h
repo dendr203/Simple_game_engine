@@ -5,6 +5,7 @@
 #include "ShaderProgram.h"
 #include "Model.h"
 #include "Material.h"
+#include "TexturedModel.h"
 
 #include "TransformationComposite.h"
 #include "Translation.h"
@@ -23,6 +24,7 @@
 #include "Models/plain.h"
 #include "Models/suzi_flat.h"
 #include "Models/suzi_smooth.h"
+#include "Models/plain_texture.h"
 
 
 class DrawableObject
@@ -31,8 +33,8 @@ public:
 	DrawableObject(Camera* _camera);
 	~DrawableObject();
 
-	void init_model(Model* model);
-
+	void init_model(Model* model, int is_skybox = 0);
+	int is_Skybox() { return is_skybox; }
 
 	void init_shader(ShaderProgram* shaderprogram);
 	void Draw(float deltaTime);
@@ -53,6 +55,7 @@ public:
 
 
 private:
+	int is_skybox;
 	ShaderProgram* shaderProgram;
 	Model* model;
 	Material* material;

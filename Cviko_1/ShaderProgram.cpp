@@ -210,8 +210,27 @@ void ShaderProgram::setMaterial(Material material)
 	setUniformLocation("material.shininess", material.getShininess());
 }
 
+void ShaderProgram::setTexture(float tex_scale)
+{
+	setUniformLocation("useTexture", 1);
+	setUniformLocation("textureScale", tex_scale);
+	setUniformLocation("textureSampler", 0);
+}
 
-void ShaderProgram::updateFromSubject() {
+void ShaderProgram::setSkyboxTexture()
+{
+	setUniformLocation("useTexture", 1);
+	setUniformLocation("textureSampler", 0);
+}
+
+void ShaderProgram::unsetTexture()
+{
+	setUniformLocation("useTexture", 0);
+}
+
+
+void ShaderProgram::updateFromSubject()
+{
 	setViewMatrix();
 	setLights();
 }

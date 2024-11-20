@@ -6,6 +6,10 @@ DynamicRotation::DynamicRotation(float speed, glm::vec3 axis)
 
 float DynamicRotation::update(float deltaTime)
 {
+    if (currentAngle >= 360.0f)
+    {
+		currentAngle = 0.0f;
+    }
     return currentAngle += speed * deltaTime;
 }
 
