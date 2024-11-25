@@ -20,6 +20,13 @@ TexturedModel::TexturedModel(const std::vector<float>& vertices, Texture* textur
 
 }
 
+TexturedModel::~TexturedModel()
+{
+	glDeleteVertexArrays(1, &VAO);
+	glDeleteBuffers(1, &VBO);
+	glDeleteBuffers(1, &IBO);
+}
+
 
 
 void TexturedModel::init_model(const std::vector<float>& vertices)
@@ -56,6 +63,7 @@ void TexturedModel::draw_model()
 {
 	glBindVertexArray(VAO);
 	glDrawArrays(GL_TRIANGLES, 0, numVertices);
+	glBindVertexArray(0);
 }
 
 float TexturedModel::getScale()

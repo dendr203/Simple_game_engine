@@ -95,7 +95,7 @@ void main(void) {
 
         // Diffuse light (Lambert model)
         float diff = max(dot(lightDir, worldNormal), 0.0);
-        vec4 diffuse = diff * vec4(material.diffuse * lights[i].lightC, 1.0) * textureColor; //* objectColor;
+        vec4 diffuse = diff * vec4(material.diffuse * lights[i].lightC, 1.0) * textureColor;
 
 
         //Specular light

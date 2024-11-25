@@ -129,7 +129,40 @@ void Scene::CreateForestScene_blud(int numTrees, int numBushes)
 		objects.push_back(bush);
 	}
 
-	
+
+
+
+	Texture* house_texture = new Texture("Textures/house.png", GL_TEXTURE2);
+	textures.push_back(house_texture);
+
+	MeshModel* house_model = new MeshModel("Models/house.obj", house_texture, 1);
+	models.push_back(house_model);
+
+	//TexturedModel* house_model = new TexturedModel(std::vector<float>(building, building + sizeof(building) / sizeof(building[0])), house_texture, 1);
+	//models.push_back(house_model);
+
+	DrawableObject* house = new DrawableObject(camera);
+	house->init_model(house_model);
+	house->init_shader(shaderProgram);
+	house->setColor(glm::vec4(1.f, 1.f, 1.f, 1.0f));
+	house->setMaterial(glm::vec3(0.01f, 0.01f, 0.01f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.1f, 0.1f, 0.1f), 32.0f);
+	objects.push_back(house);
+
+
+
+	Texture* zombie_texture = new Texture("Textures/zombie.png", GL_TEXTURE3);
+	textures.push_back(zombie_texture);
+
+	MeshModel* zombie_model = new MeshModel("Models/zombie.obj", zombie_texture, 1);
+	models.push_back(zombie_model);
+
+	DrawableObject* zombie = new DrawableObject(camera);
+	zombie->init_model(zombie_model);
+	zombie->init_shader(shaderProgram);
+	zombie->addTranslation(glm::vec3(10.f, 0.f, 0.f));
+	zombie->setColor(glm::vec4(1.f, 1.f, 1.f, 1.0f));
+	zombie->setMaterial(glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.1f, 0.1f, 0.1f), 32.0f);
+	objects.push_back(zombie);
 }
 
 void Scene::RandomTransform(DrawableObject* object, float scale_base) {

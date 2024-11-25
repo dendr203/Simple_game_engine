@@ -6,6 +6,7 @@
 #include "Model.h"
 #include "Material.h"
 #include "TexturedModel.h"
+#include "MeshModel.h"
 
 #include "TransformationComposite.h"
 #include "Translation.h"
@@ -25,6 +26,7 @@
 #include "Models/suzi_flat.h"
 #include "Models/suzi_smooth.h"
 #include "Models/plain_texture.h"
+#include "Models/house.h"
 
 
 class DrawableObject

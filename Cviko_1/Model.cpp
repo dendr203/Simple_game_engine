@@ -12,6 +12,7 @@ Model::Model(const std::vector<float>& vertices)
 Model::~Model() {
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
+	glDeleteBuffers(1, &IBO);
 }
 
 void Model::init_model(const std::vector<float>& verticies)

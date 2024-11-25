@@ -87,6 +87,9 @@
     <ClCompile Include="TexturedModel.cpp">
       <Filter>Zdrojové soubory</Filter>
     </ClCompile>
+    <ClCompile Include="MeshModel.cpp">
+      <Filter>Zdrojové soubory</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -182,6 +185,15 @@
     <ClInclude Include="Models\plain_texture.h">
       <Filter>Models</Filter>
     </ClInclude>
+    <ClInclude Include="Models\house.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Models\skydome.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshModel.h">
+      <Filter>Hlavičkové soubory</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -230,6 +242,12 @@
       <Filter>Textures</Filter>
     </Image>
     <Image Include="Textures\posz.jpg">
+      <Filter>Textures</Filter>
+    </Image>
+    <Image Include="Textures\house.png">
+      <Filter>Textures</Filter>
+    </Image>
+    <Image Include="Textures\zombie.png">
       <Filter>Textures</Filter>
     </Image>
   </ItemGroup>

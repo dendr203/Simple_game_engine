@@ -105,15 +105,15 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Libraries\glm-master;..\Libraries\glfw-3.4.bin.WIN64\include;..\Libraries\glew-2.2.0\include;..\Cviko_1;..\Libraries\soil\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Libraries\glm-master;..\Libraries\glfw-3.4.bin.WIN64\include;..\Libraries\glew-2.2.0\include;..\Cviko_1\Models;..\Cviko_1;..\Libraries\soil\include;..\Libraries\assimp\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AddModuleNamesToAssembly>
       </AddModuleNamesToAssembly>
-      <AdditionalLibraryDirectories>..\Libraries\glfw-3.4.bin.WIN64\lib-vc2022;..\Libraries\glew-2.2.0\lib\Release\x64;..\Libraries\soil\lib-vc2012\Platform_x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32.lib;opengl32.lib;glu32.lib;glfw3.lib;SOIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\Libraries\glfw-3.4.bin.WIN64\lib-vc2022;..\Libraries\glew-2.2.0\lib\Release\x64;..\Libraries\soil\lib-vc2012\Platform_x64;..\Libraries\assimp\lib\x64\v141\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glew32.lib;opengl32.lib;glu32.lib;glfw3.lib;SOIL.lib;assimp-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -140,6 +140,7 @@
     <ClCompile Include="DynamicRotation.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="Material.cpp" />
+    <ClCompile Include="MeshModel.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="Rotation.cpp" />
@@ -163,11 +164,14 @@
     <ClInclude Include="DynamicRotation.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Material.h" />
+    <ClInclude Include="MeshModel.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="Models\bushes.h" />
     <ClInclude Include="Models\gift.h" />
+    <ClInclude Include="Models\house.h" />
     <ClInclude Include="Models\plain.h" />
     <ClInclude Include="Models\plain_texture.h" />
+    <ClInclude Include="Models\skydome.h" />
     <ClInclude Include="Models\sphere.h" />
     <ClInclude Include="Models\suzi_flat.h" />
     <ClInclude Include="Models\suzi_smooth.h" />
@@ -200,6 +204,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Textures\grass.png" />
+    <Image Include="Textures\house.png" />
     <Image Include="Textures\negx.jpg" />
     <Image Include="Textures\negy.jpg" />
     <Image Include="Textures\negz.jpg" />
@@ -207,6 +212,7 @@
     <Image Include="Textures\posy.jpg" />
     <Image Include="Textures\posz.jpg" />
     <Image Include="Textures\wooden_fence.png" />
+    <Image Include="Textures\zombie.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

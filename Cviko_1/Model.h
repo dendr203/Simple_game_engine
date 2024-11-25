@@ -13,7 +13,7 @@ public:
 	virtual void draw_model();
 
 protected:
-	GLuint VBO, VAO;
+	GLuint VBO, VAO, IBO;
 	GLsizei numVertices;
 
 	virtual void init_model(const std::vector<float>& verticies);

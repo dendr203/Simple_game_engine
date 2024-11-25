@@ -40,6 +40,11 @@ void DrawableObject::Draw(float deltaTime)
 	{ 
 		shaderProgram->setTexture(texturedModel->getUnitID(), texturedModel->getScale());
 	}
+
+	if (MeshModel* meshModel = dynamic_cast<MeshModel*>(model))
+	{
+		shaderProgram->setTexture(meshModel->getUnitID(), meshModel->getScale());
+	}
 	
 	shaderProgram->use_shader();
 	model->draw_model();
