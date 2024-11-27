@@ -19,25 +19,23 @@ void Scene::CreateForestScene_blud(int numTrees, int numBushes)
 {
 	CreateSkybox();
 
-	camera->setCamera(glm::vec3(6.f, 5.f, 7.f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.05f,
+	camera->setCamera(glm::vec3(6.f, 5.f, 7.f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.10f,
 		60.0f, -130.f, -30.f, 0.08f);
 
 
-	SpotLight* spotlight_1 = new SpotLight(0, glm::vec3(-5.0f, 10.0f, 20.0f), glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(1.0f, .0f, .0f), 5.f, 10.f);
+	SpotLight* spotlight_1 = new SpotLight(0, glm::vec3(-5.0f, 20.0f, 20.0f), glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), 5.f, 10.f);
 	lights.push_back(spotlight_1);
 
-	SpotLight* spotlight_2 = new SpotLight(0, glm::vec3(5.0f, 10.0f, 20.0f), glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 0.0f), 10.f, 20.f);
-	lights.push_back(spotlight_2);
 
 	DirectionalLight* dir_light = new DirectionalLight(glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f));
 	lights.push_back(dir_light);
 	
 
-	PointLight* blud_1 = new PointLight(glm::vec3(-10.f, 1.f, -5.f), glm::vec3(1.f, 1.f, 1.f), 0.1f, 0.3f, 0.032f);
-	PointLight* blud_2 = new PointLight(glm::vec3(10.f, 1.f, 5.f), glm::vec3(1.f, 1.f, 1.f), 0.1f, 0.3f, 0.032f);
-	PointLight* blud_3 = new PointLight(glm::vec3(-2.f, 1.f, 3.f), glm::vec3(1.f, 1.f, 1.f), 0.1f, 0.3f, 0.032f);
-	PointLight* blud_4 = new PointLight(glm::vec3(5.f, 1.f, -3.f), glm::vec3(1.f, 1.f, 1.f), 0.1f, 0.3f, 0.032f);
-	PointLight* blud_5 = new PointLight(glm::vec3(8.f, 1.f, 4.f), glm::vec3(1.f, 1.f, 1.f), 0.1f, 0.3f, 0.032f);
+	PointLight* blud_1 = new PointLight(glm::vec3(-10.f, 1.f, -10.f), glm::vec3(1.f, 1.f, 1.f), 0.1f, 0.3f, 0.032f);
+	PointLight* blud_2 = new PointLight(glm::vec3(-10.f, 1.f, 10.f), glm::vec3(1.f, 1.f, 1.f), 0.1f, 0.3f, 0.032f);
+	PointLight* blud_3 = new PointLight(glm::vec3(10.f, 1.f, 10.f), glm::vec3(1.f, 1.f, 1.f), 0.1f, 0.3f, 0.032f);
+	PointLight* blud_4 = new PointLight(glm::vec3(10.f, 1.f, -10.f), glm::vec3(1.f, 1.f, 1.f), 0.1f, 0.3f, 0.032f);
+	PointLight* blud_5 = new PointLight(glm::vec3(5.f, 1.f, 5.f), glm::vec3(1.f, 1.f, 1.f), 0.1f, 0.3f, 0.032f);
 	lights.push_back(blud_1);
 	lights.push_back(blud_2);
 	lights.push_back(blud_3);
@@ -58,7 +56,6 @@ void Scene::CreateForestScene_blud(int numTrees, int numBushes)
 	//tree, bush plain
 	ShaderProgram* shaderProgram = new ShaderProgram(camera);
 	shaderProgram->addLight(spotlight_1);
-	shaderProgram->addLight(spotlight_2);
 	shaderProgram->addLight(blud_1);
 	shaderProgram->addLight(blud_2);
 	shaderProgram->addLight(blud_3);
@@ -68,7 +65,6 @@ void Scene::CreateForestScene_blud(int numTrees, int numBushes)
 	shaderProgram->init_shader("Shaders/vertex.glsl", "Shaders/blin_phong_fragment.glsl");
 	camera->addObserver(shaderProgram);
 	spotlight_1->addObserver(shaderProgram);
-	spotlight_2->addObserver(shaderProgram);
 	blud_1->addObserver(shaderProgram);
 	blud_2->addObserver(shaderProgram);
 	blud_3->addObserver(shaderProgram);
@@ -138,14 +134,12 @@ void Scene::CreateForestScene_blud(int numTrees, int numBushes)
 	MeshModel* house_model = new MeshModel("Models/house.obj", house_texture, 1);
 	models.push_back(house_model);
 
-	//TexturedModel* house_model = new TexturedModel(std::vector<float>(building, building + sizeof(building) / sizeof(building[0])), house_texture, 1);
-	//models.push_back(house_model);
-
 	DrawableObject* house = new DrawableObject(camera);
 	house->init_model(house_model);
 	house->init_shader(shaderProgram);
 	house->setColor(glm::vec4(1.f, 1.f, 1.f, 1.0f));
-	house->setMaterial(glm::vec3(0.01f, 0.01f, 0.01f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.1f, 0.1f, 0.1f), 32.0f);
+	house->addDynamicRotation(45.f, glm::vec3(0.f, 1.f, 0.f));
+	//house->setMaterial(glm::vec3(0.01f, 0.01f, 0.01f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.1f, 0.1f, 0.1f), 32.0f);
 	objects.push_back(house);
 
 
@@ -159,10 +153,28 @@ void Scene::CreateForestScene_blud(int numTrees, int numBushes)
 	DrawableObject* zombie = new DrawableObject(camera);
 	zombie->init_model(zombie_model);
 	zombie->init_shader(shaderProgram);
-	zombie->addTranslation(glm::vec3(10.f, 0.f, 0.f));
+	zombie->addTranslation(glm::vec3(15.f, 0.f, 0.f));
 	zombie->setColor(glm::vec4(1.f, 1.f, 1.f, 1.0f));
-	zombie->setMaterial(glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.1f, 0.1f, 0.1f), 32.0f);
+	zombie->addDynamicRotation(45.f, glm::vec3(0.f, 1.f, 0.f));
+	//zombie->setMaterial(glm::vec3(0.01f, 0.01f, 0.01f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.1f, 0.1f, 0.1f), 32.0f);
 	objects.push_back(zombie);
+
+
+
+	MeshModel* login_model = new MeshModel("Models/login_test.obj", plain_texture, 20);
+	models.push_back(login_model);
+
+	DrawableObject* login_object = new DrawableObject(camera);
+	login_object->init_model(login_model);
+	login_object->init_shader(shaderProgram);
+	login_object->addTranslation(glm::vec3(15.f, 5.f, 0.f));
+	login_object->setColor(glm::vec4(1.f, 1.f, 1.f, 1.0f));
+	login_object->setMaterial(glm::vec3(0.1f, 0.1f, 0.1f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.1f, 0.1f, 0.1f), 32.0f);
+	objects.push_back(login_object);
+
+
+
+
 }
 
 void Scene::RandomTransform(DrawableObject* object, float scale_base) {
@@ -257,17 +269,6 @@ void Scene::CreateForestScene_bat(int numTrees, int numBushes)
 	models.push_back(bush_model);
 
 
-	DrawableObject* tree_rotate = new DrawableObject(camera);
-	tree_rotate->init_model(tree_model);
-	tree_rotate->init_shader(shaderProgram);
-	tree_rotate->addTranslation(glm::vec3(5.f, 3.f, 0.f));
-	tree_rotate->addScale(glm::vec3(0.5, 0.5f, 0.5f));
-	tree_rotate->setColor(glm::vec4(1.0f, 1.f, 1.f, 1.0f));
-	tree_rotate->addDynamicRotation(45.f, glm::vec3(0.f, 0.f, 1.f));
-	tree_rotate->setMaterial(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.8f, 0.8f, 0.8f), glm::vec3(1.0f, 1.0f, 1.0f), 32.0f);
-	objects.push_back(tree_rotate);
-
-
 
 	for (int i = 0; i < numTrees; ++i) {
 		DrawableObject* tree = new DrawableObject(camera);
@@ -292,6 +293,23 @@ void Scene::CreateForestScene_bat(int numTrees, int numBushes)
 		bush->setMaterial(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.8f, 0.8f, 0.8f), glm::vec3(1.0f, 1.0f, 1.0f), 32.0f);
 		objects.push_back(bush);
 	}
+
+
+
+	Texture* house_texture = new Texture("Textures/house.png", GL_TEXTURE2);
+	textures.push_back(house_texture);
+
+	MeshModel* house_model = new MeshModel("Models/house.obj", house_texture, 1);
+	models.push_back(house_model);
+
+	DrawableObject* house = new DrawableObject(camera);
+	house->init_model(house_model);
+	house->init_shader(shaderProgram);
+	house->setColor(glm::vec4(1.f, 1.f, 1.f, 1.0f));
+	//house->addDynamicRotation(45.f, glm::vec3(0.f, 1.f, 0.f));
+	//house->setMaterial(glm::vec3(0.01f, 0.01f, 0.01f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.1f, 0.1f, 0.1f), 32.0f);
+	objects.push_back(house);
+
 }
 
 void Scene::CreateFourShaderLightsScene()
