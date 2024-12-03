@@ -5,14 +5,14 @@ Light::Light(glm::vec3 color) : color(color) {}
 
 
 LightType Light::getLightType() {
-	return lightType;
+    return lightType;
 }
 
 glm::vec3 Light::getColor() {
-	return color;
+    return color;
 }
 
- 
+
 
 
 
@@ -42,4 +42,3 @@ void Light::notifyObservers() {
 void Light::clearLinkShaders() {
     observers.clear();
 }
-

@@ -205,17 +205,77 @@ void Window::cursor_callback(GLFWwindow* window, float x, float y)
 }
 
 
-
+bool delete_objs = false;
 
 void Window::button_callback(GLFWwindow* window, int button, int action, int mode)
 {
+	Window* instance = static_cast<Window*>(glfwGetWindowUserPointer(window));
 
-	if (action == GLFW_PRESS) {
-		keyStates[button] = true;
+	if (instance)
+	{
+		if (action == GLFW_PRESS) {
+			keyStates[button] = true;
+		}
+		else if (action == GLFW_RELEASE) {
+			keyStates[button] = false;
+		}
+
+		if (action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT)
+		{
+			double mouseX, mouseY;
+			glfwGetCursorPos(window, &mouseX, &mouseY);
+
+			// Získání viewportu a pøepoèet y-souøadnice
+			GLint viewport[4];
+			glGetIntegerv(GL_VIEWPORT, viewport);
+
+
+			GLint x = static_cast<GLint>(mouseX);
+			GLint y = static_cast<GLint>(mouseY);
+			GLint flippedY = viewport[3] - y;
+			
+			// Naètení dat z framebufferu
+			GLbyte color[4];   // RGBA barva
+			GLfloat depth;     // Hloubka
+			GLuint stencilID;  // ID objektu ze stencil bufferu
+
+			glReadPixels(x, flippedY, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, color);                // Naètení barvy
+			glReadPixels(x, flippedY, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);           // Naètení hloubky
+			glReadPixels(x, flippedY, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &stencilID);  // Naètení ID z stencil bufferu
+
+			
+
+			// Pøevod depth na svìtové souøadnice pomocí glUnProject
+			if (depth < 1.0f) { // Kontrola, jestli jsme klikli na viditelný objekt
+				glm::mat4 viewMatrix = instance->camera->getViewMatrix();
+				glm::mat4 projectionMatrix = instance->camera->getProjectionMatrix();
+				glm::vec3 windowPos(mouseX, flippedY, depth);
+				glm::vec3 worldPos = glm::unProject(
+					windowPos,
+					viewMatrix,
+					projectionMatrix,
+					glm::vec4(viewport[0], viewport[1], viewport[2], viewport[3])
+				);
+
+				
+				// Odebrání objektu, pokud to není rovina (vždy s ID 0)
+				if (keyStates[GLFW_KEY_SPACE] && stencilID != 0) {
+					printf("Deleting an object with object ID: %u\n", stencilID);
+					instance->scene->DeleteSelectedOBJ(stencilID);
+				}
+				// Pøidání objektu
+				else {
+					printf("Adding a tree at: [%.2f, %.2f, %.2f]\n", worldPos.x, worldPos.y, worldPos.z);
+					instance->scene->addTree(worldPos);
+				}
+			}
+			else {
+				printf("No object clicked (depth is 1.0)\n");
+			}
+
+		}
 	}
-	else if (action == GLFW_RELEASE) {
-		keyStates[button] = false;
-	}
+
 
 	//printf("button_callback [%d,%d,%d]\n", button, action, mode);
 
@@ -247,4 +307,9 @@ void Window::swapBuffers()
 void Window::attachCamera(Camera* _camera)
 {
 	camera = _camera;
+}
+
+void Window::attachScene(Scene* _scene)
+{
+	scene = _scene;
 }

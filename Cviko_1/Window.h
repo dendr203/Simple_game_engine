@@ -7,6 +7,7 @@
 #include <unordered_map>
 
 #include "Camera.h"
+#include "Scene.h"
 
 class Window
 {
@@ -38,11 +39,13 @@ public:
 	void swapBuffers();
 
 	void attachCamera(Camera* _camera);
+	void attachScene(Scene* _scene);
 
 private:
 	GLFWwindow* window;
 	int major, minor, revision;
 	
 	Camera* camera;
+	Scene* scene;
 };
 

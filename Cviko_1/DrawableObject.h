@@ -13,6 +13,7 @@
 #include "Rotation.h"
 #include "Scaling.h"
 #include "DynamicRotation.h"
+#include "BezierCurve.h"
 
 
 #include <vector>
@@ -32,7 +33,7 @@
 class DrawableObject
 {
 public:
-	DrawableObject(Camera* _camera);
+	DrawableObject(Camera* _camera, BezierCurve* curve = nullptr);
 	~DrawableObject();
 
 	void init_model(Model* model, int is_skybox = 0);
@@ -56,6 +57,7 @@ public:
 	void setColor(glm::vec4 _color);
 	void setMaterial(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, float shininess);
 
+	int getID() { return objectID; }
 
 private:
 	int is_skybox;
@@ -66,5 +68,10 @@ private:
 	TransformationComposite* transformationComposite;
 
 	glm::vec4 color;
+
+	int objectID;
+	static int nextID;
+
+	BezierCurve* curve;
 };
 

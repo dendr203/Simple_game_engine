@@ -90,6 +90,9 @@
     <ClCompile Include="MeshModel.cpp">
       <Filter>Zdrojové soubory</Filter>
     </ClCompile>
+    <ClCompile Include="BezierCurve.cpp">
+      <Filter>Zdrojové soubory</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -194,6 +197,9 @@
     <ClInclude Include="MeshModel.h">
       <Filter>Hlavičkové soubory</Filter>
     </ClInclude>
+    <ClInclude Include="BezierCurve.h">
+      <Filter>Hlavičkové soubory</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -248,6 +254,9 @@
       <Filter>Textures</Filter>
     </Image>
     <Image Include="Textures\zombie.png">
+      <Filter>Textures</Filter>
+    </Image>
+    <Image Include="Textures\tree.png">
       <Filter>Textures</Filter>
     </Image>
   </ItemGroup>

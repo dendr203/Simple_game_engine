@@ -15,6 +15,8 @@ Scene::~Scene()
 }
 
 
+
+
 void Scene::CreateForestScene_blud(int numTrees, int numBushes)
 {
 	CreateSkybox();
@@ -23,7 +25,7 @@ void Scene::CreateForestScene_blud(int numTrees, int numBushes)
 		60.0f, -130.f, -30.f, 0.08f);
 
 
-	SpotLight* spotlight_1 = new SpotLight(0, glm::vec3(-5.0f, 20.0f, 20.0f), glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), 5.f, 10.f);
+	SpotLight* spotlight_1 = new SpotLight(0, glm::vec3(-5.0f, +50.0f, -5.0f), glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), 5.f, 10.f);
 	lights.push_back(spotlight_1);
 
 
@@ -48,8 +50,6 @@ void Scene::CreateForestScene_blud(int numTrees, int numBushes)
 	shaderProgram_light->init_shader("Shaders/vertex.glsl", "Shaders/constant_fragment.glsl");
 	camera->addObserver(shaderProgram_light);
 	shaderPrograms.push_back(shaderProgram_light);
-	Model* sphere_model = new Model(std::vector<float>(sphere, sphere + sizeof(sphere) / sizeof(sphere[0])));
-	models.push_back(sphere_model);
 
 
 	
@@ -77,21 +77,25 @@ void Scene::CreateForestScene_blud(int numTrees, int numBushes)
 	//plain
 	Texture* plain_texture = new Texture("Textures/grass.png", GL_TEXTURE1);
 	textures.push_back(plain_texture);
-	TexturedModel* plain_model = new TexturedModel(std::vector<float>(plain_textured, plain_textured + sizeof(plain_textured) / sizeof(plain_textured[0])), plain_texture, 10);
+
+	MeshModel* plain_model = new MeshModel("Models/teren.obj", plain_texture, 1);
 	models.push_back(plain_model);
 	
 	DrawableObject* plain = new DrawableObject(camera);
 	plain->init_model(plain_model);
 	plain->init_shader(shaderProgram);
-	plain->addScale(glm::vec3(30, 30, 30));
+	//plain->addScale(glm::vec3(30, 30, 30));
 	plain->setColor(glm::vec4(1.f, 1.f, 1.f, 1.0f));
-	plain->setMaterial(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.01f, 0.01f, 0.01f), 32.0f);
+	plain->setMaterial(glm::vec3(0.01f, 0.01f, 0.01f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.01f, 0.01f, 0.01f), 32.0f);
 	objects.push_back(plain);
 
 
 
 	//tree
-	Model* tree_model = new Model(std::vector<float>(tree, tree + sizeof(tree) / sizeof(tree[0])));
+	Texture* tree_texture = new Texture("Textures/tree.png", GL_TEXTURE2);
+	textures.push_back(tree_texture);
+
+	MeshModel* tree_model = new MeshModel("Models/tree.obj", tree_texture, 1);
 	models.push_back(tree_model);
 
 
@@ -106,7 +110,7 @@ void Scene::CreateForestScene_blud(int numTrees, int numBushes)
 		tree->init_model(tree_model);
 		tree->init_shader(shaderProgram);
 		RandomTransform(tree, 100.f);
-		tree->setColor(glm::vec4(1.0f, 0.f, 0.f, 1.0f));
+		tree->setColor(glm::vec4(1.0f, 1.f, 1.f, 1.0f));
 		tree->setMaterial(glm::vec3(0.01f, 0.01f, 0.01f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.1f, 0.1f, 0.1f), 32.0f);
 		objects.push_back(tree);
 		if (i % 3 == 0)
@@ -128,7 +132,7 @@ void Scene::CreateForestScene_blud(int numTrees, int numBushes)
 
 
 
-	Texture* house_texture = new Texture("Textures/house.png", GL_TEXTURE2);
+	Texture* house_texture = new Texture("Textures/house.png", GL_TEXTURE3);
 	textures.push_back(house_texture);
 
 	MeshModel* house_model = new MeshModel("Models/house.obj", house_texture, 1);
@@ -138,30 +142,45 @@ void Scene::CreateForestScene_blud(int numTrees, int numBushes)
 	house->init_model(house_model);
 	house->init_shader(shaderProgram);
 	house->setColor(glm::vec4(1.f, 1.f, 1.f, 1.0f));
-	house->addDynamicRotation(45.f, glm::vec3(0.f, 1.f, 0.f));
+	house->addTranslation(glm::vec3(-5.f, 0.f, -5.f));
+	house->addScale(glm::vec3(0.7f, 0.7f, 0.7f));
+	house->addRotation(45.f, glm::vec3(0.f, 1.f, 0.f));
+	//house->addDynamicRotation(45.f, glm::vec3(0.f, 1.f, 0.f));
 	//house->setMaterial(glm::vec3(0.01f, 0.01f, 0.01f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.1f, 0.1f, 0.1f), 32.0f);
 	objects.push_back(house);
 
 
 
-	Texture* zombie_texture = new Texture("Textures/zombie.png", GL_TEXTURE3);
+	Texture* zombie_texture = new Texture("Textures/zombie.png", GL_TEXTURE4);
 	textures.push_back(zombie_texture);
 
 	MeshModel* zombie_model = new MeshModel("Models/zombie.obj", zombie_texture, 1);
 	models.push_back(zombie_model);
 
-	DrawableObject* zombie = new DrawableObject(camera);
+
+	glm::mat4x3 controlPoints = glm::mat4x3(
+		glm::vec3(-5.0f, 0.0f, 0.0f), 
+		glm::vec3(-1.5f, 0.0f, 5.0f),
+		glm::vec3(1.5f, 0.0f, -5.0f),
+		glm::vec3(5.0f, 0.0f, 0.0f)
+	);
+
+	BezierCurve* bezierCurve = new BezierCurve(controlPoints, 0.5f);
+
+	DrawableObject* zombie = new DrawableObject(camera, bezierCurve);
 	zombie->init_model(zombie_model);
 	zombie->init_shader(shaderProgram);
-	zombie->addTranslation(glm::vec3(15.f, 0.f, 0.f));
+	zombie->addTranslation(glm::vec3(25.f, 0.f, 0.f));
 	zombie->setColor(glm::vec4(1.f, 1.f, 1.f, 1.0f));
-	zombie->addDynamicRotation(45.f, glm::vec3(0.f, 1.f, 0.f));
+	//zombie->addDynamicRotation(45.f, glm::vec3(0.f, 1.f, 0.f));
 	//zombie->setMaterial(glm::vec3(0.01f, 0.01f, 0.01f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.1f, 0.1f, 0.1f), 32.0f);
 	objects.push_back(zombie);
 
 
+	Texture* login_texture = new Texture("Textures/wooden_fence.png", GL_TEXTURE5);
+	textures.push_back(login_texture);
 
-	MeshModel* login_model = new MeshModel("Models/login_test.obj", plain_texture, 20);
+	MeshModel* login_model = new MeshModel("Models/login_test.obj", login_texture, 1);
 	models.push_back(login_model);
 
 	DrawableObject* login_object = new DrawableObject(camera);
@@ -190,7 +209,7 @@ void Scene::RandomTransform(DrawableObject* object, float scale_base) {
 
 
 	// Random scale
-	float scale = static_cast<float>(rand() % 30 + 1) / scale_base;
+	float scale = static_cast<float>(rand() % 25 + 1) / scale_base;
 	object->addScale(glm::vec3(scale, scale, scale));
 
 
@@ -207,29 +226,6 @@ void Scene::CreateForestScene_bat(int numTrees, int numBushes)
 
 	SpotLight* battery = new SpotLight(1, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), 10.f, 20.f);
 	lights.push_back(battery);
-
-
-	//light
-	ShaderProgram* shaderProgram_light = new ShaderProgram(camera);
-	shaderProgram_light->addLight(spotlight);
-	shaderProgram_light->init_shader("Shaders/vertex.glsl", "Shaders/constant_fragment.glsl");
-	camera->addObserver(shaderProgram_light);
-	spotlight->addObserver(shaderProgram_light);
-	shaderPrograms.push_back(shaderProgram_light);
-
-	Model* sphere_model = new Model(std::vector<float>(sphere, sphere + sizeof(sphere) / sizeof(sphere[0])));
-	models.push_back(sphere_model);
-
-	DrawableObject* light_sphere = new DrawableObject(camera);
-	light_sphere->init_model(sphere_model);
-	light_sphere->init_shader(shaderProgram_light);
-	light_sphere->addTranslation(glm::vec3(spotlight->getPosition().x, spotlight->getPosition().y, spotlight->getPosition().z));
-	light_sphere->addScale(glm::vec3(0.5f, 0.5f, 0.5f));
-	light_sphere->setColor(glm::vec4(spotlight->getColor().x, spotlight->getColor().y, spotlight->getColor().z, 1.0f));
-	light_sphere->setMaterial(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), 32.0f);
-	objects.push_back(light_sphere);
-
-
 
 
 	//tree, bush plain
@@ -259,8 +255,44 @@ void Scene::CreateForestScene_bat(int numTrees, int numBushes)
 
 
 
+
+	//light
+	ShaderProgram* shaderProgram_light = new ShaderProgram(camera);
+	shaderProgram_light->addLight(spotlight);
+	shaderProgram_light->init_shader("Shaders/vertex.glsl", "Shaders/constant_fragment.glsl");
+	camera->addObserver(shaderProgram_light);
+	spotlight->addObserver(shaderProgram_light);
+	shaderPrograms.push_back(shaderProgram_light);
+
+	Model* sphere_model = new Model(std::vector<float>(sphere, sphere + sizeof(sphere) / sizeof(sphere[0])));
+	models.push_back(sphere_model);
+
+	glm::mat4x3 controlPoints = glm::mat4x3(
+		glm::vec3(-25.0f, 0.0f, 0.0f),
+		glm::vec3(-10.0f, 0.0f, 10.0f),
+		glm::vec3(10.f, 0.0f, -10.0f),
+		glm::vec3(25.0f, 0.0f, 0.0f)
+	);
+
+	BezierCurve* bezierCurve = new BezierCurve(controlPoints, 0.5f);
+
+	DrawableObject* light_sphere = new DrawableObject(camera, bezierCurve);
+	light_sphere->init_model(sphere_model);
+	light_sphere->init_shader(shaderProgram_light);
+	light_sphere->addTranslation(glm::vec3(spotlight->getPosition().x, spotlight->getPosition().y, spotlight->getPosition().z));
+	light_sphere->addScale(glm::vec3(0.5f, 0.5f, 0.5f));
+	light_sphere->setColor(glm::vec4(spotlight->getColor().x, spotlight->getColor().y, spotlight->getColor().z, 1.0f));
+	light_sphere->setMaterial(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), 32.0f);
+	objects.push_back(light_sphere);
+
+
+
+
 	//tree
-	Model* tree_model = new Model(std::vector<float>(tree, tree + sizeof(tree) / sizeof(tree[0])));
+	Texture* tree_texture = new Texture("Textures/tree.png", GL_TEXTURE2);
+	textures.push_back(tree_texture);
+
+	MeshModel* tree_model = new MeshModel("Models/tree.obj", tree_texture, 1);
 	models.push_back(tree_model);
 
 
@@ -275,7 +307,7 @@ void Scene::CreateForestScene_bat(int numTrees, int numBushes)
 		tree->init_model(tree_model);
 		tree->init_shader(shaderProgram);
 		RandomTransform(tree, 100.f);
-		tree->setColor(glm::vec4(1.0f, 0.f, 0.f, 1.0f));
+		tree->setColor(glm::vec4(1.0f, 1.f, 1.f, 1.0f));
 		tree->setMaterial(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.8f, 0.8f, 0.8f), glm::vec3(0.2f, 0.2f, 0.2f), 32.0f);
 		objects.push_back(tree);
 		if (i % 3 == 0)
@@ -288,7 +320,7 @@ void Scene::CreateForestScene_bat(int numTrees, int numBushes)
 		DrawableObject* bush = new DrawableObject(camera);
 		bush->init_model(bush_model);
 		bush->init_shader(shaderProgram);
-		RandomTransform(bush, 30.f);
+		RandomTransform(bush, 10.f);
 		bush->setColor(glm::vec4(0.0f, 1.f, 0.f, 1.0f));
 		bush->setMaterial(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.8f, 0.8f, 0.8f), glm::vec3(1.0f, 1.0f, 1.0f), 32.0f);
 		objects.push_back(bush);
@@ -296,7 +328,7 @@ void Scene::CreateForestScene_bat(int numTrees, int numBushes)
 
 
 
-	Texture* house_texture = new Texture("Textures/house.png", GL_TEXTURE2);
+	Texture* house_texture = new Texture("Textures/house.png", GL_TEXTURE3);
 	textures.push_back(house_texture);
 
 	MeshModel* house_model = new MeshModel("Models/house.obj", house_texture, 1);
@@ -306,6 +338,9 @@ void Scene::CreateForestScene_bat(int numTrees, int numBushes)
 	house->init_model(house_model);
 	house->init_shader(shaderProgram);
 	house->setColor(glm::vec4(1.f, 1.f, 1.f, 1.0f));
+	house->addTranslation(glm::vec3(-5.f, 0.f, -5.f));
+	house->addScale(glm::vec3(0.7f, 0.7f, 0.7f));
+	house->addRotation(45.f, glm::vec3(0.f, 1.f, 0.f));
 	//house->addDynamicRotation(45.f, glm::vec3(0.f, 1.f, 0.f));
 	//house->setMaterial(glm::vec3(0.01f, 0.01f, 0.01f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.1f, 0.1f, 0.1f), 32.0f);
 	objects.push_back(house);
@@ -559,8 +594,6 @@ void Scene::CreateTexturedScene()
 	background->setColor(glm::vec4(0.385, 0.647, 0.812, 1.0));
 	background->setMaterial(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.8f, 0.8f, 0.8f), glm::vec3(0.2f, 0.2f, 0.2f), 32.0f);
 	objects.push_back(background);
-
-
 	
 }
 
@@ -647,9 +680,12 @@ void Scene::DrawSkybox(float deltaTime)
 	{
 		if (object->is_Skybox() == 1)
 		{
+			glDepthMask(GL_FALSE);
 			glDepthFunc(GL_LEQUAL);
 			object->DrawSkybox(skyboxFollowCamera);
+			glDepthMask(GL_TRUE);
 			glDepthFunc(GL_LESS);
+
 		}
 	}
 }
@@ -660,6 +696,7 @@ void Scene::DrawScene(float deltaTime)
 	{
 		if (object->is_Skybox() != 1)
 		{
+			glStencilFunc(GL_ALWAYS, object->getID(), 0xFF);
 			object->Draw(deltaTime);
 		}
 	}
@@ -684,7 +721,7 @@ void Scene::ClearScene() {
 	}
 	textures.clear();
 	
-
+	
 	for (DrawableObject* obj : objects) {
 		obj->clearTransformations();
 		delete obj;
@@ -701,10 +738,10 @@ void Scene::SwitchScene(int sceneId) {
 	ClearScene();
 
 	if (sceneId == 1) {
-		CreateForestScene_blud(500, 1000);
+		CreateForestScene_blud(50, 50);
 	}
 	else if (sceneId == 2) {
-		CreateForestScene_bat(500, 1000);
+		CreateForestScene_bat(50, 50);
 	}
 	else if (sceneId == 3) {
 		CreateFourShaderLightsScene();
@@ -716,4 +753,54 @@ void Scene::SwitchScene(int sceneId) {
 	{
 		CreateTexturedScene();
 	}
+}
+
+void Scene::DeleteSelectedOBJ(int id) {
+	for (int i = 0; i < objects.size(); ++i) {
+		if (objects[i]->getID() == id) {
+			objects.erase(objects.begin() + i);
+			break;
+		}
+	}
+}
+
+void Scene::addTree(const glm::vec3& position) {
+	
+	ShaderProgram* shaderProgram = new ShaderProgram(camera);
+	shaderProgram->addLight(lights[0]);
+	shaderProgram->addLight(lights[1]);
+	shaderProgram->init_shader("Shaders/vertex.glsl", "Shaders/blin_phong_fragment.glsl");
+	camera->addObserver(shaderProgram);
+	lights[0]->addObserver(shaderProgram);
+	lights[1]->addObserver(shaderProgram);
+	shaderPrograms.push_back(shaderProgram);
+
+	
+	Texture* tree_texture = new Texture("Textures/tree.png", GL_TEXTURE10);
+	textures.push_back(tree_texture);
+
+	MeshModel* tree_model = new MeshModel("Models/tree.obj", tree_texture, 1);
+	models.push_back(tree_model);
+
+
+
+
+	DrawableObject* tree = new DrawableObject(camera);
+	tree->init_model(tree_model);
+	tree->init_shader(shaderProgram);
+	tree->addTranslation(position);
+
+	// Random rotation
+	float random_rotate = rand() % 360;
+	tree->addRotation(random_rotate, glm::vec3(0.f, 1.f, 0.f));
+
+
+	// Random scale
+	float scale = static_cast<float>(rand() % 9 + 1) / 50;
+	tree->addScale(glm::vec3(scale, scale, scale));
+
+
+	tree->setColor(glm::vec4(1.f, 1.f, 1.f, 1.0f));
+	tree->setMaterial(glm::vec3(0.01f, 0.01f, 0.01f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.1f, 0.1f, 0.1f), 32.0f);
+	objects.push_back(tree);
 }

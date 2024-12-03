@@ -18,10 +18,10 @@ public:
 
 
 
-	LightType getLightType();
+    LightType getLightType();
     glm::vec3 getColor();
 
-    
+
     void addObserver(Observer* observer) override;
     void removeObserver(Observer* observer) override;
     void notifyObservers() override;

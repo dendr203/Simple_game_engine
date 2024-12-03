@@ -26,6 +26,10 @@ public:
 	void DrawScene(float deltaTime);
 	void ClearScene();
 	void SwitchScene(int sceneId);
+
+	void DeleteSelectedOBJ(int objId);
+	void addTree(const glm::vec3& position);
+
 	
 
 	bool skyboxFollowCamera = true;

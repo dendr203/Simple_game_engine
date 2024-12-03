@@ -19,8 +19,8 @@ void Application::initialization()
 	window = new Window(1000, 800);
 	camera = new Camera(window->getAspect_ratio());
 	window->attachCamera(camera);
-	
 	scene = new Scene(camera);
+	window->attachScene(scene);
 }
 
 
@@ -40,22 +40,27 @@ void Application::run()
 	auto previousTime = std::chrono::high_resolution_clock::now();
 
 	glEnable(GL_DEPTH_TEST);//Do depth comparisons and update the depth buffer.
+	glEnable(GL_STENCIL_TEST);
+	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+
 	while (!window->shouldClose()) {
 		auto currentTime = std::chrono::high_resolution_clock::now();
 		float deltaTime = std::chrono::duration<float>(currentTime - previousTime).count();
 		previousTime = currentTime;
 
-
 		// clear color and depth buffer
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
+		scene->DrawSkybox(deltaTime);
+		scene->DrawScene(deltaTime);
+		
 		window->poolEvents();
 		HandleInput();
 
-		scene->DrawSkybox(deltaTime);
-		glClear(GL_DEPTH_BUFFER_BIT);
-		scene->DrawScene(deltaTime);
 		window->swapBuffers();
 	}
+
+	glDisable(GL_STENCIL_TEST);
 
 	exit(EXIT_SUCCESS);
 }
@@ -109,6 +114,8 @@ void Application::HandleInput()
         Window::out_x = 0;
         Window::out_y = 0;
     }
+
+	
 }
 
 
