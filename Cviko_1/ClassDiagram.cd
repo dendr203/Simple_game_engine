@@ -1,2 +1,193 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ClassDiagram /> 
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Application" Collapsed="true">
+    <Position X="12.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgCAAhAAAAAAAAAAAIAAAAACAIAIAIAAAAAAAAA=</HashCode>
+      <FileName>Application.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BezierCurve" Collapsed="true">
+    <Position X="14" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAACAAAAAAAAAAAAAAAAQAQAEQAAAAkAAA=</HashCode>
+      <FileName>BezierCurve.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Camera" Collapsed="true">
+    <Position X="3.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAIKAAAkAXAAIALAQAEhIwAAAgAAAEAoAoAACkAAgAA=</HashCode>
+      <FileName>Camera.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DirectionalLight" Collapsed="true">
+    <Position X="5.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQgAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DirectionalLight.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DrawableObject" Collapsed="true">
+    <Position X="15.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAIAAggIAAEAAgCAAFAAAAQAEASQACCIAAAAEABqAQA=</HashCode>
+      <FileName>DrawableObject.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DynamicRotation" Collapsed="true">
+    <Position X="9.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACAAAEAAAAAAAAEAQAAAgAAAAAEAAA=</HashCode>
+      <FileName>DynamicRotation.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Light" Collapsed="true">
+    <Position X="3" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAAAAAACAAAAAAgAAAAAAAACAAQAAgAAAAAA=</HashCode>
+      <FileName>Light.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Material" Collapsed="true">
+    <Position X="12.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QEABAAAAEABAAAAAAAAAAAIAAAAAAAAAAIAAAABAAAA=</HashCode>
+      <FileName>Material.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshModel" Collapsed="true">
+    <Position X="6.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAACAAAAAABiAhAAAABAAAAAAAA=</HashCode>
+      <FileName>MeshModel.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Model" Collapsed="true">
+    <Position X="7.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAgAIAAAAAAAAAAICAAAAAAAAAAAAAAgAAAAEAgA=</HashCode>
+      <FileName>Model.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Observer" Collapsed="true">
+    <Position X="0.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Observer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PointLight" Collapsed="true">
+    <Position X="0.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAACAAAAKAAAAAAAIAAAAAAAAACAgAAIICAAAAA=</HashCode>
+      <FileName>PointLight.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rotation" Collapsed="true">
+    <Position X="5.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAIAAAAAAAAAAAAAEAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>Rotation.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Scaling" Collapsed="true">
+    <Position X="7.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEAAEAAAAAAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Scaling.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Scene" Collapsed="true">
+    <Position X="14" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAkAgAACAgACEAKAQQQIBQCABAKAAAAAIAAA=</HashCode>
+      <FileName>Scene.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ShaderLoader" Collapsed="true">
+    <Position X="3.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAMEACAAAAAAAAAAAAAAAAAAAAAAAEAAAAIAAAQAAA=</HashCode>
+      <FileName>ShaderLoader.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ShaderProgram" Collapsed="true">
+    <Position X="0.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgIAAAKAAgUQAAIAAAAAAAJAAAYIAAAgAFIBAAAAACA=</HashCode>
+      <FileName>ShaderProgram.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SpotLight" Collapsed="true">
+    <Position X="3" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAoAgAAABEIAAAAAAAIAAAABAAAIAAAAAIAAAAEAA=</HashCode>
+      <FileName>SpotLight.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Subject" Collapsed="true">
+    <Position X="3.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIABAQAAAAAAAAAAAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>Subject.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Texture" Collapsed="true">
+    <Position X="15.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAggAAAAAAAAAAAAABAABAAAAIAAAAAAAA=</HashCode>
+      <FileName>Texture.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TexturedModel" Collapsed="true">
+    <Position X="8.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAAAAAAIBACAAAAAABgAgAAAABAAAAAAAE=</HashCode>
+      <FileName>TexturedModel.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TransformationComponent" Collapsed="true">
+    <Position X="5.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>TransformationComponent.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TransformationComposite" Collapsed="true">
+    <Position X="0.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAACAAAAAAACEAAAIAAAAAAAAAAA=</HashCode>
+      <FileName>TransformationComposite.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Translation" Collapsed="true">
+    <Position X="3" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAACAAAAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Translation.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Window" Collapsed="true">
+    <Position X="12.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BEAAIAAAAwARAIQAQAAAAJAAASFAEABJEAAgCCAAIBA=</HashCode>
+      <FileName>Window.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="Vertex" Collapsed="true">
+    <Position X="12.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAEgAAAAAAAAAAAIAAACAAAAAAAAAAA=</HashCode>
+      <FileName>MeshModel.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Enum Name="LightType" Collapsed="true">
+    <Position X="12.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAQAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Light.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -32,4 +32,5 @@ void Model::init_model(const std::vector<float>& verticies)
 void Model::draw_model(){
 	glBindVertexArray(VAO);
 	glDrawArrays(GL_TRIANGLES, 0, numVertices);
+	glBindVertexArray(0);
 }	

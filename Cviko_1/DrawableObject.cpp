@@ -1,19 +1,26 @@
 #include "DrawableObject.h"
 
-int DrawableObject::nextID = -1;
+int DrawableObject::nextID = 1;
 
 
-DrawableObject::DrawableObject(Camera* _camera, BezierCurve* curve) 
+DrawableObject::DrawableObject(BezierCurve* curve, bool is_plain) 
 	: curve(curve), shaderProgram(nullptr), model(nullptr), color(0), objectID(nextID++)
 {
 	transformationComposite = new TransformationComposite();
+	if (is_plain == true)
+	{
+		objectID = 0;
+	}
 }
 
 DrawableObject::~DrawableObject()
 {
 	delete material;
 	delete transformationComposite;
-	nextID--;
+	if (objectID != 0)
+	{
+		nextID--;
+	}
 }
 
 
@@ -34,6 +41,8 @@ void DrawableObject::init_shader(ShaderProgram* shaderprogram)
 
 void DrawableObject::Draw(float deltaTime)
 {
+	shaderProgram->setLights();
+
 	shaderProgram->setModelMatrix(getModelMatrix(deltaTime));
 	shaderProgram->setObjectColor(color);
 	if (material != nullptr)
@@ -69,11 +78,7 @@ void DrawableObject::DrawSkybox(bool followCamera)
 	model->draw_model();
 	shaderProgram->unuse_Shader();
 
-	
-	if (TexturedModel* texturedModel = dynamic_cast<TexturedModel*>(model))
-	{
-		shaderProgram->unsetTexture();
-	}
+	shaderProgram->unsetTexture();
 }
 
 
@@ -114,7 +119,7 @@ glm::mat4 DrawableObject::getModelMatrix(float deltaTime)
 		modelMatrix = curve->getModelMatrix(deltaTime);
 	}
 	
-	transformationComposite->transform(modelMatrix, deltaTime); // Aplikuj transformace na jednotkovou matici
+	transformationComposite->transform(modelMatrix, deltaTime); // Aplikuj transformace na matici
 	return modelMatrix;
 }
 

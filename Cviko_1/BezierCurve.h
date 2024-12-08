@@ -11,34 +11,11 @@ private:
     float speed;             // Rychlost zmìny parametru
 
 public:
-    BezierCurve(const glm::mat4x3& controlPoints, float speed = 0.01f)
-        : t(0.0f), speed(speed) {
-        controlMatrix = glm::transpose(controlPoints);
-        bezierMatrix = glm::mat4(
-            glm::vec4(-1.0, 3.0, -3.0, 1.0),
-            glm::vec4(3.0, -6.0, 3.0, 0.0),
-            glm::vec4(-3.0, 3.0, 0.0, 0.0),
-            glm::vec4(1.0, 0.0, 0.0, 0.0)
-        );
-    }
+    BezierCurve(const glm::mat4x3& controlPoints, float speed = 0.01f);
 
-    void update(float deltaTime) {
-		printf("t: %f\n", t);
-        t += speed * deltaTime;
-        if (t >= 1.0f || t <= 0.0f) {
-            speed *= -1; // Otoèení smìru
-        }
-    }
+    void update();
 
-    glm::vec3 getPosition() const {
-        glm::vec4 tVec(t * t * t, t * t, t, 1.0f);
-        return tVec * bezierMatrix * controlMatrix;
-    }
+    glm::vec3 getPosition();
 
-    glm::mat4 getModelMatrix(float deltaTime) {
-        update(deltaTime);
-        glm::vec3 position = getPosition();
-        glm::mat4 modelMatrix = glm::translate(glm::mat4(1.0f), position);
-        return modelMatrix;
-    }
+    glm::mat4 getModelMatrix(float deltaTime);
 };

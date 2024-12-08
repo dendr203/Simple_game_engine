@@ -25,21 +25,25 @@ void Camera::move(const glm::vec3& direction)
 	updateViewMatrix();
 }
 
+//we are mooving front direction
 void Camera::moveForward()
 {
 	move(front);
 }
 
+//back direction
 void Camera::moveBackwards()
 {
 	move(-front);
 }
 
+//we have perpendicular vector to fron and up - means we are moving left
 void Camera::moveLeft()
 {
 	move(-glm::normalize(glm::cross(front, up)));
 }
 
+//same as left but move is right
 void Camera::moveRight()
 {
 	move(glm::normalize(glm::cross(front, up)));
@@ -73,19 +77,20 @@ void Camera::updateCameraVectors() {
 	newFront.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
 	front = glm::normalize(newFront);
 
-	right = glm::normalize(glm::cross(front, glm::vec3(0.0f, 1.0f, 0.0f))); // Right vector
-	up = glm::normalize(glm::cross(right, front)); // Up vector
+	right = glm::normalize(glm::cross(front, glm::vec3(0.0f, 1.0f, 0.0f))); //kolmý na front a svìtový "up"
+	up = glm::normalize(glm::cross(right, front)); // kolmý na pravý a front
 
 	updateViewMatrix();
 }
 
+//called from window if we moove mouse
 void Camera::processMouseMovement(float xoffset, float yoffset) {
 	
 	xoffset *= sensitivity;
 	yoffset *= sensitivity;
 
-	yaw += xoffset;
-	pitch += yoffset;
+	yaw += xoffset;				//left to right
+	pitch += yoffset;			//up and down 
 
 	if (pitch > 89.0f)
 		pitch = 89.0f;
@@ -97,7 +102,7 @@ void Camera::processMouseMovement(float xoffset, float yoffset) {
 };
 
 
-
+//for resize, we need to update projection matrix
 void Camera::updateAspectRatio(float _aspectRatio)
 {
 	aspectRatio = _aspectRatio;
@@ -110,6 +115,7 @@ void Camera::updateProjectionMatrix()
 	updateObserversProjection();
 }
 
+//send new projections to observers (shaderPrograms)
 void Camera::updateObserversProjection()
 {
 	for (Observer* obs : observers)
@@ -122,6 +128,10 @@ void Camera::updateObserversProjection()
 
 void Camera::updateViewMatrix()
 {
+	//transform world to camera view
+	//position of camera, 
+	//point we are looking at
+	//up from camera
 	viewMatrix = glm::lookAt(position, position + front, up);
 	notifyObservers();
 }

@@ -2,6 +2,8 @@
 
 Texture::Texture(const char* texture_path, GLenum textureUnit) : unit(textureUnit)
 {
+	//we use specified texture unit
+	//for me, if skybox is present it is always 0
 	glGenTextures(1, &textureID);
 	glActiveTexture(unit);
 	textureID = SOIL_load_OGL_texture(texture_path, SOIL_LOAD_RGBA, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);

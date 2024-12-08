@@ -37,7 +37,7 @@ void Application::createModels()
 
 void Application::run()
 {	
-	auto previousTime = std::chrono::high_resolution_clock::now();
+	auto previousTime = std::chrono::high_resolution_clock::now(); //dynamic rotation will be dependent on framerate
 
 	glEnable(GL_DEPTH_TEST);//Do depth comparisons and update the depth buffer.
 	glEnable(GL_STENCIL_TEST);

@@ -31,9 +31,9 @@ struct Material{
 uniform Material material;
 
 
-in vec3 worldNormal;
-in vec4 fragPosition;
-in vec3 viewDirection;
+in vec3 worldNormal;        //normal in world coordinates
+in vec4 fragPosition;       //position of the fragment in world coordinates
+in vec3 viewDirection;      //direction from the fragment to the camera
 
 uniform vec4 objectColor;
 
@@ -69,41 +69,34 @@ void main(void) {
         }
         else if (lights[i].type == 2) //spotlight
         {   
+            //pro spotlight je to smìr svìtla k fragmentu, proto se použije poté pøi theta -lightDir
             lightDir = normalize(lights[i].position - vec3(fragPosition));
-            float theta = dot(-lightDir, normalize(lights[i].direction));
+            float theta = dot(lightDir, normalize(-lights[i].direction));
 
             float innerCutoff = cos(radians(lights[i].cutoff));
             float outerCutoff = cos(radians(lights[i].outerCutoff));
 
             float intensity = clamp((theta - outerCutoff) / (innerCutoff - outerCutoff), 0.0, 1.0);
-            //intensity = max(intensity, 0.1);
 
-            if (theta >= innerCutoff)
-            {
-                attenuation *= intensity;
-            } 
-            else if (theta >= outerCutoff)
-            {
-                attenuation *= intensity;
-            }
-            else
-            {
-                attenuation = 0.;
-            }
+            attenuation*= intensity;
         }
 
 
-        // Diffuse light (Lambert model)
+        // Diffuse light (Lambertùv model)
+        // intenzita svìtla je tedy závislá na úhlu mezi svìtelným paprskem a normálou povrchu
+        // difùzní složka je jen odražené svìtlo od matného povrchu
         float diff = max(dot(lightDir, worldNormal), 0.0);
         vec4 diffuse = diff * vec4(material.diffuse * lights[i].lightC, 1.0) * textureColor;
 
 
         //Specular light
+        //nejdøíve spoèítáme polovièní vektor mezi smìrem pohledu a smìrem svìtla
         vec3 halfwayVec = normalize(lightDir + viewDirection);
         float spec = 0.0;
-        if (diff >= 0.0)
+        if (diff > 0.0)
         {
 			spec = pow(max(dot(worldNormal, halfwayVec), 0.0), material.shininess);
+            spec = min(spec, 1.0);
 		}
         vec4 specular = vec4(material.specular * lights[i].lightC, 1.0) * spec;
 
@@ -111,5 +104,10 @@ void main(void) {
         
     }
     out_Color = (ambientLight + finalColor) * objectColor;
-    
+
+    //v pravo (kladné x) - èervená
+    //nahoru (kladné y) - zelená
+    //dopøedu (kladné z) - modrá
+    //out_Color = vec4((worldNormal + 1.0) * 0.5, 1.0);  // Vizualizace normál
+
 };

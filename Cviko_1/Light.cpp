@@ -16,29 +16,3 @@ glm::vec3 Light::getColor() {
 
 
 
-void Light::addObserver(Observer* observer) {
-    observers.push_back(observer);
-}
-
-void Light::removeObserver(Observer* observer) {
-    observers.erase(std::remove(observers.begin(), observers.end(), observer), observers.end());
-}
-
-void Light::notifyObservers() {
-    for (Observer* observer : observers)
-    {
-        ShaderProgram* shaderProgram = dynamic_cast<ShaderProgram*>(observer);
-        if (shaderProgram)
-        {
-            shaderProgram->updateFromSubject();
-        }
-        else
-        {
-            printf("ShaderProgram not found!!!\n");
-        }
-    }
-}
-
-void Light::clearLinkShaders() {
-    observers.clear();
-}

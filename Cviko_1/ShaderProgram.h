@@ -45,13 +45,15 @@ public:
 	void unsetTexture();
 	void setSkyboxTexture(bool followCamera);
 
+	void setLights();
+
 private:
 	Camera* camera;
 	std::vector<Light*> lights;
 
 	GLuint getLocation(const char* name);
 
-	void setLights();
+	
 
 
 	void setUniformLocation(const char* name, const glm::mat4& matrix);

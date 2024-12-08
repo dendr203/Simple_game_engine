@@ -56,7 +56,6 @@ void ShaderProgram::setLights()
 	int counter = 0;
 	for (Light* light : lights)
 	{
-			
 			setUniformLocation("numberOfLights", (int)lights.size());
 
 
@@ -83,7 +82,6 @@ void ShaderProgram::setLights()
 
 				std::string quadraticName = "lights[" + std::to_string(counter) + "].quadratic";
 				setUniformLocation(quadraticName.c_str(), pointlight->getQuadratic());
-				//0.1 0.3 0.032
 			}
 			else if (light->getLightType() == DIRECTIONAL)
 			{
@@ -233,7 +231,6 @@ void ShaderProgram::unsetTexture()
 void ShaderProgram::updateFromSubject()
 {
 	setViewMatrix();
-	setLights();
 }
 
 

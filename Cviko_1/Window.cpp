@@ -152,15 +152,16 @@ void Window::window_size_callback(GLFWwindow* window, int _width, int _height)
 	if (instance)
 	{
 		if (_height == 0) {
-			_height = 1;  // Aby se pøedešlo dìlení nulou
+			_height = 1;  // for minimalization, aware 0 division
 		}
 
 		instance->width = _width;
 		instance->height = _height;
 
+		//we set new ratio
 		instance->ratio = (float) instance->width / (float)instance->height;
 
-		//printf("resize %d, %d \n", _width, _height);
+		//resize viewport
 		glViewport(0, 0, instance->width, instance->height);
 
 		if (instance->camera)
@@ -187,6 +188,7 @@ void Window::cursor_callback(GLFWwindow* window, float x, float y)
 
 	if (instance)
 	{
+		//for the first moove, we need to set where the mouse is
 		if (firstMouse)
 		{
 			instance->lastX = x;
@@ -194,8 +196,8 @@ void Window::cursor_callback(GLFWwindow* window, float x, float y)
 			firstMouse = false;
 		}
 
-		out_x = x - instance->lastX;
-		out_y = instance->lastY - y;
+		out_x = x - instance->lastX;	//x_ofset
+		out_y = instance->lastY - y;	//y_ofset
 
 		instance->lastX = x;
 		instance->lastY = y;
@@ -220,41 +222,41 @@ void Window::button_callback(GLFWwindow* window, int button, int action, int mod
 			keyStates[button] = false;
 		}
 
+		//adding or deleting objects in scene
 		if (action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT)
 		{
 			double mouseX, mouseY;
 			glfwGetCursorPos(window, &mouseX, &mouseY);
 
-			// Získání viewportu a pøepoèet y-souøadnice
+			// Získání viewportu a pøepoèet y-souøadnice (zaèínájí dole)
 			GLint viewport[4];
 			glGetIntegerv(GL_VIEWPORT, viewport);
 
 
 			GLint x = static_cast<GLint>(mouseX);
 			GLint y = static_cast<GLint>(mouseY);
-			GLint flippedY = viewport[3] - y;
+			GLint flippedY = viewport[3] - y; //viewport[3] výška viewportu
 			
 			// Naètení dat z framebufferu
-			GLbyte color[4];   // RGBA barva
 			GLfloat depth;     // Hloubka
 			GLuint stencilID;  // ID objektu ze stencil bufferu
 
-			glReadPixels(x, flippedY, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, color);                // Naètení barvy
+			
 			glReadPixels(x, flippedY, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);           // Naètení hloubky
 			glReadPixels(x, flippedY, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &stencilID);  // Naètení ID z stencil bufferu
 
 			
 
-			// Pøevod depth na svìtové souøadnice pomocí glUnProject
+			// Pøevod souøadnic viewportu na svìtové souøadnice pomocí glUnProject
 			if (depth < 1.0f) { // Kontrola, jestli jsme klikli na viditelný objekt
 				glm::mat4 viewMatrix = instance->camera->getViewMatrix();
 				glm::mat4 projectionMatrix = instance->camera->getProjectionMatrix();
 				glm::vec3 windowPos(mouseX, flippedY, depth);
-				glm::vec3 worldPos = glm::unProject(
-					windowPos,
-					viewMatrix,
+				glm::vec3 worldPos = glm::unProject(										// Svìtové souøadnice bodu, na který uživatel klikl
+					windowPos,																// Souøadnice v oknì a hloubka pixelu
+					viewMatrix,																
 					projectionMatrix,
-					glm::vec4(viewport[0], viewport[1], viewport[2], viewport[3])
+					glm::vec4(viewport[0], viewport[1], viewport[2], viewport[3])			//inforamce o viewportu
 				);
 
 				

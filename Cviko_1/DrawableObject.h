@@ -33,7 +33,7 @@
 class DrawableObject
 {
 public:
-	DrawableObject(Camera* _camera, BezierCurve* curve = nullptr);
+	DrawableObject(BezierCurve* curve = nullptr, bool is_plain = false);
 	~DrawableObject();
 
 	void init_model(Model* model, int is_skybox = 0);

@@ -195,6 +195,7 @@
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram.cd" />
     <None Include="packages.config" />
     <None Include="Shaders\blin_phong_fragment.glsl" />
     <None Include="Shaders\skybox_fragment.glsl" />
@@ -207,6 +208,7 @@
   <ItemGroup>
     <Image Include="Textures\grass.png" />
     <Image Include="Textures\house.png" />
+    <Image Include="Textures\Mario.png" />
     <Image Include="Textures\negx.jpg" />
     <Image Include="Textures\negy.jpg" />
     <Image Include="Textures\negz.jpg" />

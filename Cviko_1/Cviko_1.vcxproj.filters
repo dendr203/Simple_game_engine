@@ -224,6 +224,7 @@
     <None Include="Shaders\skybox_vertex.glsl">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Textures\grass.png">
@@ -258,6 +259,9 @@
     </Image>
     <Image Include="Textures\tree.png">
       <Filter>Textures</Filter>
+    </Image>
+    <Image Include="Textures\Mario.png">
+      <Filter>Soubory zdrojů</Filter>
     </Image>
   </ItemGroup>
 </Project>

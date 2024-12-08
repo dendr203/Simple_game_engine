@@ -16,7 +16,7 @@ Scene::~Scene()
 
 
 
-
+//Daylight forrest scene
 void Scene::CreateForestScene_blud(int numTrees, int numBushes)
 {
 	CreateSkybox();
@@ -64,13 +64,6 @@ void Scene::CreateForestScene_blud(int numTrees, int numBushes)
 	shaderProgram->addLight(dir_light);
 	shaderProgram->init_shader("Shaders/vertex.glsl", "Shaders/blin_phong_fragment.glsl");
 	camera->addObserver(shaderProgram);
-	spotlight_1->addObserver(shaderProgram);
-	blud_1->addObserver(shaderProgram);
-	blud_2->addObserver(shaderProgram);
-	blud_3->addObserver(shaderProgram);
-	blud_4->addObserver(shaderProgram);
-	blud_5->addObserver(shaderProgram);
-	dir_light->addObserver(shaderProgram);
 	shaderPrograms.push_back(shaderProgram);
 
 
@@ -81,7 +74,7 @@ void Scene::CreateForestScene_blud(int numTrees, int numBushes)
 	MeshModel* plain_model = new MeshModel("Models/teren.obj", plain_texture, 1);
 	models.push_back(plain_model);
 	
-	DrawableObject* plain = new DrawableObject(camera);
+	DrawableObject* plain = new DrawableObject(nullptr, true);
 	plain->init_model(plain_model);
 	plain->init_shader(shaderProgram);
 	//plain->addScale(glm::vec3(30, 30, 30));
@@ -106,7 +99,7 @@ void Scene::CreateForestScene_blud(int numTrees, int numBushes)
 
 
 	for (int i = 0; i < numTrees; ++i) {
-		DrawableObject* tree = new DrawableObject(camera);
+		DrawableObject* tree = new DrawableObject();
 		tree->init_model(tree_model);
 		tree->init_shader(shaderProgram);
 		RandomTransform(tree, 100.f);
@@ -120,10 +113,10 @@ void Scene::CreateForestScene_blud(int numTrees, int numBushes)
 	}
 
 	for (int i = 0; i < numBushes; ++i) {
-		DrawableObject* bush = new DrawableObject(camera);
+		DrawableObject* bush = new DrawableObject();
 		bush->init_model(bush_model);
 		bush->init_shader(shaderProgram);
-		RandomTransform(bush, 30.f);
+		RandomTransform(bush, 5.f);
 		bush->setColor(glm::vec4(0.0f, 1.f, 0.f, 1.0f));
 		bush->setMaterial(glm::vec3(0.01f, 0.01f, 0.01f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.1f, 0.1f, 0.1f), 32.0f);
 		objects.push_back(bush);
@@ -138,7 +131,7 @@ void Scene::CreateForestScene_blud(int numTrees, int numBushes)
 	MeshModel* house_model = new MeshModel("Models/house.obj", house_texture, 1);
 	models.push_back(house_model);
 
-	DrawableObject* house = new DrawableObject(camera);
+	DrawableObject* house = new DrawableObject();
 	house->init_model(house_model);
 	house->init_shader(shaderProgram);
 	house->setColor(glm::vec4(1.f, 1.f, 1.f, 1.0f));
@@ -165,9 +158,9 @@ void Scene::CreateForestScene_blud(int numTrees, int numBushes)
 		glm::vec3(5.0f, 0.0f, 0.0f)
 	);
 
-	BezierCurve* bezierCurve = new BezierCurve(controlPoints, 0.5f);
+	BezierCurve* bezierCurve = new BezierCurve(controlPoints, 0.25f);
 
-	DrawableObject* zombie = new DrawableObject(camera, bezierCurve);
+	DrawableObject* zombie = new DrawableObject(bezierCurve);
 	zombie->init_model(zombie_model);
 	zombie->init_shader(shaderProgram);
 	zombie->addTranslation(glm::vec3(25.f, 0.f, 0.f));
@@ -180,10 +173,10 @@ void Scene::CreateForestScene_blud(int numTrees, int numBushes)
 	Texture* login_texture = new Texture("Textures/wooden_fence.png", GL_TEXTURE5);
 	textures.push_back(login_texture);
 
-	MeshModel* login_model = new MeshModel("Models/login_test.obj", login_texture, 1);
+	MeshModel* login_model = new MeshModel("Models/login_final.obj", login_texture, 1);
 	models.push_back(login_model);
 
-	DrawableObject* login_object = new DrawableObject(camera);
+	DrawableObject* login_object = new DrawableObject();
 	login_object->init_model(login_model);
 	login_object->init_shader(shaderProgram);
 	login_object->addTranslation(glm::vec3(15.f, 5.f, 0.f));
@@ -192,6 +185,20 @@ void Scene::CreateForestScene_blud(int numTrees, int numBushes)
 	objects.push_back(login_object);
 
 
+	Texture* mario_texture = new Texture("Textures/Mario.png", GL_TEXTURE6);
+	textures.push_back(mario_texture);
+
+	MeshModel* mario_model = new MeshModel("Models/mario.obj", mario_texture, 1);
+	models.push_back(mario_model);
+
+	DrawableObject* mario_object = new DrawableObject();
+	mario_object->init_model(mario_model);
+	mario_object->init_shader(shaderProgram);
+	mario_object->addTranslation(glm::vec3(30.f, 0.f, -10.f));
+	mario_object->setColor(glm::vec4(1.f, 1.f, 1.f, 1.0f));
+	mario_object->addDynamicRotation(5, glm::vec3(0.f, 1.f, 0.f));
+	mario_object->setMaterial(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.9f, 0.9f, 0.9f), glm::vec3(0.5f, 0.5f, 0.5f), 32.0f);
+	objects.push_back(mario_object);
 
 
 }
@@ -203,9 +210,6 @@ void Scene::RandomTransform(DrawableObject* object, float scale_base) {
 	float z = static_cast<float>(rand() % 500 - 250) / 10.0f;
 	object->addTranslation(glm::vec3(x, 0, z));
 
-	// Random rotation
-	float random_rotate = rand() % 360;
-	object->addRotation(random_rotate, glm::vec3(0.f, 1.f, 0.f));
 
 
 	// Random scale
@@ -216,15 +220,26 @@ void Scene::RandomTransform(DrawableObject* object, float scale_base) {
 }
 
 
+//Dark forrest scene
 void Scene::CreateForestScene_bat(int numTrees, int numBushes)
 {
 	camera->setCamera(glm::vec3(6.f, 5.f, 7.f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.05f,
 		60.0f, -130.f, -30.f, 0.08f);
 
-	SpotLight* spotlight = new SpotLight(0, glm::vec3(10.0f, 10.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(1.0f, 1.0f, .0f), 20.f, 40.f);
+
+	glm::mat4x3 controlPoints = glm::mat4x3(
+		glm::vec3(-25.0f, 5.0f, 0.0f),
+		glm::vec3(-11.5f, 5.0f, 25.0f),
+		glm::vec3(11.5f, 5.0f, -25.0f),
+		glm::vec3(25.0f, 5.0f, 0.0f)
+	);
+
+	BezierCurve* bezierCurve = new BezierCurve(controlPoints, 0.001f);
+
+	SpotLight* spotlight = new SpotLight(0, glm::vec3(10.0f, 10.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(1.0f, 1.0f, .0f), 20.f, 40.f, bezierCurve);
 	lights.push_back(spotlight);
 
-	SpotLight* battery = new SpotLight(1, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), 10.f, 20.f);
+	SpotLight* battery = new SpotLight(1, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), 15.f, 30.f);
 	lights.push_back(battery);
 
 
@@ -234,23 +249,21 @@ void Scene::CreateForestScene_bat(int numTrees, int numBushes)
 	shaderProgram->addLight(battery);
 	shaderProgram->init_shader("Shaders/vertex.glsl", "Shaders/blin_phong_fragment.glsl");
 	camera->addObserver(shaderProgram);
-	spotlight->addObserver(shaderProgram);
-	battery->addObserver(shaderProgram);
 	shaderPrograms.push_back(shaderProgram);
 
 
 	//plain
 	Texture* plain_texture = new Texture("Textures/grass.png", GL_TEXTURE1);
 	textures.push_back(plain_texture);
-	TexturedModel* plain_model = new TexturedModel(std::vector<float>(plain_textured, plain_textured + sizeof(plain_textured) / sizeof(plain_textured[0])), plain_texture, 30);
 
+	MeshModel* plain_model = new MeshModel("Models/teren.obj", plain_texture, 1);
+	models.push_back(plain_model);
 
-	DrawableObject* plain = new DrawableObject(camera);
+	DrawableObject* plain = new DrawableObject(nullptr, true);
 	plain->init_model(plain_model);
 	plain->init_shader(shaderProgram);
-	plain->addScale(glm::vec3(100, 100, 100));
 	plain->setColor(glm::vec4(1.f, 1.f, 1.f, 1.0f));
-	plain->setMaterial(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.8f, 0.8f, 0.8f), glm::vec3(1.0f, 1.0f, 1.0f), 32.0f);
+	plain->setMaterial(glm::vec3(0.01f, 0.01f, 0.01f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.01f, 0.01f, 0.01f), 32.0f);
 	objects.push_back(plain);
 
 
@@ -261,25 +274,14 @@ void Scene::CreateForestScene_bat(int numTrees, int numBushes)
 	shaderProgram_light->addLight(spotlight);
 	shaderProgram_light->init_shader("Shaders/vertex.glsl", "Shaders/constant_fragment.glsl");
 	camera->addObserver(shaderProgram_light);
-	spotlight->addObserver(shaderProgram_light);
 	shaderPrograms.push_back(shaderProgram_light);
 
 	Model* sphere_model = new Model(std::vector<float>(sphere, sphere + sizeof(sphere) / sizeof(sphere[0])));
 	models.push_back(sphere_model);
 
-	glm::mat4x3 controlPoints = glm::mat4x3(
-		glm::vec3(-25.0f, 0.0f, 0.0f),
-		glm::vec3(-10.0f, 0.0f, 10.0f),
-		glm::vec3(10.f, 0.0f, -10.0f),
-		glm::vec3(25.0f, 0.0f, 0.0f)
-	);
-
-	BezierCurve* bezierCurve = new BezierCurve(controlPoints, 0.5f);
-
-	DrawableObject* light_sphere = new DrawableObject(camera, bezierCurve);
+	DrawableObject* light_sphere = new DrawableObject(bezierCurve);
 	light_sphere->init_model(sphere_model);
 	light_sphere->init_shader(shaderProgram_light);
-	light_sphere->addTranslation(glm::vec3(spotlight->getPosition().x, spotlight->getPosition().y, spotlight->getPosition().z));
 	light_sphere->addScale(glm::vec3(0.5f, 0.5f, 0.5f));
 	light_sphere->setColor(glm::vec4(spotlight->getColor().x, spotlight->getColor().y, spotlight->getColor().z, 1.0f));
 	light_sphere->setMaterial(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), 32.0f);
@@ -303,12 +305,12 @@ void Scene::CreateForestScene_bat(int numTrees, int numBushes)
 
 
 	for (int i = 0; i < numTrees; ++i) {
-		DrawableObject* tree = new DrawableObject(camera);
+		DrawableObject* tree = new DrawableObject();
 		tree->init_model(tree_model);
 		tree->init_shader(shaderProgram);
 		RandomTransform(tree, 100.f);
 		tree->setColor(glm::vec4(1.0f, 1.f, 1.f, 1.0f));
-		tree->setMaterial(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.8f, 0.8f, 0.8f), glm::vec3(0.2f, 0.2f, 0.2f), 32.0f);
+		tree->setMaterial(glm::vec3(0.01f, 0.01f, 0.01f), glm::vec3(0.8f, 0.8f, 0.8f), glm::vec3(0.2f, 0.2f, 0.2f), 32.0f);
 		objects.push_back(tree);
 		if (i % 3 == 0)
 		{
@@ -317,14 +319,15 @@ void Scene::CreateForestScene_bat(int numTrees, int numBushes)
 	}
 
 	for (int i = 0; i < numBushes; ++i) {
-		DrawableObject* bush = new DrawableObject(camera);
+		DrawableObject* bush = new DrawableObject();
 		bush->init_model(bush_model);
 		bush->init_shader(shaderProgram);
-		RandomTransform(bush, 10.f);
+		RandomTransform(bush, 5.f);
 		bush->setColor(glm::vec4(0.0f, 1.f, 0.f, 1.0f));
-		bush->setMaterial(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.8f, 0.8f, 0.8f), glm::vec3(1.0f, 1.0f, 1.0f), 32.0f);
+		bush->setMaterial(glm::vec3(0.01f, 0.01f, 0.01f), glm::vec3(0.8f, 0.8f, 0.8f), glm::vec3(1.0f, 1.0f, 1.0f), 32.0f);
 		objects.push_back(bush);
 	}
+
 
 
 
@@ -334,7 +337,7 @@ void Scene::CreateForestScene_bat(int numTrees, int numBushes)
 	MeshModel* house_model = new MeshModel("Models/house.obj", house_texture, 1);
 	models.push_back(house_model);
 
-	DrawableObject* house = new DrawableObject(camera);
+	DrawableObject* house = new DrawableObject();
 	house->init_model(house_model);
 	house->init_shader(shaderProgram);
 	house->setColor(glm::vec4(1.f, 1.f, 1.f, 1.0f));
@@ -342,11 +345,12 @@ void Scene::CreateForestScene_bat(int numTrees, int numBushes)
 	house->addScale(glm::vec3(0.7f, 0.7f, 0.7f));
 	house->addRotation(45.f, glm::vec3(0.f, 1.f, 0.f));
 	//house->addDynamicRotation(45.f, glm::vec3(0.f, 1.f, 0.f));
-	//house->setMaterial(glm::vec3(0.01f, 0.01f, 0.01f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.1f, 0.1f, 0.1f), 32.0f);
+	house->setMaterial(glm::vec3(0.01f, 0.01f, 0.01f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.1f, 0.1f, 0.1f), 32.0f);
 	objects.push_back(house);
-
 }
 
+
+//marios
 void Scene::CreateFourShaderLightsScene()
 {
 	camera->setCamera(glm::vec3(-0.4f, 0.1f, 0.6f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f),
@@ -367,11 +371,10 @@ void Scene::CreateFourShaderLightsScene()
 	shaderProgram_light->addLight(pointlight);
 	shaderProgram_light->init_shader("Shaders/vertex.glsl", "Shaders/constant_fragment.glsl");
 	camera->addObserver(shaderProgram_light);
-	pointlight->addObserver(shaderProgram_light);
 	shaderPrograms.push_back(shaderProgram_light);
 
 
-	DrawableObject* light_sphere_1 = new DrawableObject(camera);
+	DrawableObject* light_sphere_1 = new DrawableObject();
 	light_sphere_1->init_model(sphere_model);
 	light_sphere_1->init_shader(shaderProgram_light);
 	light_sphere_1->addTranslation(glm::vec3(pointlight->getPosition().x, pointlight->getPosition().y, pointlight->getPosition().z));
@@ -385,57 +388,81 @@ void Scene::CreateFourShaderLightsScene()
 	
 	
 
+	Texture* mario_texture = new Texture("Textures/Mario.png", GL_TEXTURE1);
+	textures.push_back(mario_texture);
+
+	MeshModel* mario_model = new MeshModel("Models/mario.obj", mario_texture, 1);
+	models.push_back(mario_model);
 
 
-	//suzi
-	ShaderProgram* shaderProgram_suzi = new ShaderProgram(camera);
-	shaderProgram_suzi->addLight(pointlight);
-	shaderProgram_suzi->init_shader("Shaders/vertex.glsl", "Shaders/lambert_fragment.glsl");
-	camera->addObserver(shaderProgram_suzi);
-	pointlight->addObserver(shaderProgram_suzi);
-	shaderPrograms.push_back(shaderProgram_suzi);
+	
 
-	Model* suzi_smooth_model = new Model(std::vector<float>(suziSmooth, suziSmooth + sizeof(suziSmooth) / sizeof(suziSmooth[0])));
-	models.push_back(suzi_smooth_model);
+	DrawableObject* mario_object = new DrawableObject();
+	mario_object->init_model(mario_model);
+	mario_object->init_shader(shaderProgram_light);
+	mario_object->addTranslation(glm::vec3(-0.4f, 0.f, 0.f));
+	mario_object->setColor(glm::vec4(1.f, 1.f, 1.f, 1.0f));
+	mario_object->addScale(glm::vec3(0.03f, 0.03f, 0.03f));
+	mario_object->addDynamicRotation(5, glm::vec3(0.f, 1.f, 0.f));
+	mario_object->setMaterial(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.5f, 0.5f, 0.5f), 32.0f);
+	objects.push_back(mario_object);
 
-	DrawableObject* suzi_object = new DrawableObject(camera);
-	suzi_object->init_model(suzi_smooth_model);
-	suzi_object->init_shader(shaderProgram_suzi);
-	suzi_object->addTranslation(glm::vec3(-0.35f, 0.f, 0.f));
-	suzi_object->addScale(glm::vec3(0.1f, 0.1f, 0.1f));
-	suzi_object->setColor(glm::vec4(0.631f, 0.412f, 0.106f, 1.0f));
-	suzi_object->setMaterial(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.8f, 0.8f, 0.8f), glm::vec3(0.1f, 0.1f, 0.1f), 32.0f);
-	objects.push_back(suzi_object);
+
+	ShaderProgram* shaderProgram_lambert = new ShaderProgram(camera);
+	shaderProgram_lambert->addLight(pointlight);
+	shaderProgram_lambert->init_shader("Shaders/vertex.glsl", "Shaders/lambert_fragment.glsl");
+	camera->addObserver(shaderProgram_lambert);
+	shaderPrograms.push_back(shaderProgram_lambert);
+
+	DrawableObject* mario_object_1 = new DrawableObject();
+	mario_object_1->init_model(mario_model);
+	mario_object_1->init_shader(shaderProgram_lambert);
+	mario_object_1->addTranslation(glm::vec3(-0.15f, 0.f, 0.f));
+	mario_object_1->setColor(glm::vec4(1.f, 1.f, 1.f, 1.0f));
+	mario_object_1->addScale(glm::vec3(0.03f, 0.03f, 0.03f));
+	mario_object_1->addDynamicRotation(5, glm::vec3(0.f, 1.f, 0.f));
+	mario_object_1->setMaterial(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.5f, 0.5f, 0.5f), 32.0f);
+	objects.push_back(mario_object_1);
 	
 
 
-	DrawableObject* suzi_object_2 = new DrawableObject(camera);
-	suzi_object_2->init_model(suzi_smooth_model);
-	suzi_object_2->init_shader(shaderProgram_suzi);
-	suzi_object_2->addTranslation(glm::vec3(-0.08f, 0.f, 0.f));
-	suzi_object_2->addScale(glm::vec3(0.1f, 0.1f, 0.1f));
-	suzi_object_2->setColor(glm::vec4(0.631f, 0.412f, 0.106f, 1.0f));
-	suzi_object_2->setMaterial(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.1f, 0.1f, 0.1f), glm::vec3(1.0f, 1.0f, 1.0f), 32.0f);
-	objects.push_back(suzi_object_2);
+	ShaderProgram* shaderProgram_phong = new ShaderProgram(camera);
+	shaderProgram_phong->addLight(pointlight);
+	shaderProgram_phong->init_shader("Shaders/vertex.glsl", "Shaders/phong_fragment.glsl");
+	camera->addObserver(shaderProgram_phong);
+	shaderPrograms.push_back(shaderProgram_phong);
+
+	DrawableObject* mario_object_2 = new DrawableObject();
+	mario_object_2->init_model(mario_model);
+	mario_object_2->init_shader(shaderProgram_phong);
+	mario_object_2->addTranslation(glm::vec3(0.05f, 0.f, 0.f));
+	mario_object_2->setColor(glm::vec4(1.f, 1.f, 1.f, 1.0f));
+	mario_object_2->addScale(glm::vec3(0.03f, 0.03f, 0.03f));
+	mario_object_2->addDynamicRotation(5, glm::vec3(0.f, 1.f, 0.f));
+	mario_object_2->setMaterial(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.5f, 0.5f, 0.5f), 32.0f);
+	objects.push_back(mario_object_2);
 
 
 
-	DrawableObject* suzi_object_3 = new DrawableObject(camera);
-	suzi_object_3->init_model(suzi_smooth_model);
-	suzi_object_3->init_shader(shaderProgram_suzi);
-	suzi_object_3->addTranslation(glm::vec3(0.20f, 0.f, 0.f));
-	suzi_object_3->addScale(glm::vec3(0.1f, 0.1f, 0.1f));
-	suzi_object_3->setColor(glm::vec4(0.631f, 0.412f, 0.106f, 1.0f));
-	suzi_object_3->setMaterial(glm::vec3(0.6f, 0.6f, 0.6f), glm::vec3(0.8f, 0.8f, 0.8f), glm::vec3(1.0f, 1.0f, 1.0f), 32.0f);
-	objects.push_back(suzi_object_3);
-	
+	ShaderProgram* shaderProgram_blin = new ShaderProgram(camera);
+	shaderProgram_blin->addLight(pointlight);
+	shaderProgram_blin->init_shader("Shaders/vertex.glsl", "Shaders/blin_phong_fragment.glsl");
+	camera->addObserver(shaderProgram_blin);
+	shaderPrograms.push_back(shaderProgram_blin);
 
-
-
-
+	DrawableObject* mario_object_3 = new DrawableObject();
+	mario_object_3->init_model(mario_model);
+	mario_object_3->init_shader(shaderProgram_blin);
+	mario_object_3->addTranslation(glm::vec3(0.3f, 0.f, 0.f));
+	mario_object_3->setColor(glm::vec4(1.f, 1.f, 1.f, 1.0f));
+	mario_object_3->addScale(glm::vec3(0.03f, 0.03f, 0.03f));
+	mario_object_3->addDynamicRotation(5, glm::vec3(0.f, 1.f, 0.f));
+	mario_object_3->setMaterial(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.5f, 0.5f, 0.5f), 32.0f);
+	objects.push_back(mario_object_3);
 
 }
 
+//koule
 void Scene::CreateMultipleLightsScene()
 {
 	camera->setCamera(glm::vec3(0.f, 0.f, 2.f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f),
@@ -458,11 +485,9 @@ void Scene::CreateMultipleLightsScene()
 	shaderProgram_light->addLight(spotlight_red);
 	shaderProgram_light->init_shader("Shaders/vertex.glsl", "Shaders/constant_fragment.glsl");
 	camera->addObserver(shaderProgram_light);
-	spotlight_white->addObserver(shaderProgram_light);
-	spotlight_white->addObserver(shaderProgram_light);
 	shaderPrograms.push_back(shaderProgram_light);
 
-	DrawableObject* light_sphere_red = new DrawableObject(camera);
+	DrawableObject* light_sphere_red = new DrawableObject();
 	light_sphere_red->init_model(sphere_model);
 	light_sphere_red->init_shader(shaderProgram_light);
 	light_sphere_red->addTranslation(glm::vec3(spotlight_red->getPosition().x, spotlight_red->getPosition().y, spotlight_red->getPosition().z));
@@ -472,7 +497,7 @@ void Scene::CreateMultipleLightsScene()
 	objects.push_back(light_sphere_red);
 	
 
-	DrawableObject* light_sphere_white = new DrawableObject(camera);
+	DrawableObject* light_sphere_white = new DrawableObject();
 	light_sphere_white->init_model(sphere_model);
 	light_sphere_white->init_shader(shaderProgram_light);
 	light_sphere_white->addTranslation(glm::vec3(spotlight_white->getPosition().x, spotlight_white->getPosition().y, spotlight_white->getPosition().z));
@@ -489,11 +514,9 @@ void Scene::CreateMultipleLightsScene()
 	shaderProgram_sphere->addLight(spotlight_white);
 	shaderProgram_sphere->init_shader("Shaders/vertex.glsl", "Shaders/blin_phong_fragment.glsl");
 	camera->addObserver(shaderProgram_sphere);
-	spotlight_red->addObserver(shaderProgram_sphere);
-	spotlight_white->addObserver(shaderProgram_sphere);
 	shaderPrograms.push_back(shaderProgram_sphere);
 
-	DrawableObject* sphere_1 = new DrawableObject(camera);
+	DrawableObject* sphere_1 = new DrawableObject();
 	sphere_1->init_model(sphere_model);
 	sphere_1->init_shader(shaderProgram_sphere);
 	sphere_1->addTranslation(glm::vec3(0.8f, 0.f, -0.5f));
@@ -502,7 +525,7 @@ void Scene::CreateMultipleLightsScene()
 	sphere_1->setMaterial(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.8f, 0.8f, 0.8f), glm::vec3(1.0f, 1.0f, 1.0f), 32.0f);
 	objects.push_back(sphere_1);
 
-	DrawableObject* sphere_2 = new DrawableObject(camera);
+	DrawableObject* sphere_2 = new DrawableObject();
 	sphere_2->init_model(sphere_model);
 	sphere_2->init_shader(shaderProgram_sphere);
 	sphere_2->addTranslation(glm::vec3(-0.8f, 0.f, -0.5f));
@@ -514,7 +537,7 @@ void Scene::CreateMultipleLightsScene()
 	Model* background_model = new Model(std::vector<float>(plain, plain + sizeof(plain) / sizeof(plain[0])));
 	models.push_back(background_model);
 
-	DrawableObject* background = new DrawableObject(camera);
+	DrawableObject* background = new DrawableObject();
 	background->init_model(background_model);
 	background->init_shader(shaderProgram_sphere);
 	background->addTranslation(glm::vec3(0.f, 0.f, -1.f));
@@ -541,7 +564,6 @@ void Scene::CreateTexturedScene()
 	shaderProgram->addLight(spotlight_white);
 	shaderProgram->init_shader("Shaders/vertex.glsl", "Shaders/blin_phong_fragment.glsl");
 	camera->addObserver(shaderProgram);
-	spotlight_white->addObserver(shaderProgram);
 	shaderPrograms.push_back(shaderProgram);
 
 
@@ -550,7 +572,7 @@ void Scene::CreateTexturedScene()
 	TexturedModel* tex_model = new TexturedModel(std::vector<float>(plain_textured, plain_textured + sizeof(plain_textured) / sizeof(plain_textured[0])), texture);
 	models.push_back(tex_model);
 
-	DrawableObject* textured_object = new DrawableObject(camera);
+	DrawableObject* textured_object = new DrawableObject();
 	textured_object->init_model(tex_model);
 	textured_object->init_shader(shaderProgram);
 	textured_object->addTranslation(glm::vec3(-2.f, 0.f, -1.f));
@@ -568,7 +590,7 @@ void Scene::CreateTexturedScene()
 	TexturedModel* tex_model_2 = new TexturedModel(std::vector<float>(plain_textured, plain_textured + sizeof(plain_textured) / sizeof(plain_textured[0])), texture_2);
 	models.push_back(tex_model_2);
 
-	DrawableObject* textured_object_2 = new DrawableObject(camera);
+	DrawableObject* textured_object_2 = new DrawableObject();
 	textured_object_2->init_model(tex_model_2);
 	textured_object_2->init_shader(shaderProgram);
 	textured_object_2->addTranslation(glm::vec3(2.f, 0.f, -1.f));
@@ -585,7 +607,7 @@ void Scene::CreateTexturedScene()
 	Model* background_model = new Model(std::vector<float>(plain, plain + sizeof(plain) / sizeof(plain[0])));
 	models.push_back(background_model);
 
-	DrawableObject* background = new DrawableObject(camera);
+	DrawableObject* background = new DrawableObject();
 	background->init_model(background_model);
 	background->init_shader(shaderProgram);
 	background->addTranslation(glm::vec3(0.f, 0.f, -3.f));
@@ -596,6 +618,8 @@ void Scene::CreateTexturedScene()
 	objects.push_back(background);
 	
 }
+
+
 
 void Scene::CreateSkybox()
 {
@@ -668,7 +692,7 @@ void Scene::CreateSkybox()
 	models.push_back(skybox_model);
 
 
-	DrawableObject* skybox = new DrawableObject(camera);
+	DrawableObject* skybox = new DrawableObject();
 	skybox->init_model(skybox_model, 1);
 	skybox->init_shader(shaderProgram_skybox);
 	objects.push_back(skybox);
@@ -680,12 +704,11 @@ void Scene::DrawSkybox(float deltaTime)
 	{
 		if (object->is_Skybox() == 1)
 		{
-			glDepthMask(GL_FALSE);
-			glDepthFunc(GL_LEQUAL);
+			glDepthMask(GL_FALSE);						//zákaz zápisu do depth bufferu
+			glDepthFunc(GL_LEQUAL);						//fragmenty projdou hloubkovým testem, pokud mají hloubku menší nebo rovnu aktuální hodnotì (vykreslí se na pozdají)
 			object->DrawSkybox(skyboxFollowCamera);
 			glDepthMask(GL_TRUE);
-			glDepthFunc(GL_LESS);
-
+			glDepthFunc(GL_LESS);						//další objekty musí mít hloubku menší než maximum v depth bufferu
 		}
 	}
 }
@@ -705,9 +728,6 @@ void Scene::DrawScene(float deltaTime)
 
 void Scene::ClearScene() {
 	camera->clearLinkShaders();
-	for (Light* light : lights) {
-		light->clearLinkShaders();
-	}
 	lights.clear();
 
 	
@@ -767,12 +787,12 @@ void Scene::DeleteSelectedOBJ(int id) {
 void Scene::addTree(const glm::vec3& position) {
 	
 	ShaderProgram* shaderProgram = new ShaderProgram(camera);
-	shaderProgram->addLight(lights[0]);
-	shaderProgram->addLight(lights[1]);
+	for(Light* light : lights)
+	{
+		shaderProgram->addLight(light);
+	}
 	shaderProgram->init_shader("Shaders/vertex.glsl", "Shaders/blin_phong_fragment.glsl");
 	camera->addObserver(shaderProgram);
-	lights[0]->addObserver(shaderProgram);
-	lights[1]->addObserver(shaderProgram);
 	shaderPrograms.push_back(shaderProgram);
 
 	
@@ -785,7 +805,7 @@ void Scene::addTree(const glm::vec3& position) {
 
 
 
-	DrawableObject* tree = new DrawableObject(camera);
+	DrawableObject* tree = new DrawableObject();
 	tree->init_model(tree_model);
 	tree->init_shader(shaderProgram);
 	tree->addTranslation(position);
