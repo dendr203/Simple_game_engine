@@ -247,7 +247,7 @@ void Scene::CreateForestScene_bat(int numTrees, int numBushes)
 	ShaderProgram* shaderProgram = new ShaderProgram(camera);
 	shaderProgram->addLight(spotlight);
 	shaderProgram->addLight(battery);
-	shaderProgram->init_shader("Shaders/vertex.glsl", "Shaders/blin_phong_fragment.glsl");
+	shaderProgram->init_shader("Shaders/vertex.glsl", "Shaders/phong_fragment.glsl");
 	camera->addObserver(shaderProgram);
 	shaderPrograms.push_back(shaderProgram);
 
